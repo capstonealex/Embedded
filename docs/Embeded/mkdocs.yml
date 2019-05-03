@@ -1,0 +1,12 @@
+site_name: Alex Embeded Documentation
+theme: readthedocs
+nav:
+  - Home: index.md
+  - Requirements: requirements.md
+  - Getting started: fastbuild.md
+  - Workbench setup: workbench.md
+  - Beagle Bone Black: bbb.md
+  - Beagle Bone Kernal: kernal.md
+  - Real Time: relatime.md
+  - Misc: misc.md
+  - About: about.md
