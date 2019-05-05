@@ -1,6 +1,6 @@
 site_name: Alex Embeded Documentation
 theme:
-    name: readthedocs
+    name: 'readthedocs'
     highlightjs: true
     hljs_languages:
         - yaml
