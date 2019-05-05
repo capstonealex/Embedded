@@ -1,5 +1,10 @@
 site_name: Alex Embeded Documentation
-theme: readthedocs
+theme:
+    name: readthedocs
+    highlightjs: true
+    hljs_languages:
+        - yaml
+        - rust
 nav:
   - Home: index.md
   - Requirements: requirements.md
