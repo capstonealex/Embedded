@@ -1,5 +1,5 @@
 site_name: Alex Embeded Documentation
-theme: readthedocs
+theme: 'readthedocs'
 nav:
   - Home: index.md
   - Requirements: requirements.md
