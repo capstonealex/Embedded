@@ -1,6 +1,6 @@
 # Alex Embeded System Documentation
 
-![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "Logo Title Text 1")
+![Alex logo](img/logo_blue.png "Alex Logo")
 
 ## You have just found ALEXs Embeded system docs
 
