@@ -2,6 +2,8 @@
 
 ![Alex logo](img/logo_blue.png "Alex Logo")
 
+---
+
 ## You have just found ALEXs Embeded system docs
 
 <!-- What alex is:
@@ -19,21 +21,17 @@ You might find the docs useful if you are:
 - Detailed instructions on implementing Can bus support over a beagle bone black.
 - more to come.
 
-`mkdocs new [dir-name]` - Create a new project.
-`mkdocs serve` - Start the live-reloading docs server.
-`mkdocs build` - Build the documentation site.
-`mkdocs help` - Print this help message.
-
 ---
 
 ## Project breakdown
 
+<!--
     mkdocs.yml    # The configuration file.
     docs/
         index.md  # The documentation homepage.
         ...       # Other markdown pages, images and other files.
 
----
+--- -->
 
 ## Getting started in 10 minutes with a local install
 
@@ -71,7 +69,7 @@ Follow these steps to start running a pre-configured VM .ova file on your own ma
 
 You should now have a cloned VM with working Debian and cross compilation to beagle bone or any other armhf devices.
 
-## `Tested on mac OSX 10.14 and Windows`
+#### `Tested on mac OSX 10.14 and Windows 10`
 
 ## Support
 
