@@ -9,6 +9,6 @@ nav:
   - Eclipse w/ cross compliation: eclipse.md
   - Beagle Bone Black: bbb.md
   - Beagle Bone Kernal: kernal.md
-  - Real Time: relatime.md
-  - Misc: misc.md
-  - About: about.md
+  # - Real Time: relatime.md
+  # - Misc: misc.md
+  # - About: about.md
