@@ -68,7 +68,7 @@ root@debian:~# reboot
 
 Now you have a cloned VM with working Debian and cross compilation to beagle bone or any other armhf devices.
 
-`Tested on mac OSX 10.14 and Windows`
+## `Tested on mac OSX 10.14 and Windows`
 
 ## Support
 
