@@ -1,14 +1,14 @@
 # Alex Embeded System Documentation
 
-## LOGO HERE
+![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "Logo Title Text 1")
 
 ## You have just found ALEXs Embeded system docs
 
-What alex is:
+<!-- What alex is:
 
 What the documentationon can tell you
 
-Description of what the project is.
+Description of what the project is. -->
 
 You might find the docs useful if you are:
 
