@@ -5,6 +5,8 @@ nav:
   - Requirements: requirements.md
   - Getting started: fastbuild.md
   - Workbench setup: workbench.md
+  - Cross compliation: crosscomp.md
+  - Eclipse w/ cross compliation: eclipse.md
   - Beagle Bone Black: bbb.md
   - Beagle Bone Kernal: kernal.md
   - Real Time: relatime.md

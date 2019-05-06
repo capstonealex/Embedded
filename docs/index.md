@@ -25,6 +25,8 @@ You might find the docs useful if you are:
 
 ## Project breakdown
 
+---
+
 <!--
     mkdocs.yml    # The configuration file.
     docs/
@@ -39,17 +41,20 @@ For development we suggest using a virtual machine running debian linux.
 Follow these steps to start running a pre-configured VM .ova file on your own machine.
 
 1. Install [virtual box](<https://github.com/capstonealex/Embeded/wiki/Setting-Up-Local-Desktop-Workbench-(VM)>).
-2. Download workbench.ova
-   For CAPSTONE Group only:Currently hosted at the capstone google drive
-   `Capstone Project - LOWER LIMB EXOSKELETON FOR GAIT ASSISTANCE\Embedded Team\Virtual Machines`[workbench.ova](https://drive.google.com/drive/folders/1lCGyRpQLjKOnCXbs27e6w6VfofizSCC8)
+2. Download workbench.ova: Currently hosted at the capstone google drive: [workbench.ova](https://drive.google.com/drive/folders/1lCGyRpQLjKOnCXbs27e6w6VfofizSCC8)
+
+   `Capstone Project - LOWER LIMB EXOSKELETON FOR GAIT ASSISTANCE\Embedded Team\Virtual Machines`
+
    Hosting for others tbt.
-3. In Virtual box `file -> import appliance` and enter the path to the .ova file
-4. Configure the environment.
 
-   - Be sure to have more than 70mb of video ram
+3) In Virtual box `file -> import appliance` and enter the path to the .ova file
+4) Configure the environment.
 
-5. Make sure to select the `reinitialize the MAC address of all the network cards option`.
-6. Start your system and install virtual box Guest additions.
+   - Be sure to have more than 70mb of video ram allocated.
+
+5) Make sure to select the `reinitialize the MAC address of all the network cards option`.
+
+6) Start your system and install virtual box Guest additions.
 
 ### Guest additions
 
@@ -74,3 +79,7 @@ You should now have a cloned VM with working Debian and cross compilation to bea
 ## Support
 
 ## Aim of the project
+
+```
+
+```
