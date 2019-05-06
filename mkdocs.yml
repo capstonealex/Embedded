@@ -1,5 +1,5 @@
 site_name: Alex Embeded Documentation
-theme: 'rtd-dropdown'
+theme: readthedocs
 nav:
   - Home: index.md
   - Requirements: requirements.md
