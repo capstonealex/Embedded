@@ -53,21 +53,23 @@ Follow these steps to start running a pre-configured VM .ova file on your own ma
 5. Make sure to select the `reinitialize the MAC address of all the network cards option`.
 6. Start your system and install virtual box Guest additions.
 
-   Guest additions.
-   On the Virtual box menu Choose “Devices”->”Insert Guest Additions CD image…”
-   If this does not automatically run then follow the below code.
+### Guest additions
 
-   ```linux
-   user@debian:~$ su -
-   root@debian:~# apt-get update
-   root@debian:~# apt-get install build-essential module-assistant
-   root@debian:~# m-a prepare
-   root@debian:~# cd /media/cdrom
-   root@debian:~# sh ./VBoxLinuxAdditions.run
-   root@debian:~# reboot
-   ```
+    - On the Virtual box menu Choose “Devices”->”Insert Guest Additions CD image…”
 
-Now you have a cloned VM with working Debian and cross compilation to beagle bone or any other armhf devices.
+    - If this does not automatically run then follow the below code.
+
+        ```linux
+        user@debian:~$ su -
+        root@debian:~# apt-get update
+        root@debian:~# apt-get install build-essential module-assistant
+        root@debian:~# m-a prepare
+        root@debian:~# cd /media/cdrom
+        root@debian:~# sh ./VBoxLinuxAdditions.run
+        root@debian:~# reboot
+        ```
+
+You should now have a cloned VM with working Debian and cross compilation to beagle bone or any other armhf devices.
 
 ## `Tested on mac OSX 10.14 and Windows`
 
