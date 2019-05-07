@@ -57,6 +57,7 @@ Follow these steps to start running a pre-configured VM .ova file on your own ma
 5) Make sure to select the `reinitialize the MAC address of all the network cards option`.
 
 6) Start your system and install virtual box Guest additions.
+   - Login password is `password`
 
 ### Guest additions
 
