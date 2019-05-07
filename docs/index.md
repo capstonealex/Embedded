@@ -1,4 +1,4 @@
-# Alex Embeded System Documentation
+# Alex Embedded System Documentation
 
 ![Alex logo](img/logo_blue.png "Alex Logo")
 

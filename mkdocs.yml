@@ -1,4 +1,4 @@
-site_name: Alex Embeded Documentation
+site_name: Alex Embedded  Documentation
 theme: readthedocs
 nav:
   - Home: index.md
