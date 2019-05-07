@@ -13,5 +13,3 @@
   - [DCAN Ti User Guide](http://processors.wiki.ti.com/index.php/Linux_Core_DCAN_User%27s_Guide)
 - BeagleBone Black Capes
   - [Compatible Capes](https://elinux.org/Beagleboard:BeagleBone_Capes)
-
-- will is a poobrain
