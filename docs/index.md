@@ -37,6 +37,8 @@ You might find the docs useful if you are:
 
 ## Getting started in 10 minutes with a local install
 
+<!-- EXPLAIN HOW THE BELLOW WAS BUILT -->
+
 For development we suggest using a virtual machine running debian linux.
 Follow these steps to start running a pre-configured VM .ova file on your own machine.
 
@@ -71,6 +73,9 @@ Follow these steps to start running a pre-configured VM .ova file on your own ma
         root@debian:~# sh ./VBoxLinuxAdditions.run
         root@debian:~# reboot
         ```
+
+<!--
+7) Test debian w/ cross compiler from previous file -->
 
 You should now have a cloned VM with working Debian and cross compilation to beagle bone or any other armhf devices.
 
