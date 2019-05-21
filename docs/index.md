@@ -53,13 +53,13 @@ Follow these steps to start running a pre-configured VM .ova file on your own ma
 
 4) Configure the environment .
 
-   - Select more 70mb or more of video ram.
+   * Select more 70mb or more of video ram.
 
 5) Make sure to select the `reinitialize the MAC address of all the network cards option`.
 
 6) Start your system and install virtual box Guest additions.
 
-   - Login password is `password`
+   * Login password is `password`
 
 ### Guest additions
 
