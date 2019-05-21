@@ -42,7 +42,7 @@ You might find the docs useful if you are:
 For development we suggest using a virtual machine running debian linux.
 Follow these steps to start running a pre-configured VM .ova file on your own machine.
 
-1. Install [virtual box](<https://github.com/capstonealex/Embeded/wiki/Setting-Up-Local-Desktop-Workbench-(VM)>).
+1. Install [virtual box version 6.0.4](<https://www.virtualbox.org/wiki/Download_Old_Builds_6_0>).
 2. Download workbench.ova: Currently hosted at the capstone google drive: [workbench.ova](https://drive.google.com/drive/folders/1lCGyRpQLjKOnCXbs27e6w6VfofizSCC8)
 
    `Capstone Project - LOWER LIMB EXOSKELETON FOR GAIT ASSISTANCE\Embedded Team\Virtual Machines`
@@ -50,13 +50,15 @@ Follow these steps to start running a pre-configured VM .ova file on your own ma
    Hosting for others tbt.
 
 3) In Virtual box `file -> import appliance` and enter the path to the .ova file
-4) Configure the environment.
 
-   - Be sure to have more than 70mb of video ram allocated.
+4) Configure the environment .
+
+   - Select more 70mb or more of video ram.
 
 5) Make sure to select the `reinitialize the MAC address of all the network cards option`.
 
 6) Start your system and install virtual box Guest additions.
+
    - Login password is `password`
 
 ### Guest additions
