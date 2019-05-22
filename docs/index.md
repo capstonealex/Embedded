@@ -27,13 +27,6 @@ You might find the docs useful if you are:
 
 ---
 
-<!--
-    mkdocs.yml    # The configuration file.
-    docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.
-
---- -->
 
 ## Getting started in 10 minutes with a local install
 
@@ -41,6 +34,8 @@ You might find the docs useful if you are:
 
 For development we suggest using a virtual machine running debian linux.
 Follow these steps to start running a pre-configured VM .ova file on your own machine.
+The pre- congigured VM ha been configured as outlined in the [workbench setup] section.
+Upon installation the user should be up and running with an environment able to develop software, test and cross compile to a real time linux os on a beagle bone black.
 
 1. Install [virtual box version 6.0.4](<https://www.virtualbox.org/wiki/Download_Old_Builds_6_0>).
 2. Download workbench.ova: Currently hosted at the capstone google drive: [workbench.ova](https://drive.google.com/drive/folders/1lCGyRpQLjKOnCXbs27e6w6VfofizSCC8)
@@ -76,11 +71,17 @@ Follow these steps to start running a pre-configured VM .ova file on your own ma
         root@debian:~# sh ./VBoxLinuxAdditions.run
         root@debian:~# reboot
         ```
+---
+## Test system
+    * Follow the tests run in [cross compilation test]() section.
+    * Follow the instructions in [Eclipse cross compilation]() section.
+    
+    
 
-<!--
-7) Test debian w/ cross compiler from previous file -->
 
+---
 You should now have a cloned VM with working Debian and cross compilation to beagle bone or any other armhf devices.
+---
 
 #### `Tested on mac OSX 10.14 and Windows 10`
 
