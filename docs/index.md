@@ -1,6 +1,6 @@
-# Alex Embedded System Documentation
+# ALEX Embedded System Documentation
 
-![Alex logo](img/logo_blue.png "Alex Logo")
+![Alex logo](img/logo.png "Alex Logo")
 
 ---
 

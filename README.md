@@ -1,10 +1,11 @@
 # Alex Embeded Documentation
 
-The source for ALEX EMBEDED SYSTEM documentation is in this directory under `sources/`. 
+The source for ALEX EMBEDDED SYSTEM documentation is in this directory under `sources/`. 
 Our documentation uses extended Markdown, as implemented by [MkDocs](http://mkdocs.org).
 
 ## Building the documentation
 
-- install MkDocs: `pip install mkdocs`
+- Download and install python.
+- From CMD line, install MkDocs using: `pip install mkdocs`
 - `cd` to the `repository` folder and run:
-    - `mkdocs serve`    # Starts a local webserver:  [localhost:8000](localhost:8000)
+    - `mkdocs serve` This starts a local webserver:  [localhost:8000](localhost:8000)
