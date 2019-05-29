@@ -33,7 +33,7 @@ These steps should be done on the host PC and not the BBB as there are large fil
 
 ## Additional Information
 
-- If you want to go back to the old kernel. Simply edit the `/boot/uEnv.txt` file and change the line `uname_r=<kernel>` to the appropriate kernel version. Make sure you only use kernels that are installed on the system. You can check installed kernels by running `dpkg --list | grep linux-image`
+- If you want to go back to the old kernel, edit the `/boot/uEnv.txt` file in the SD card debian image. Change the line `uname_r=<kernel>` to the appropriate kernel version. Then [flash](/en/latest/bbb/#getting-and-flashing-bbb-images) the BBB with this image. Make sure you only use kernels that are installed on the system. You can check installed kernels by running `dpkg --list | grep linux-image`
 
 ## Sources
 
@@ -41,7 +41,7 @@ These steps should be done on the host PC and not the BBB as there are large fil
 - BBB Github wiki about kernel cross compilation https://github.com/beagleboard/linux/wiki
 - [Robert Nelson's Repo](https://github.com/RobertCNelson/ti-linux-kernel-dev)
 
-## Developer Section
+# Developer Section
 
 There is an alternate script `build_kernel.sh` that can be used to make non-debian specific kernel files. In step 4 of the "Building Kernel" section, run this script instead to generate kernel files. In step 7, the deploy folder will contain `4.14.108-ti-rt-r103.zimage`, `4.14.108-ti-rt-r103-dtbs.tar.gz` and `4.14.108-ti-rt-r103-module.tar.gz` files. The file names will depend on the kernel version you checked out earlier. Now, follow the instructions below to install these kernel files.
 
