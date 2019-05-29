@@ -26,7 +26,7 @@ These steps should be done on the host PC and not the BBB as there are large fil
 
 ## Installing the kernel built with build_deb.sh method
 
-1. [Live boot](https://github.com/capstonealex/Embeded/wiki/Flashing-&-Livebooting-images-on-the-BBB) the BBB using a functioning image on SD card.
+1. [Live boot](/bbb/#getting-and-flashing-bbb-images) the BBB using a functioning image on SD card.
 2. Copy the .deb files from the deploy folder on to the BBB.
 3. From the terminal, navigate to the folder where you copied the .deb file. Install the three packages: `sudo dpkg -i <package name>.deb`
 4. The SD card now has an image with the new kernel. You can now live boot or flash this image.
