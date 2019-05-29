@@ -46,7 +46,7 @@ There is an alternate script `build_kernel.sh` that can be used to make non-debi
 
 ## Installing the kernel built with build_kernel.sh method
 
-1. [Live boot](https://github.com/capstonealex/Embeded/wiki/Flashing-&-Livebooting-images-on-the-BBB) the BBB using a functioning image on SD card.
+1. [Live boot](/bbb/#getting-and-flashing-bbb-images) the BBB using a functioning image on SD card.
 2. Copy the zimage and 2 tar.gz files from the deploy folder on to the BBB.
    - The zimage should be placed in the `\boot\` folder and renamed to `vmlinuz-<kernel_version>`. Remove the `.zimage` extension from the file name. This can also be done via terminal: `sudo cp -v <kernel_version>.zImage /boot/vmlinuz-<kernel_version>`. Replace <kernel_version> with the compiled kernel version.
    - The device tree binaries files (dtbs) should be extracted and copied to `/boot/dtbs/` folder.
