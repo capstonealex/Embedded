@@ -39,6 +39,7 @@ These steps should be done on the host PC and not the BBB as there are large fil
 
 - Manual installation of kernel files (build_kernel.sh method) https://www.digikey.com/eewiki/display/linuxonarm/BeagleBone+Black#BeagleBoneBlack-InstallKernelandRootFileSystem
 - BBB Github wiki about kernel cross compilation https://github.com/beagleboard/linux/wiki
+- [Robert Nelson's Repo](https://github.com/RobertCNelson/ti-linux-kernel-dev)
 
 ##Developer Section
 
