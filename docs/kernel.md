@@ -23,6 +23,8 @@ These steps should be done on the host PC and not the BBB as there are large fil
 6. The compilation will resume. On a laptop (i5-8250U CPU, 8GB RAM) running a VM (2 cores, 2 GB RAM), it takes approximately an hour. Outside the VM is takes roughly 20mins.
 7. Once the compilation is complete, there will be sub folder called "deploy".
    - This folder has `linux-headers-4.14.108-ti-rt-r103_1xross_armhf.deb` , `linux-image-4.14.108-ti-rt-r103_1xross_armhf.deb` and `linux-libc-dev_1xross_armhf.deb` files. The file names will depend on the kernel version you checked out earlier.
+   
+The debian packages compiled in this section can be found [here](https://drive.google.com/drive/folders/1QxixLCkjTl1fydw8D9Qf-CXiwcgkRjLf?usp=sharing). Note: You may need a University of Melbourne email to access this.
 
 ## Installing the kernel built with build_deb.sh method
 
