@@ -9,6 +9,9 @@ nav:
   - Eclipse w/ cross compliation: eclipse.md
   - Beagle Bone Black: bbb.md
   - Beagle Bone Kernel: kernel.md
+  # - Everthing below this is in-development components. Move completed sections above.
+  - IN-DEVELOPMENT: develop.md
+  - CANbus: canbus.md
   # - Real Time: relatime.md
   # - Misc: misc.md
   # - About: about.md
