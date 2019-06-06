@@ -1,3 +1,4 @@
+**This section contains features that are currently in development and not fully tested/documented. They are recorded here for reference.**
 ## CANbus
 The Fourier X2 exoskelton currently uses the Accelnet [ACJ-055-18](https://www.copleycontrols.com/en/products/acj-055-18) servo drivers. These support the CANopen protocol. We use BeagleBoneBlack with a [comms cape](https://github.com/beagleboard/capes/tree/master/beaglebone/Comms) for communicating with it. BBB has 2 CAN controllers: DCAN0 and DCAN1. But the pins for DCAN0 are used by the comms cape, so we will be using DCAN1 exclusively. Note that these capes already have a terminating resistance (120Ω) between CAN-H and CAN-L.
 
