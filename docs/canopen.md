@@ -26,8 +26,11 @@
  - CMO for CANopen guide
     
     https://www.youtube.com/watch?v=NNlMBlTM228
+    
+    https://www.youtube.com/watch?v=i60Kk0K8KW8
 
-    CMO is used by copley for CANopen comms. Most of the video is unusable since we are using a BBB for comms. But we maybe able to use the C++ code at the end to construct messages. 
+    CMO is used by copley for CANopen comms. Most of the 1st video is unusable since we are using a BBB for comms. But we maybe able to use the C++ code at the end to construct messages. 
+    The 2nd video mentions that we can use the CMO library with other tools as well. Might be worth looking into.
 
  - CANopenSocket
    
