@@ -10,9 +10,9 @@ nav:
   - Beagle Bone Black: bbb.md
   - Beagle Bone Kernel: kernel.md
   # - Everthing below this is in-development components. Move completed sections above.
-  - IN-DEVELOPMENT: develop.md
-  - CANbus: canbus.md
-  - CANopen: canopen.md
+  - IN-DEVELOPMENT:
+    - CANbus: canbus.md
+    - CANopen: canopen.md
   # - Real Time: relatime.md
   # - Misc: misc.md
   # - About: about.md

@@ -1,4 +1,6 @@
+**This section contains features that are currently in development and not fully tested/documented. They are recorded here for reference.**
 # CANopen
+
 ## Resources to look into
  - **Basics of CANopen**
 
