@@ -12,6 +12,7 @@ nav:
   # - Everthing below this is in-development components. Move completed sections above.
   - IN-DEVELOPMENT: develop.md
   - CANbus: canbus.md
+  - CANopen: canopen.md
   # - Real Time: relatime.md
   # - Misc: misc.md
   # - About: about.md
