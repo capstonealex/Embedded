@@ -4,7 +4,7 @@
 
 ---
 
-## You have just found ALEXs Embeded system docs
+## You have just found ALEX's embedded systems documentation
 
 <!-- What alex is:
 
@@ -15,7 +15,7 @@ Description of what the project is. -->
 You might find the docs useful if you are:
 
 - Developing on the Fourier inteligence platform using a beagle bone black
-- Developing an embeded system using a begale bone black as the hardware platform
+- Developing an embedded system using a begale bone black as the hardware platform
 - Are in need of implementing a real time linux system.
 - Are in need of impleneting a real time linux development system with Can Bus support
 - Detailed instructions on implementing Can bus support over a beagle bone black.
