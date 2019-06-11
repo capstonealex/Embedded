@@ -6,7 +6,7 @@ Note: CANbus is a physical/data link later protocol. CANOpen is a higher layer p
 
 ## Configuring the BBB CAN interface
 1. We will be using DCAN1 controller on BBB for CAN comms. For this pins P9_24 and P9_26 have to be configured correctly. You can check current config by running `config-pin -q P9.24`. If it is configured for CAN, it will shows "p9_24 Mode: can".
-2. To config pins for CAN: `config-pin -q P9.24` and `config-pin -q P2.9`.
+2. To config pins for CAN: `sudo config-pin p9.24 can` and `sudo config-pin p9.26 can`.
 3. Load LKMs for CAN:
 
     ```
