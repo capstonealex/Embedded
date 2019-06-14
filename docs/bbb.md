@@ -10,8 +10,6 @@ Root password: root
 
 # Connect to BBB through VM
 
-## Basic description of this here
-
 ## Setting up BBB outside VM (To be done first)
 
 1. Fully shutdown VirtualBox and plug the BBB in to the host computer's USB. It should show up as a USB drive.
@@ -22,7 +20,7 @@ Root password: root
 
 ## Setting up VirtualBox to enable USB ethernet connection to BBB.
 
-1. Download and install the VirtualBox Oracle VM VirtualBox Extension Pack (https://www.virtualbox.org/wiki/Downloads)
+1. Download and install the VirtualBox Oracle VM VirtualBox [Extension Pack](https://www.virtualbox.org/wiki/Downloads).
 2. Under VirtualBox Settings > Network > Adapter, Enable Network Adapter and select NAT. Now launch the VM and check that you have internet access.
    - Shutdown the VM.
    - In VirtualBox go to settings > ports > usb. For windows this will be settings > USB

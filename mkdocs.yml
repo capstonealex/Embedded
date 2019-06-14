@@ -3,7 +3,6 @@ theme: readthedocs
 nav:
   - Home: index.md
   - Requirements: requirements.md
-  - Getting started: fastbuild.md
   - Workbench setup: workbench.md
   - Cross compliation: crosscomp.md
   - Eclipse w/ cross compliation: eclipse.md
@@ -13,6 +12,4 @@ nav:
   - IN-DEVELOPMENT:
     - CANbus: canbus.md
     - CANopen: canopen.md
-  # - Real Time: relatime.md
-  # - Misc: misc.md
   # - About: about.md
