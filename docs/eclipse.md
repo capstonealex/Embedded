@@ -81,4 +81,4 @@ Pre-requisites: ARM hard float (cross compilation) and QEMU (emulation) package 
 
 ## Allow direct executable copying onto BBB with 1 click via scp.
 
-1.
+To be done.

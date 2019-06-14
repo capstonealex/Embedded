@@ -1,6 +1,6 @@
 # Cross-compilation tool chain
 
-## Instal
+## Install
 
 The cross-toolchain repository on linux can be used for crosscompilation. Specifically, the ARM hard float (armhf) package can be used for building programs for the BBB.
 
@@ -66,4 +66,4 @@ armhf ”
 
 ## Set up Multiarch cross-compliation with third-party libraries
 
-\*
+To be done.
