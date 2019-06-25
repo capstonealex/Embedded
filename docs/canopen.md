@@ -1,6 +1,52 @@
 **This section contains features that are currently in development and not fully tested/documented. They are recorded here for reference.**
 # CANopen
 
+## Sending CANopen messages
+1. Git clone the [canopensocket](https://github.com/CANopenNode/CANopenSocket) from github. Note: The canopennode folder may have to be separately downloaded. Check canopennode folder and see if empty. Transfer the entire folder it over to BBB. 
+2. Follow instructions in README.md on the github page for CANopenSocket. Below is an abridged version of the same.
+1.	Setup BBB CAN1 from the embedded [wiki](https://embeded.readthedocs.io/en/latest/canbus/#configuring-the-bbb-can-interface). Make sure to use same bitrate in setup here and the CAN config in the [CME software](https://embeded.readthedocs.io/en/latest/canbus/#accelnet-serial-comms). 
+2.	Connect to driver using serial. Reset the driver using CME to clear network errors. Also check bitrate and note the node ID.
+3.	Open 3 terminals on BBB. On first terminal: `$ candump can1`
+
+4.	2nd terminal: Navigate to canopend folder.
+
+      ```
+      $ cd CANopenSocket/canopend
+      $ make
+      $ app/canopend --help
+      $ echo - > od6_storage
+      $ echo - > od6_storage_auto
+      $ app/canopend can1 -i 6 -s od6_storage -a od6_storage_auto
+      ```
+
+      Replace 6 with node address of driver, both for "od" and for "-i 6". Note: the "make" step is only required once. 
+
+5. Ctrl+z, to start another process.
+   
+      ```
+      $ bg
+      $ app/canopend can1 -i 6 -c ""
+      ```
+
+5.	3rd terminal: navigate to canopencomm folder
+   
+      ```
+      $ cd CANopenSocket/canopencomm
+      $ make
+      $ ./canopencomm –help
+      ```
+      Note: the "make" step is only required once.
+6. `./canopencomm [1] 6 write 0x1017 0 i16 5000`
+This can be used to set the heartbeat 1 every 5000ms. The 1st 6 is the node ID.
+   
+      ```
+      $ ./canopencomm 6 preop
+      $ ./canopencomm 6 start
+      $ ./canopencomm 6 stop
+      ```
+      Above can be used to change driver states.
+
+
 ## Resources to look into
  - **Basics of CANopen**
 
