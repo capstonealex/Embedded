@@ -48,6 +48,19 @@ The Accelnet [datasheet](https://www.copleycontrols.com/wp-content/uploads/2018/
 5. If all the previous steps succeded, the CME2 software will connect to the amplifier (Accelnet driver). You should now be able to modify the settings of the driver and troubleshoot. See the help under the CME software for more details. 
 
 ## CANbus wiring for BBB and Accelnet
+Image below shows the wiring required for the test setup. Cables/Connectors have been made for the following:
+
+* Power suppply to J3
+* BBB to J1
+* Serial Adapter to J5 (RS-232)
+
+For the 120 ohm termination and the 5V power supply, use a breadboard.
+
+Note:
+
+* For J1, power pins (1 and 6) and internally connected. So are signal GND pins (4 and  9). So you can connect power and ground to either of these sets of pins. 
+
+![CANbus BBB Wiring](img/WiringCanbus.png)
 ### Accelnet ACJ-055-18 Pins
 Pin mapping from Accelnet [datasheet](https://www.copleycontrols.com/wp-content/uploads/2018/02/Accelnet_Micro_Panel_CANopen-ACJ-Datasheet-Datasheet.pdf).
 ![ACJ-055-18](img/accelnetWiring.png)
