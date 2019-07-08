@@ -1,6 +1,6 @@
 **This section contains features that are currently in development and not fully tested/documented. They are recorded here for reference.**
 ## CANbus
-The Fourier X2 exoskelton currently uses the Accelnet [ACJ-055-18](https://www.copleycontrols.com/en/products/acj-055-18) servo drivers. These support the CANopen protocol. We use BeagleBoneBlack with a [comms cape](https://github.com/beagleboard/capes/tree/master/beaglebone/Comms) for communicating with it. BBB has 2 CAN controllers: DCAN0 and DCAN1. But the pins for DCAN0 are used by the comms cape, so we will be using DCAN1 exclusively. Note that these capes already have a terminating resistance (120Ω) between CAN-H and CAN-L.
+The Fourier X2 exoskelton currently uses the Accelnet [ACJ-055-18](https://www.copleycontrols.com/en/products/acj-055-18) servo drives. These support the CANopen protocol. We use BeagleBoneBlack with a [comms cape](https://github.com/beagleboard/capes/tree/master/beaglebone/Comms) for communicating with it. BBB has 2 CAN controllers: DCAN0 and DCAN1. But the pins for DCAN0 are used by the comms cape, so we will be using DCAN1 exclusively. Note that these capes already have a terminating resistance (120Ω) between CAN-H and CAN-L.
 
 Note: CANbus is a physical/data link later protocol. CANOpen is a higher layer protocol.
 
@@ -18,7 +18,10 @@ Note: CANbus is a physical/data link later protocol. CANOpen is a higher layer p
     mesg|grep raw
     ```
 
-5. Setup the CAN link: `sudo ip link set can1 up type can bitrate 115200`. The 115200 can be replaced with your required bitrate. Then run `sudo ifconfig can1 up`.
+5. Setup the CAN link: `sudo ip link set can1 up type can bitrate 1000000`. The 1000000 can be replaced with your required bitrate. Then run `sudo ifconfig can1 up`. 
+        
+    Note: `sudo ifconfig can1 down` can be used to close the network interface. This is useful if you want to change parameters, like bitrate.
+
 6. You can run `ifconfig` to check that the CAN interface is running. You should see CAN as one of the adapters along with ethernet. 
 
 ## Testing CAN messages between BBB
@@ -35,9 +38,9 @@ The Accelnet [datasheet](https://www.copleycontrols.com/wp-content/uploads/2018/
 2. The drivers from step 1 are incompatible. To fix it, go [here](http://www.ifamilysoftware.com/news37.html) and download the "PL2303_64bit_ Installer.exe" and install it. Run the installed software and follow the instructions to fix the driver.
 
 ## Accelnet Serial Comms
-1. Connect the pins from the serial adapter to the Accelnet driver as shown below. 
+1. Connect the pins from the serial adapter to the Accelnet drive as shown below. 
     
-    | Serial Adapter| ACJ-055-18 Servo Driver|
+    | Serial Adapter| ACJ-055-18 Servo Drive|
     | ------------- |:----------------------:|
     | TXD           | RXD on J5              |
     | RXD           | TXD on J5              |
@@ -45,7 +48,7 @@ The Accelnet [datasheet](https://www.copleycontrols.com/wp-content/uploads/2018/
 
 3. Download and install the [CME2](https://www.copleycontrols.com/en/products/acj-055-18/) software from Copley.
 4. Run the CME2 software. Start the "communications wizard > Serial" and select the COM port on which the serial adapter is connected. You can check the COM port by going to "device manager > ports" in Windows. You may need to set the serial adapter bitrate to match CME software detected bitrate. The bit rate can be selected from properties of the TRP-C08 in "device manager > ports".
-5. If all the previous steps succeded, the CME2 software will connect to the amplifier (Accelnet driver). You should now be able to modify the settings of the driver and troubleshoot. See the help under the CME software for more details. 
+5. If all the previous steps succeded, the CME2 software will connect to the amplifier (Accelnet drive). You should now be able to modify the settings of the drive and troubleshoot. See the help under the CME software for more details. 
 
 ## CANbus wiring for BBB and Accelnet
 Image below shows the wiring required for the test setup. Cables/Connectors have been made for the following:
