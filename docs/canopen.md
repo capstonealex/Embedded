@@ -28,10 +28,10 @@
    
       ```
       bg
-      app/canopend can1 -i 0 -c ""
+      app/canopend can1 -i 100 -c ""
       ```
 
-      The zero in the above line is the master node ID.
+      The zero in the above line is the master node ID. Using 0 here throws an error. For now, use a large unused ID.
 
 8.	3rd terminal: navigate to canopencomm folder
    
@@ -85,9 +85,9 @@ Currently, an ethernet cable (accessible from outside) is connected to the exosk
       app/canopend can1 -i <NODE_ID> -s od<NODE_ID>_storage -a od<NODE_ID>_storage_auto
       ```
 
-8. In terminal 2, start one more process (ctrl + z and `bg`) for the master: `app/canopend can1 -i 0 -c ""`. At this stage, you should be able to see the heartbeat in terminal 1.
+8. In terminal 2, start one more process (ctrl + z and `bg`) for the master: `app/canopend can1 -i 100 -c ""`. At this stage, you should be able to see the heartbeat in terminal 1.
 
-9. On terminal 3, you can start issuing CANopen commands. See next steps for issuing relative position command to left knee motor. 
+9. On terminal 3: `cd CANopenSocket/canopencomm`. Now you can start issuing CANopen commands. See next steps for issuing relative position command to left knee motor. 
 
       | Function                  | Index                    | Manual Pg #|
       | ------------------------- |:------------------------:|:----------:|
