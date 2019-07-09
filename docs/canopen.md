@@ -31,7 +31,8 @@
       app/canopend can1 -i 100 -c ""
       ```
 
-      The 100 in the above line is the master node ID. Using 0 here throws an error. For now, use a large unused ID.
+      The 100
+       in the above line is the master node ID. Using 0 here throws an error. For now, use a large unused ID.
 
 8.	3rd terminal: navigate to canopencomm folder
    
