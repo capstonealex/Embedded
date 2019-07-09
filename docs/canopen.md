@@ -31,7 +31,8 @@
       app/canopend can1 -i 100 -c ""
       ```
 
-      The 100 in the above line is the master node ID. Using 0 here throws an error. For now, use a large unused ID.
+      The 100
+       in the above line is the master node ID. Using 0 here throws an error. For now, use a large unused ID.
 
 8.	3rd terminal: navigate to canopencomm folder
    
@@ -107,6 +108,10 @@ Currently, an ethernet cable (accessible from outside) is connected to the exosk
 13. Set target position: `./canopencomm [1] 2 write 0x607A 0 i32 100000`. This is approximately half bent knee if you start from fully extended position. Note that this example uses relative motion. Also verify position by moving knee manually and reading position. 
 14. Read status word: `./canopencomm [1] 2 read 0x6041 0 i16`. Should be 1591 (to be verified) if ready for motion. Convert 1591 to binary and compare to the bits in the manual for 0x6041 to get more details. 
 15. Control word (0x6040) can now be used for motion. We need to change bit 4 from low to high to start motion. The entire control word goes from 0000000001101111 (decimal 111) to 0000000001111111 (decimal 127). So send, `./canopencomm [1] 2 write 0x6040 0 i16 111` followed by `./canopencomm [1] 2 write 0x6040 0 i16 127`. This should move the knee. See profile position mode for details on bits 4-6. For remaining bits, see control word in manual.
+
+## MISC
+* The zero (home) position of the motor set to current position when exo skeleton is powered on. 
+* To send negative values in canopencomm, use -- -number. The -- specifies that the number is a value and not an option for the command.
 
 ## Resources to look into
  - **Basics of CANopen**

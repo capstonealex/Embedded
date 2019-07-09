@@ -15,4 +15,5 @@ echo - > od2_storage_auto
 app/canopend can1 -i 2 -s od2_storage -a od2_storage_auto &
 
 #master
+#using node ID 0 throws error. Use 100 for now. 
 app/canopend can1 -i 100 -c ""
