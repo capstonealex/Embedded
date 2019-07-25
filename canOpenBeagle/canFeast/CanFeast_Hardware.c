@@ -30,8 +30,8 @@ void getPos();
 
 
 int main (/*int argc, char *argv[]*/){
-    printf("Welcome to canFeast!\n");
-    int canOutput1 = 0;
+	printf("Welcome to canFeast!\n");
+	int canOutput1 = 0;
     int canOutput2 = 0;
     int canOutput3 = 0;
     int loopcount = 0;
@@ -147,37 +147,37 @@ void setAbsPos2()
 }
 
 void canFeast (char *buf,int* canOutput) {
-    char *socketPath = "/tmp/CO_command_socket";  /* Name of the local domain socket, configurable by arguments. */
-    //char buf[BUF_SIZE];
-    int fd;
-    struct sockaddr_un addr;
-    //int opt;
-    //int i;
+	char *socketPath = "/tmp/CO_command_socket";  /* Name of the local domain socket, configurable by arguments. */
+	//char buf[BUF_SIZE];
+	int fd;
+	struct sockaddr_un addr;
+	    //int opt;
+	    //int i;
 
-    fd = socket(AF_UNIX, SOCK_STREAM, 0);
-    if (fd == -1)
-    {
-        perror("Socket creation failed");
-        exit(EXIT_FAILURE);
-    }
-    memset(&addr, 0, sizeof(struct sockaddr_un));
-    addr.sun_family = AF_UNIX;
-    strncpy(addr.sun_path, socketPath, sizeof(addr.sun_path) - 1);
-    // Try to make a connection to the local UNIT AF_UNIX SOCKET, quit if unavailable
-    if (connect(fd, (struct sockaddr *)&addr, sizeof(struct sockaddr_un)) == -1)
-    {
-        perror("Socket connection failed");
-        exit(EXIT_FAILURE);
-    }
-    /*get command and send down socket, print response to screen*/
-    // get commands from stdin until end.
-    //while (fgets(buf, BUF_SIZE, stdin) != NULL)
-    //{
-    sendCommand(fd, buf, strlen(buf),canOutput);
-    //}
+	fd = socket(AF_UNIX, SOCK_STREAM, 0);
+	if (fd == -1)
+	{
+		perror("Socket creation failed");
+		exit(EXIT_FAILURE);
+	}
+	 memset(&addr, 0, sizeof(struct sockaddr_un));
+	 addr.sun_family = AF_UNIX;
+	 strncpy(addr.sun_path, socketPath, sizeof(addr.sun_path) - 1);
+	 // Try to make a connection to the local UNIT AF_UNIX SOCKET, quit if unavailable
+	 if (connect(fd, (struct sockaddr *)&addr, sizeof(struct sockaddr_un)) == -1)
+	 {
+		 perror("Socket connection failed");
+		 exit(EXIT_FAILURE);
+	 }
+	 /*get command and send down socket, print response to screen*/
+	 // get commands from stdin until end.
+	 //while (fgets(buf, BUF_SIZE, stdin) != NULL)
+	 //{
+	 sendCommand(fd, buf, strlen(buf),canOutput);
+	 //}
 
-    //close socket
-    close(fd);
+	 //close socket
+	 close(fd);
 
 }
 
@@ -190,16 +190,16 @@ static void sendCommand(int fd, char *command, size_t commandLength, int* canOut
 
     if (write(fd, command, commandLength) != commandLength)
     {
-        perror("Socket write failed");
-        exit(EXIT_FAILURE);
+    	perror("Socket write failed");
+    	exit(EXIT_FAILURE);
     }
 
     n = read(fd, buf, sizeof(buf));
 
     if (n == -1)
     {
-        perror("Socket read failed");
-        exit(EXIT_FAILURE);
+    	perror("Socket read failed");
+    	exit(EXIT_FAILURE);
     }
     // printf("%s \n",buf);
 
@@ -214,3 +214,4 @@ static void sendCommand(int fd, char *command, size_t commandLength, int* canOut
         *canOutput = 0;
     }
 }
+
