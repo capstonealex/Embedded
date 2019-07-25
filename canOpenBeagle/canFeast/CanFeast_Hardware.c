@@ -19,7 +19,7 @@
 /* Helper functions */
 static void sendCommand(int fd, char *command, size_t commandLength, int* canOutput);
 void canFeast (char *buf, int* canOutput);
-void getButton(int button);
+void getButton(int button, int* canOutput);
 // MAKE ME ACCEPT drivePOS we want
 void setAbsPos();
 // MAKE ME ACCEPT nodeID
@@ -30,14 +30,12 @@ int main (/*int argc, char *argv[]*/){
 	printf("Welcome to canFeast!\n");
 	int canOutput = 0;
     while(canOutput == 0){
-        getButton(BUTTON_ONE);
+        getButton(BUTTON_ONE, &canOutput);
     }
-
-	
     return 0;
 }
 
-void getButton(int button){
+void getButton(int button, int* canOutput){
     char buttons[][MAX_STRINGS]=
             {
                     "[1] 9 read 0x0101 1 u32", //button 1
@@ -45,22 +43,24 @@ void getButton(int button){
                     "[1] 9 read 0x0103 1 u32", //button 1
                     "[1] 9 read 0x0104 1 u32"//button 2
             };
-    canFeast(buttons[button-1]);
+    canFeast(buttons[button-1], canOutput);
 }
 //GET THIS TO WORK WITH SPECIFC NODE ID
 void getPos()
 {
+    int canOutput = 0;
     char *buf="[1] 2 read 0x6063 0 i32"; //display current knee position
     //char *input = NULL;
     int count = 0;
 
     while(count<100){
         count ++;
-        canFeast(buf);
+        canFeast(buf, &canOutput);
     }
 }
 void setAbsPos()
 {
+    int canOutput = 0;
     char commList[][MAX_STRINGS]=
             {
                     "[1] 2 start", //go to start mode
@@ -82,7 +82,7 @@ void setAbsPos()
 
     //printf("%d", Num_of_Strings);
     for(int i=0; i<Num_of_Strings; ++i)
-        canFeast(commList[i]);
+        canFeast(commList[i],&canOutput);
 
 }
 
@@ -118,11 +118,10 @@ void canFeast (char *buf,int* canOutput) {
 
 	 //close socket
 	 close(fd);
-	 return return_command;
 
 }
 
-static void sendCommand(int fd, char *command, size_t commandLength, int* c)
+static void sendCommand(int fd, char *command, size_t commandLength, int* canOutput)
 {
     //will: change this hackey BUTTON_PRESS logic
     char button_press[] = "[1] 0x3F800000";
@@ -143,7 +142,7 @@ static void sendCommand(int fd, char *command, size_t commandLength, int* c)
     	exit(EXIT_FAILURE);
     }
     printf("%s", buf);
-    if(strcmp(buff,button_press)==0)
+    if(strcmp(buf,button_press)==0)
     {
         *canOutput = 1;
     }
