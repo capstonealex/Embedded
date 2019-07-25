@@ -38,14 +38,14 @@ int main (/*int argc, char *argv[]*/){
 }
 
 void getButton(int button){
-    char commList[][MAX_STRINGS]=
+    char buttons[][MAX_STRINGS]=
             {
                     "[1] 9 read 0x0101 1 u32", //button 1
                     "[1] 9 read 0x0102 1 u32",//button 2
                     "[1] 9 read 0x0103 1 u32", //button 1
                     "[1] 9 read 0x0104 1 u32"//button 2
             };
-    canFeast(buttont[button-1]);
+    canFeast(buttons[button-1]);
 }
 //GET THIS TO WORK WITH SPECIFC NODE ID
 void getPos()
