@@ -10,6 +10,7 @@
 #define BUF_SIZE 100000
 #endif
 #define MAX_STRINGS 40
+#define NUM_POS_POLLS 100
 #define DECIMAL 10
 #define BUTTON_ONE 1
 #define BUTTON_TWO 2
@@ -51,16 +52,23 @@ void getButton(int button, int* canOutput){
     canFeast(buttons[button-1], canOutput);
 }
 //GET THIS TO WORK WITH SPECIFC NODE ID
-void getPos()
+void getPos(int node)
 {
+    char node[MAX_STRINGS], getpos[MAX_STRINGS];
+    char buffer[MAX_STRINGS];
+    itoa(node,buffer,10);
+    printf("Decimal value = %s\n", buffer);
+    strcpy(getpos, "[1] 2 read 0x6063 ");
+    strcpy(node, buffer);
+    strcpy(dataType," i32")
+    strcat(getpos, node);
+    strcat(getpos, dataType);
+    printf("%s\n",getpos);
     int canOutput = 0;
-    char *buf="[1] 2 read 0x6063 0 i32"; //display current knee position
-    //char *input = NULL;
-    int count = 0;
-
-    while(count<100){
+    int count;
+    while(count< NUM_POS_POLLS){
         count ++;
-        canFeast(buf, &canOutput);
+        canFeast(getpos, &canOutput);
     }
 }
 void setAbsPos()
@@ -119,12 +127,11 @@ void setAbsPosSmart(int position)
 
     //printf("%d", Num_of_Strings);
     for(int i=0; i<Num_of_Strings; ++i)
-//        canFeast(commList[i],&canOutput);
-        printf("entry %d: %s\n",i,commList[i]);
+        canFeast(commList[i],&canOutput);
 
 }
 
-void canFeast (char *buf,int* canOutput) {
+void canFeast(char *buf,int* canOutput) {
 	char *socketPath = "/tmp/CO_command_socket";  /* Name of the local domain socket, configurable by arguments. */
 	//char buf[BUF_SIZE];
 	int fd;
@@ -156,7 +163,6 @@ void canFeast (char *buf,int* canOutput) {
 
 	 //close socket
 	 close(fd);
-
 }
 
 static void sendCommand(int fd, char *command, size_t commandLength, int* canOutput)
