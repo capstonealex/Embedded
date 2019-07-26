@@ -5,12 +5,13 @@
 #include <sys/un.h>
 #include <sys/socket.h>
 #include <string.h>
-#include <time.h>
 
 #ifndef BUF_SIZE
 #define BUF_SIZE 100000
 #endif
 #define MAX_STRINGS 40
+#define NUM_POS_POLLS 100
+#define DECIMAL 10
 #define BUTTON_ONE 1
 #define BUTTON_TWO 2
 #define BUTTON_THREE 3
@@ -23,47 +24,20 @@ void canFeast (char *buf, int* canOutput);
 void getButton(int button, int* canOutput);
 // MAKE ME ACCEPT drivePOS we want
 void setAbsPos();
-void setAbsPos2();
-
 // MAKE ME ACCEPT nodeID
 void getPos();
+void remove_spaces(char* s);
+
+void setAbsPosSmart(int position);
+/* Helpers for int to string conversion */
+void itoa(int value, char* str, int base);
+void strreverse(char* begin, char* end);
+
 
 
 int main (/*int argc, char *argv[]*/){
 	printf("Welcome to canFeast!\n");
-	int canOutput1 = 0;
-    int canOutput2 = 0;
-    int canOutput3 = 0;
-    int loopcount = 0;
-    clock_t startTime = clock();
-    printf("Start Time %d\n",startTime);
-
-    while(canOutput3 == 0){
-        getButton(BUTTON_ONE, &canOutput1);
-        if (canOutput1 == 1)
-        {
-            printf("Button 1 was pressed");
-            setAbsPos();
-        }
-        getButton(BUTTON_TWO, &canOutput2);
-        if(canOutput2== 1)
-        {
-            printf("Button 2 was pressed");
-            setAbsPos2();
-        }
-        getButton(BUTTON_THREE, &canOutput3);
-        loopcount++;
-    }
-    clock_t endTime = clock();
-    printf("End time %d\n",endTime);
-    printf("Loop Count %d\n",loopcount);
-
-    printf("Button 3 WAS PRESSED, and we quit\n");
-    char *buf="[1] 2 preop"; //L Knee to preop state
-    canFeast(buf, &canOutput1);
-
-    //setAbsPos();
-
+    setAbsPosSmart(200000);
     return 0;
 }
 
@@ -78,16 +52,23 @@ void getButton(int button, int* canOutput){
     canFeast(buttons[button-1], canOutput);
 }
 //GET THIS TO WORK WITH SPECIFC NODE ID
-void getPos()
+void getPos(int node)
 {
+    char node[MAX_STRINGS], getpos[MAX_STRINGS];
+    char buffer[MAX_STRINGS];
+    itoa(node,buffer,10);
+    printf("Decimal value = %s\n", buffer);
+    strcpy(getpos, "[1] 2 read 0x6063 ");
+    strcpy(node, buffer);
+    strcpy(dataType," i32")
+    strcat(getpos, node);
+    strcat(getpos, dataType);
+    printf("%s\n",getpos);
     int canOutput = 0;
-    char *buf="[1] 2 read 0x6063 0 i32"; //display current knee position
-    //char *input = NULL;
-    int count = 0;
-
-    while(count<100){
+    int count;
+    while(count< NUM_POS_POLLS){
         count ++;
-        canFeast(buf, &canOutput);
+        canFeast(getpos, &canOutput);
     }
 }
 void setAbsPos()
@@ -102,7 +83,7 @@ void setAbsPos()
                     "[1] 2 write 0x6060 0 i8 1", //Drive to position mode
                     "[1] 2 read 0x6061 0 i8", //display current drive mode
                     "[1] 2 read 0x6063 0 i32", //display current knee position
-                    "[1] 2 write 0x607A 0 i32 50000", //move to this position (absolute)
+                    "[1] 2 write 0x607A 0 i32 200000", //move to this position (absolute)
                     "[1] 2 read 0x607A 0 i32", //display target position
                     "[1] 2 read 0x6041 0 i16", //display status word
                     "[1] 2 write 0x6040 0 i16 47", //control word low
@@ -112,41 +93,45 @@ void setAbsPos()
 
     int Num_of_Strings = sizeof(commList)/MAX_STRINGS;
 
-    printf("SetAbsPos %d", Num_of_Strings);
+    //printf("%d", Num_of_Strings);
     for(int i=0; i<Num_of_Strings; ++i)
         canFeast(commList[i],&canOutput);
 
 }
-
-void setAbsPos2()
+void setAbsPosSmart(int position)
 {
-    int canOutput = 0;
-    char commList[][MAX_STRINGS]=
-            {
-                    "[1] 2 start", //go to start mode
-                    "[1] 2 read 0x1008 0 vs", //read hardware name
-                    "[1] 2 read 0x1017 0 i16", //read heartbeat timing
-                    "[1] 2 write 0x1017 0 i16 10000", //set heartbeat to 10s
-                    "[1] 2 write 0x6060 0 i8 1", //Drive to position mode
-                    "[1] 2 read 0x6061 0 i8", //display current drive mode
-                    "[1] 2 read 0x6063 0 i32", //display current knee position
-                    "[1] 2 write 0x607A 0 i32 150000", //move to this position (absolute)
-                    "[1] 2 read 0x607A 0 i32", //display target position
-                    "[1] 2 read 0x6041 0 i16", //display status word
-                    "[1] 2 write 0x6040 0 i16 47", //control word low
-                    "[1] 2 write 0x6040 0 i16 63" //control word high
+    char pos[MAX_STRINGS], movePos[MAX_STRINGS];
+    char buffer[MAX_STRINGS];
+    itoa(position,buffer,10);
+    printf("Decimal value = %s\n", buffer);
+    strcpy(movePos, "[1] 2 write 0x607A 0 i32 ");
+    strcpy(pos, buffer);
+    strcat(movePos, pos);
+    printf("%s\n",movePos);
 
-            };
+    char* commList[MAX_STRINGS];
+    commList[0]= "[1] 2 start"; //go to start mode
+    commList[1]= "[1] 2 read 0x1008 0 vs"; //read hardware name
+    commList[2]= "[1] 2 read 0x1017 0 i16"; //read heartbeat timing
+    commList[3]= "[1] 2 write 0x1017 0 i16 10000"; //set heartbeat to 10s
+    commList[4]= "[1] 2 write 0x6060 0 i8 1"; //Drive to position mode
+    commList[5]= "[1] 2 read 0x6061 0 i8"; //display current drive mode
+    commList[6]= "[1] 2 read 0x6063 0 i32"; //display current knee position
+    commList[7]= movePos; //move to this position (absolute)
+    commList[8]= "[1] 2 read 0x607A 0 i32"; //display target position
+    commList[9]= "[1] 2 read 0x6041 0 i16"; //display status word
+    commList[10]= "[1] 2 write 0x6040 0 i16 47"; //control word low
+    commList[11]= "[1] 2 write 0x6040 0 i16 63"; //control word high
 
     int Num_of_Strings = sizeof(commList)/MAX_STRINGS;
 
-    printf("setAbsPos2 %d", Num_of_Strings);
+    //printf("%d", Num_of_Strings);
     for(int i=0; i<Num_of_Strings; ++i)
         canFeast(commList[i],&canOutput);
 
 }
 
-void canFeast (char *buf,int* canOutput) {
+void canFeast(char *buf,int* canOutput) {
 	char *socketPath = "/tmp/CO_command_socket";  /* Name of the local domain socket, configurable by arguments. */
 	//char buf[BUF_SIZE];
 	int fd;
@@ -178,13 +163,12 @@ void canFeast (char *buf,int* canOutput) {
 
 	 //close socket
 	 close(fd);
-
 }
 
 static void sendCommand(int fd, char *command, size_t commandLength, int* canOutput)
 {
     //will: change this hackey BUTTON_PRESS logic
-    char button_press = '3';
+    char button_press= '3';
     size_t n;
     char buf[BUF_SIZE];
 
@@ -195,18 +179,14 @@ static void sendCommand(int fd, char *command, size_t commandLength, int* canOut
     }
 
     n = read(fd, buf, sizeof(buf));
-
     if (n == -1)
     {
     	perror("Socket read failed");
     	exit(EXIT_FAILURE);
     }
-    // printf("%s \n",buf);
-
-
-    if(buf[6]== button_press)
+    printf("%s", buf);
+    if(buf[6] == button_press)
     {
-        printf("WE MADE IT!\n");
         *canOutput = 1;
     }
     else
@@ -215,3 +195,54 @@ static void sendCommand(int fd, char *command, size_t commandLength, int* canOut
     }
 }
 
+////Definitionof itoa(int to string conversion) and helper Kernighan & Ritchie's Ansi C.
+
+void itoa(int value, char* str, int base) {
+
+    static char num[] = "0123456789abcdefghijklmnopqrstuvwxyz";
+
+    char* wstr=str;
+
+    int sign;
+
+
+
+
+    // Validate base
+
+    if (base<2 || base>35){ *wstr='\0'; return; }
+
+
+
+    // Take care of sign
+
+    if ((sign=value) < 0) value = -value;
+
+
+
+
+    // Conversion. Number is reversed.
+
+    do *wstr++ = num[value%base]; while(value/=base);
+
+    if(sign<0) *wstr++='-';
+
+    *wstr='\0';
+
+
+
+    // Reverse string
+
+
+    strreverse(str,wstr-1);
+
+}
+void strreverse(char* begin, char* end) {
+
+    char aux;
+
+    while(end>begin)
+
+        aux=*end, *end--=*begin, *begin++=aux;
+
+}
