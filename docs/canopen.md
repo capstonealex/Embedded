@@ -78,15 +78,8 @@ Currently, an ethernet cable (accessible from outside) is connected to the exosk
 
 4. On a BBB with CANopenSocket installed, open 3 terminals. 
 5. On terminal 1: `candump can1`
-6. On terminal 2: `cd CANopenSocket/canopend`. Then issue below command for each node after replace <NODE_ID> with correct ID. You can use ctrl + z and type `bg` to start another process for each of the node. 
 
-      ```
-      echo - > od<NODE_ID>_storage
-      echo - > od<NODE_ID>_storage_auto
-      app/canopend can1 -i <NODE_ID> -s od<NODE_ID>_storage -a od<NODE_ID>_storage_auto
-      ```
-
-8. In terminal 2, start one more process (ctrl + z and `bg`) for the master: `app/canopend can1 -i 100 -c ""`. At this stage, you should be able to see the heartbeat in terminal 1.
+8. In terminal 2, run following for the master: `cd CANopenSocket/canopend` followed by `app/canopend can1 -i 100 -c ""`. At this stage, you should be able to see the heartbeat in terminal 1 if it is setup.
 
 9. On terminal 3: `cd CANopenSocket/canopencomm`. Now you can start issuing CANopen commands. See next steps for issuing relative position command to left knee motor. 
 
@@ -112,6 +105,13 @@ Currently, an ethernet cable (accessible from outside) is connected to the exosk
 ## MISC
 * The zero (home) position of the motor set to current position when exo skeleton is powered on. 
 * To send negative values in canopencomm, use -- -number. The -- specifies that the number is a value and not an option for the command.
+* To add virtual nodes when using vcan, do the following step after step 5. On terminal 2: `cd CANopenSocket/canopend`. Then issue below command for each node after replace <NODE_ID> with correct ID. You can use ctrl + z and type `bg` to start another process for each of the node. 
+
+      ```
+      echo - > od<NODE_ID>_storage
+      echo - > od<NODE_ID>_storage_auto
+      app/canopend can1 -i <NODE_ID> -s od<NODE_ID>_storage -a od<NODE_ID>_storage_auto
+      ```
 
 ## Resources to look into
  - **Basics of CANopen**
