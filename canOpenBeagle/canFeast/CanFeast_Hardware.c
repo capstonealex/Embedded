@@ -37,6 +37,7 @@ int main (/*int argc, char *argv[]*/){
     int loopcount = 0;
     clock_t startTime = clock();
     printf("Start Time %d\n",startTime);
+    printf("%d",CLOCKS_PER_SEC);
 
     while(canOutput3 == 0){
         getButton(BUTTON_ONE, &canOutput1);
