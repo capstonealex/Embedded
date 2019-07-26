@@ -5,7 +5,6 @@
 #include <sys/un.h>
 #include <sys/socket.h>
 #include <string.h>
-#include <time.h>
 
 #ifndef BUF_SIZE
 #define BUF_SIZE 100000
@@ -21,6 +20,7 @@
 static void sendCommand(int fd, char *command, size_t commandLength, int* canOutput);
 void canFeast (char *buf, int* canOutput);
 void getButton(int button, int* canOutput);
+
 // MAKE ME ACCEPT drivePOS we want
 void setAbsPos();
 void setAbsPos2();
@@ -34,10 +34,6 @@ int main (/*int argc, char *argv[]*/){
 	int canOutput1 = 0;
     int canOutput2 = 0;
     int canOutput3 = 0;
-    int loopcount = 0;
-    clock_t startTime = clock();
-    printf("Start Time %d\n",startTime);
-    printf("%d",CLOCKS_PER_SEC);
 
     while(canOutput3 == 0){
         getButton(BUTTON_ONE, &canOutput1);
@@ -53,17 +49,12 @@ int main (/*int argc, char *argv[]*/){
             setAbsPos2();
         }
         getButton(BUTTON_THREE, &canOutput3);
-        loopcount++;
+
     }
-    clock_t endTime = clock();
-    printf("End time %d\n",endTime);
-    printf("Loop Count %d\n",loopcount);
 
     printf("Button 3 WAS PRESSED, and we quit\n");
     char *buf="[1] 2 preop"; //L Knee to preop state
     canFeast(buf, &canOutput1);
-
-    //setAbsPos();
 
     return 0;
 }
@@ -97,18 +88,10 @@ void setAbsPos()
     char commList[][MAX_STRINGS]=
             {
                     "[1] 2 start", //go to start mode
-                    "[1] 2 read 0x1008 0 vs", //read hardware name
-                    "[1] 2 read 0x1017 0 i16", //read heartbeat timing
-                    "[1] 2 write 0x1017 0 i16 10000", //set heartbeat to 10s
                     "[1] 2 write 0x6060 0 i8 1", //Drive to position mode
-                    "[1] 2 read 0x6061 0 i8", //display current drive mode
-                    "[1] 2 read 0x6063 0 i32", //display current knee position
                     "[1] 2 write 0x607A 0 i32 50000", //move to this position (absolute)
-                    "[1] 2 read 0x607A 0 i32", //display target position
-                    "[1] 2 read 0x6041 0 i16", //display status word
                     "[1] 2 write 0x6040 0 i16 47", //control word low
                     "[1] 2 write 0x6040 0 i16 63" //control word high
-
             };
 
     int Num_of_Strings = sizeof(commList)/MAX_STRINGS;
@@ -125,18 +108,10 @@ void setAbsPos2()
     char commList[][MAX_STRINGS]=
             {
                     "[1] 2 start", //go to start mode
-                    "[1] 2 read 0x1008 0 vs", //read hardware name
-                    "[1] 2 read 0x1017 0 i16", //read heartbeat timing
-                    "[1] 2 write 0x1017 0 i16 10000", //set heartbeat to 10s
                     "[1] 2 write 0x6060 0 i8 1", //Drive to position mode
-                    "[1] 2 read 0x6061 0 i8", //display current drive mode
-                    "[1] 2 read 0x6063 0 i32", //display current knee position
                     "[1] 2 write 0x607A 0 i32 150000", //move to this position (absolute)
-                    "[1] 2 read 0x607A 0 i32", //display target position
-                    "[1] 2 read 0x6041 0 i16", //display status word
                     "[1] 2 write 0x6040 0 i16 47", //control word low
                     "[1] 2 write 0x6040 0 i16 63" //control word high
-
             };
 
     int Num_of_Strings = sizeof(commList)/MAX_STRINGS;
@@ -149,11 +124,8 @@ void setAbsPos2()
 
 void canFeast (char *buf,int* canOutput) {
 	char *socketPath = "/tmp/CO_command_socket";  /* Name of the local domain socket, configurable by arguments. */
-	//char buf[BUF_SIZE];
 	int fd;
 	struct sockaddr_un addr;
-	    //int opt;
-	    //int i;
 
 	fd = socket(AF_UNIX, SOCK_STREAM, 0);
 	if (fd == -1)
@@ -170,14 +142,9 @@ void canFeast (char *buf,int* canOutput) {
 		 perror("Socket connection failed");
 		 exit(EXIT_FAILURE);
 	 }
-	 /*get command and send down socket, print response to screen*/
-	 // get commands from stdin until end.
-	 //while (fgets(buf, BUF_SIZE, stdin) != NULL)
-	 //{
-	 sendCommand(fd, buf, strlen(buf),canOutput);
-	 //}
 
-	 //close socket
+	 sendCommand(fd, buf, strlen(buf),canOutput);
+
 	 close(fd);
 
 }
@@ -202,7 +169,6 @@ static void sendCommand(int fd, char *command, size_t commandLength, int* canOut
     	perror("Socket read failed");
     	exit(EXIT_FAILURE);
     }
-    // printf("%s \n",buf);
 
 
     if(buf[6]== button_press)
