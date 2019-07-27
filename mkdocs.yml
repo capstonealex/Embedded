@@ -12,4 +12,5 @@ nav:
   - IN-DEVELOPMENT:
     - CANbus: canbus.md
     - CANopen: canopen.md
+    - CANopen Hardware: canopenHardware.md
   # - About: about.md

@@ -11,23 +11,8 @@
 4.	Connect to drive using serial. Reset the drive using CME to clear network errors. Also check bitrate and note the node ID.
 5.	Open 3 terminals on BBB. On first terminal: `candump can1`
 
-6.	2nd terminal: Navigate to canopend folder.
-
+6.	2nd terminal: Navigate to canopend folder.  
       ```
-      cd CANopenSocket/canopend
-      make
-      app/canopend --help
-      echo - > od6_storage
-      echo - > od6_storage_auto
-      app/canopend can1 -i 6 -s od6_storage -a od6_storage_auto
-      ```
-
-      Replace 6 with node address of drive, both for "od" and for "-i 6". Note: the "make" step is only required once. 
-
-7. Ctrl+z, to start another process.
-   
-      ```
-      bg
       app/canopend can1 -i 100 -c ""
       ```
 
