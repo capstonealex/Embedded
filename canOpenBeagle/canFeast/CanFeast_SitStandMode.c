@@ -4,6 +4,7 @@
 #include <sys/un.h>
 #include <sys/socket.h>
 #include <string.h>
+#include <math.h>
 
 
 #ifndef BUF_SIZE
@@ -29,7 +30,7 @@ void setAbsPosSmart(int position, int* canOutput);
 void itoa(int value, char* str, int base);
 void strreverse(char* begin, char* end);
 void stringExtract(char *origStr, char **extractStr, int pos);
-
+int strToInt(char str[]);
 
 int main (){
     int canOutput=0;
@@ -192,4 +193,22 @@ void stringExtract(char *origStr, char **extractStr, int pos){
         *extractStr=ptr;
         ptr = strtok(NULL, delim);
     }
+}
+
+int strToInt(char str[]){
+    int len = strlen(str);
+    int i, num = 0;
+
+    if(str[0]=='-'){
+        for (i = 0; i < len-1; i++){
+            num += (str[len - (i + 1)] - '0') * pow(10, i);
+        }
+        return -num;
+    }
+
+    for (i = 0; i < len; i++) {
+        num += ((str[len - (i + 1)] - '0') * pow(10, i));
+    }
+
+    return num;
 }
