@@ -1,4 +1,3 @@
-/******************************************************************************/
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -11,7 +10,7 @@
 #define BUF_SIZE 100000
 #endif
 #define STRING_LENGTH 50
-#define NUM_POS_POLLS 100
+#define NUM_POS_POLLS 10
 #define DECIMAL 10
 #define BUTTON_ONE 1
 #define BUTTON_TWO 2
@@ -30,10 +29,12 @@ void setAbsPosSmart(int position, int* canOutput);
 void itoa(int value, char* str, int base);
 void strreverse(char* begin, char* end);
 
+
 int main (){
     int canOutput=0;
-    printf("Welcome to canFeast!\n");
-    setAbsPosSmart(200000, &canOutput);
+    printf("Welcome to CANfeast!\n");
+
+
     return 0;
 }
 
@@ -42,18 +43,18 @@ void getButton(int button, int* canOutput){
             {
                     "[1] 9 read 0x0101 1 u32", //button 1
                     "[1] 9 read 0x0102 1 u32",//button 2
-                    "[1] 9 read 0x0103 1 u32", //button 1
-                    "[1] 9 read 0x0104 1 u32"//button 2
+                    "[1] 9 read 0x0103 1 u32", //button 3
+                    "[1] 9 read 0x0104 1 u32"//button 4
             };
     canFeast(buttons[button-1], canOutput);
 }
-//GET THIS TO WORK WITH SPECIFC NODE ID
+
 void getPos(int nodeid, int* canOutput){
     char node[STRING_LENGTH], getpos[STRING_LENGTH], dataType[STRING_LENGTH], buffer[STRING_LENGTH];
     itoa(nodeid,buffer,DECIMAL);
-    strcpy(getpos, "[1] 2 read 0x6063 ");
+    strcpy(getpos, "[1] ");
     strcpy(node, buffer);
-    strcpy(dataType," i32");
+    strcpy(dataType," read 0x6063 0 i32");
     //concatenate message
     strcat(getpos, node);
     strcat(getpos, dataType);
