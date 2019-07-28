@@ -31,12 +31,14 @@ void itoa(int value, char* str, int base);
 void strreverse(char* begin, char* end);
 void stringExtract(char *origStr, char **extractStr, int pos);
 int strToInt(char str[]);
+void sitStand();
+void preop(int nodeid);
+void initMotorPos(int nodeid);
 
 int main (){
     int canOutput=0;
     printf("Welcome to CANfeast!\n");
-
-
+    sitStand();
     return 0;
 }
 
@@ -80,7 +82,6 @@ void setAbsPosSmart(int position, int* canOutput){
     char* commList[]= {
             "[1] 2 start", //go to start mode
             "[1] 2 write 0x6060 0 i8 1", //Drive to position mode
-            "[1] 2 read 0x6063 0 i32", //display current knee position
             movePos, //move to this position (absolute)
             "[1] 2 write 0x6040 0 i16 47", //control word low
             "[1] 2 write 0x6040 0 i16 63" //control word high
@@ -211,4 +212,46 @@ int strToInt(char str[]){
     }
 
     return num;
+}
+
+void sitStand(){
+    int sitState=0; //0 means fully standing, 9 means fully seated.
+
+}
+
+//set node to preop mode
+void preop(int nodeid){
+    char node[STRING_LENGTH], preop[STRING_LENGTH], dataTail[STRING_LENGTH], buffer[STRING_LENGTH];
+    itoa(nodeid,buffer,DECIMAL);
+    strcpy(preop, "[1] ");
+    strcpy(node, buffer);
+    strcpy(dataTail," preop");
+    //concatenate message
+    strcat(preop, node);
+    strcat(preop, dataTail);
+    printf("%s\n",preop);
+}
+
+//start motor and set to position mode.
+void initMotorPos(int nodeid){
+    char node[STRING_LENGTH], comm[STRING_LENGTH], dataTail[STRING_LENGTH], buffer[STRING_LENGTH];
+    itoa(nodeid,buffer,DECIMAL);
+
+    //creating message for start mode
+    strcpy(comm, "[1] ");
+    strcpy(node, buffer);
+    strcpy(dataTail," start");
+    //concatenate message
+    strcat(comm, node);
+    strcat(comm, dataTail);
+    printf("%s\n",comm);
+
+    //creating message for position mode
+    strcpy(comm, "[1] ");
+    strcpy(node, buffer);
+    strcpy(dataTail," write 0x6060 0 i8 1");
+    //concatenate message
+    strcat(comm, node);
+    strcat(comm, dataTail);
+    printf("%s\n",comm);
 }
