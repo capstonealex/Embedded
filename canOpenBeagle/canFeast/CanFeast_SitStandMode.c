@@ -169,10 +169,11 @@ void strreverse(char* begin, char* end) {
 }
 
 //Extracts a string at position pos of origStr and stores it in extractStr.
-//Index 0 is position 1
+//Index 0 is position 1.
 // IMPORTANT: The origStr passed into the function gets modified. So pass a copy if needed.
 void stringExtract(char *origStr, char **extractStr, int pos){
-    char delim[] = " ";
+    //using both space and nextline as delimiter
+    char delim[] = " \n\r";
     char *ptr = strtok(origStr, delim);
 
     for(int i=0; ptr != NULL && i<pos; i++){
@@ -185,6 +186,7 @@ int strToInt(char str[]){
     int len = strlen(str);
     int i, num = 0;
 
+    //if 1st char is -ve symbol then do 1 less loop.
     if(str[0]=='-'){
         for (i = 0; i < len-1; i++){
             num += (str[len - (i + 1)] - '0') * pow(10, i);
@@ -205,17 +207,19 @@ void sitStand(){
     int sitState=0; //0 means fully standing, 9 means fully seated.
     initMotorPos(2);
     setAbsPosSmart(50000, junk);
-    sleep(5);
+    sleep(2);
 
     getPos(2,positionMessageNode2);
     printf("Position Message is %s\n",positionMessageNode2);
 
-    stringExtract(positionMessageNode2,&positionStrNode2,1);
-    printf("Extracted position Message is %s\n",positionMessageNode2);
+    //extracting 2nd string as that contains the position.
+    stringExtract(positionMessageNode2,&positionStrNode2,2);
+    printf("Extracted position Message is %s\n",positionStrNode2);
 
     int positionNode2=strToInt(positionStrNode2);
-    printf("\nLeft Knee (node 2) positions is: %d", positionNode2);
-    sleep(5);
+    printf("\nLeft Knee (node 2) positions is: %d\n", positionNode2);
+    sleep(2);
+
     preop(2);
 }
 
