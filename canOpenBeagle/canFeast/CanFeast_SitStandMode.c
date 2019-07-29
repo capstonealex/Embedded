@@ -20,12 +20,12 @@
 
 
 /* Helper functions */
-static void sendCommand(int fd, char *command, size_t commandLength, int* canOutput);
-void canFeast (char *buf, int* canOutput);
-void getButton(int button, int* canOutput);
+static void sendCommand(int fd, char *command, size_t commandLength, char *canReturnMessage);
+void canFeast (char *buf, char *canReturnMessage);
+void getButton(int button, char *canReturnMessage);
 // MAKE ME ACCEPT nodeID
-void getPos(int nodeid, int* canOutput);
-void setAbsPosSmart(int position, int* canOutput);
+void getPos(int nodeid, char *canReturnMessage);
+void setAbsPosSmart(int position, char *canReturnMessage);
 /* Helpers for int to string conversion */
 void itoa(int value, char* str, int base);
 void strreverse(char* begin, char* end);
@@ -36,13 +36,13 @@ void preop(int nodeid);
 void initMotorPos(int nodeid);
 
 int main (){
-    int canOutput=0;
+    //int canOutput=0;
     printf("Welcome to CANfeast!\n");
     sitStand();
     return 0;
 }
 
-void getButton(int button, int* canOutput){
+void getButton(int button, char *canReturnMessage){
     char buttons[][STRING_LENGTH]=
             {
                     "[1] 9 read 0x0101 1 u32", //button 1
@@ -50,10 +50,10 @@ void getButton(int button, int* canOutput){
                     "[1] 9 read 0x0103 1 u32", //button 3
                     "[1] 9 read 0x0104 1 u32"//button 4
             };
-    canFeast(buttons[button-1], canOutput);
+    canFeast(buttons[button-1], canReturnMessage);
 }
 
-void getPos(int nodeid, int* canOutput){
+void getPos(int nodeid, char *canReturnMessage){
     char node[STRING_LENGTH], getpos[STRING_LENGTH], dataType[STRING_LENGTH], buffer[STRING_LENGTH];
     itoa(nodeid,buffer,DECIMAL);
     strcpy(getpos, "[1] ");
@@ -62,14 +62,14 @@ void getPos(int nodeid, int* canOutput){
     //concatenate message
     strcat(getpos, node);
     strcat(getpos, dataType);
-    int count=0;
-    while(count< NUM_POS_POLLS){
-        count ++;
-        canFeast(getpos, canOutput);
-    }
+//    int count=0;
+//    while(count< NUM_POS_POLLS){
+//        count ++;
+        canFeast(getpos, canReturnMessage);
+//    }
 }
 
-void setAbsPosSmart(int position, int* canOutput){
+void setAbsPosSmart(int position, char *canReturnMessage){
     char pos[STRING_LENGTH], movePos[STRING_LENGTH];
     char buffer[STRING_LENGTH];
     itoa(position,buffer,DECIMAL);
@@ -80,8 +80,8 @@ void setAbsPosSmart(int position, int* canOutput){
     printf("%s\n",movePos);
 
     char* commList[]= {
-            "[1] 2 start", //go to start mode
-            "[1] 2 write 0x6060 0 i8 1", //Drive to position mode
+            //"[1] 2 start", //go to start mode
+            //"[1] 2 write 0x6060 0 i8 1", //Drive to position mode
             movePos, //move to this position (absolute)
             "[1] 2 write 0x6040 0 i16 47", //control word low
             "[1] 2 write 0x6040 0 i16 63" //control word high
@@ -89,10 +89,10 @@ void setAbsPosSmart(int position, int* canOutput){
 
     int Num_of_Strings = sizeof(commList)/ sizeof(commList[0]);
     for(int i=0; i<Num_of_Strings; ++i)
-        canFeast(commList[i],canOutput);
+        canFeast(commList[i],canReturnMessage);
 }
 
-void canFeast(char *buf,int* canOutput) {
+void canFeast(char *buf, char *canReturnMessage) {
     char *socketPath = "/tmp/CO_command_socket";  /* Name of the local domain socket, configurable by arguments. */
     int fd;
     struct sockaddr_un addr;
@@ -110,15 +110,15 @@ void canFeast(char *buf,int* canOutput) {
         perror("Socket connection failed");
         exit(EXIT_FAILURE);
     }
-    sendCommand(fd, buf, strlen(buf),canOutput);
+    sendCommand(fd, buf, strlen(buf),canReturnMessage);
     //close socket
     close(fd);
 }
 
-static void sendCommand(int fd, char *command, size_t commandLength, int* canOutput)
+static void sendCommand(int fd, char *command, size_t commandLength, char *canReturnMessage)
 {
     //will: change this hackey BUTTON_PRESS logic
-    char button_press= '3';
+    //char button_press= '3';
     size_t n;
     char buf[BUF_SIZE];
 
@@ -133,12 +133,15 @@ static void sendCommand(int fd, char *command, size_t commandLength, int* canOut
         exit(EXIT_FAILURE);
     }
     printf("%s", buf);
+    printf("\nabout to copy buf to return message");
+    strcpy(canReturnMessage,buf);
+    /*//button press check
     if(buf[6] == button_press){
         *canOutput = 1;
     }
     else{
         *canOutput = 0;
-    }
+    }*/
 }
 
 ////Definitionof itoa(int to string conversion) and helper Kernighan & Ritchie's Ansi C.
@@ -215,12 +218,21 @@ int strToInt(char str[]){
 }
 
 void sitStand(){
+    char positionNode2[STRING_LENGTH];
+    char* junk=0;
     int sitState=0; //0 means fully standing, 9 means fully seated.
-
+    initMotorPos(2);
+    //setAbsPosSmart(20000, &junk);
+    //sleep(5);
+    getPos(2,positionNode2);
+    printf("\nLeft Knee (node 2) positions is: %s", positionNode2);
+    //sleep(5);
+    //preop(2);
 }
 
 //set node to preop mode
 void preop(int nodeid){
+    char junk[STRING_LENGTH];
     char node[STRING_LENGTH], preop[STRING_LENGTH], dataTail[STRING_LENGTH], buffer[STRING_LENGTH];
     itoa(nodeid,buffer,DECIMAL);
     strcpy(preop, "[1] ");
@@ -229,13 +241,16 @@ void preop(int nodeid){
     //concatenate message
     strcat(preop, node);
     strcat(preop, dataTail);
-    printf("%s\n",preop);
+    printf("\nNode %d is now in preop state\n",nodeid);
+    canFeast(preop,junk);
 }
 
 //start motor and set to position mode.
 void initMotorPos(int nodeid){
     char node[STRING_LENGTH], comm[STRING_LENGTH], dataTail[STRING_LENGTH], buffer[STRING_LENGTH];
     itoa(nodeid,buffer,DECIMAL);
+
+    char canMessage[STRING_LENGTH];
 
     //creating message for start mode
     strcpy(comm, "[1] ");
@@ -244,7 +259,7 @@ void initMotorPos(int nodeid){
     //concatenate message
     strcat(comm, node);
     strcat(comm, dataTail);
-    printf("%s\n",comm);
+    canFeast(comm,canMessage);
 
     //creating message for position mode
     strcpy(comm, "[1] ");
@@ -253,5 +268,5 @@ void initMotorPos(int nodeid){
     //concatenate message
     strcat(comm, node);
     strcat(comm, dataTail);
-    printf("%s\n",comm);
+    canFeast(comm,canMessage);
 }
