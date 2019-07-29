@@ -4,7 +4,6 @@
 #include <sys/un.h>
 #include <sys/socket.h>
 #include <string.h>
-#include <math.h>
 
 
 #ifndef BUF_SIZE
@@ -29,7 +28,7 @@ void setAbsPosSmart(int position, char *canReturnMessage);
 void itoa(int value, char* str, int base);
 void strreverse(char* begin, char* end);
 void stringExtract(char *origStr, char **extractStr, int pos);
-int strToInt(char str[]);
+long strToInt(char str[]);
 void sitStand();
 void preop(int nodeid);
 void initMotorPos(int nodeid);
@@ -182,21 +181,18 @@ void stringExtract(char *origStr, char **extractStr, int pos){
     }
 }
 
-int strToInt(char str[]){
+long strToInt(char str[]){
     int len = strlen(str);
-    int i, num = 0;
+    long num=0;
 
-    //if 1st char is -ve symbol then do 1 less loop.
     if(str[0]=='-'){
-        for (i = 0; i < len-1; i++){
-            num += (str[len - (i + 1)] - '0') * pow(10, i);
-        }
+        for(int i=0, j=1; i<(len-1); i++, j*=10)
+            num += ((str[len-(i+1)]-'0')*j);
         return -num;
     }
 
-    for (i = 0; i < len; i++) {
-        num += ((str[len - (i + 1)] - '0') * pow(10, i));
-    }
+    for(int i=0, j=1; i<len; i++, j*=10)
+        num += ((str[len-(i+1)]-'0')*j);
     return num;
 }
 
@@ -216,8 +212,8 @@ void sitStand(){
     stringExtract(positionMessageNode2,&positionStrNode2,2);
     printf("Extracted position Message is %s\n",positionStrNode2);
 
-    int positionNode2=strToInt(positionStrNode2);
-    printf("\nLeft Knee (node 2) positions is: %d\n", positionNode2);
+    long positionNode2=strToInt(positionStrNode2);
+    printf("\nLeft Knee (node 2) positions is: %ld\n", positionNode2);
     sleep(2);
 
     preop(2);
