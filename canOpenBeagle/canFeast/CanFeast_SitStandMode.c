@@ -11,7 +11,6 @@
 #define BUF_SIZE 100000
 #endif
 #define STRING_LENGTH 50
-#define NUM_POS_POLLS 10
 #define DECIMAL 10
 #define BUTTON_ONE 1
 #define BUTTON_TWO 2
@@ -36,7 +35,6 @@ void preop(int nodeid);
 void initMotorPos(int nodeid);
 
 int main (){
-    //int canOutput=0;
     printf("Welcome to CANfeast!\n");
     sitStand();
     return 0;
@@ -62,11 +60,7 @@ void getPos(int nodeid, char *canReturnMessage){
     //concatenate message
     strcat(getpos, node);
     strcat(getpos, dataType);
-//    int count=0;
-//    while(count< NUM_POS_POLLS){
-//        count ++;
-        canFeast(getpos, canReturnMessage);
-//    }
+    canFeast(getpos, canReturnMessage);
 }
 
 void setAbsPosSmart(int position, char *canReturnMessage){
@@ -80,8 +74,6 @@ void setAbsPosSmart(int position, char *canReturnMessage){
     printf("%s\n",movePos);
 
     char* commList[]= {
-            //"[1] 2 start", //go to start mode
-            //"[1] 2 write 0x6060 0 i8 1", //Drive to position mode
             movePos, //move to this position (absolute)
             "[1] 2 write 0x6040 0 i16 47", //control word low
             "[1] 2 write 0x6040 0 i16 63" //control word high
@@ -117,8 +109,6 @@ void canFeast(char *buf, char *canReturnMessage) {
 
 static void sendCommand(int fd, char *command, size_t commandLength, char *canReturnMessage)
 {
-    //will: change this hackey BUTTON_PRESS logic
-    //char button_press= '3';
     size_t n;
     char buf[BUF_SIZE];
 
@@ -133,15 +123,7 @@ static void sendCommand(int fd, char *command, size_t commandLength, char *canRe
         exit(EXIT_FAILURE);
     }
     printf("%s", buf);
-    printf("\nabout to copy buf to return message");
     strcpy(canReturnMessage,buf);
-    /*//button press check
-    if(buf[6] == button_press){
-        *canOutput = 1;
-    }
-    else{
-        *canOutput = 0;
-    }*/
 }
 
 ////Definitionof itoa(int to string conversion) and helper Kernighan & Ritchie's Ansi C.
@@ -213,21 +195,28 @@ int strToInt(char str[]){
     for (i = 0; i < len; i++) {
         num += ((str[len - (i + 1)] - '0') * pow(10, i));
     }
-
     return num;
 }
 
 void sitStand(){
-    char positionNode2[STRING_LENGTH];
-    char* junk=0;
+    char positionMessageNode2[STRING_LENGTH];
+    char *positionStrNode2;
+    char junk[STRING_LENGTH];
     int sitState=0; //0 means fully standing, 9 means fully seated.
     initMotorPos(2);
-    //setAbsPosSmart(20000, &junk);
-    //sleep(5);
-    getPos(2,positionNode2);
-    printf("\nLeft Knee (node 2) positions is: %s", positionNode2);
-    //sleep(5);
-    //preop(2);
+    setAbsPosSmart(50000, junk);
+    sleep(5);
+
+    getPos(2,positionMessageNode2);
+    printf("Position Message is %s\n",positionMessageNode2);
+
+    stringExtract(positionMessageNode2,&positionStrNode2,1);
+    printf("Extracted position Message is %s\n",positionMessageNode2);
+
+    int positionNode2=strToInt(positionStrNode2);
+    printf("\nLeft Knee (node 2) positions is: %d", positionNode2);
+    sleep(5);
+    preop(2);
 }
 
 //set node to preop mode
