@@ -28,13 +28,19 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define MAX_STRINGS 40
+#define NUM_POS_POLLS 100
+
+void getPos(int node);
 void setAbsPosSmart(int position);
 void itoa(int value, char* str, int base);
 void strreverse(char* begin, char* end);
 
-        int main () {
+int main () {
     int position = 200000;
+    int node = 3;
     setAbsPosSmart(position);
+    getPos(node);
 
     return(0);
 }
@@ -42,12 +48,25 @@ void setAbsPosSmart(int position) {
     char pos[50], movePos[50];
     char buffer[50];
     itoa(position,buffer,10);
-    printf("Decimal value = %s\n", buffer);
     strcpy(movePos, "[1] 2 write 0x607A 0 i32 ");
     strcpy(pos, buffer);
     strcat(movePos, pos);
 //    strcat(movePos, position);
     printf("%s\n",movePos);
+}
+void getPos(int nodeid)
+{
+    char node[MAX_STRINGS], getpos[MAX_STRINGS], dataType[MAX_STRINGS];
+    char buffer[MAX_STRINGS];
+    itoa(nodeid,buffer,10);
+    strcpy(getpos, "[1] 2 read 0x6063 ");
+    strcpy(node, buffer);
+    strcpy(dataType," i32");
+
+    strcat(getpos, node);
+    strcat(getpos, dataType);
+    printf("%s\n",getpos);
+    int canOutput = 0;
 }
 /**
 
