@@ -2,10 +2,8 @@
 // Created by William Campbell on 2019-07-23.
 //
 
-#ifndef CAPSTONE_EXO_H
-#define CAPSTONE_EXO_H
-
-#include "iostream"
+#ifndef CANOPENBEAGLE_EXO_H
+#define CANOPENBEAGLE_EXO_H
 
 
 class Exo {
@@ -33,4 +31,4 @@ public:
 };
 
 
-#endif //CAPSTONE_EXO_H
+#endif //CANOPENBEAGLE_EXO_H

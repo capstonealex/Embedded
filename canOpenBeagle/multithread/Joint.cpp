@@ -8,8 +8,7 @@
 Joint::Joint(){
     //Default constructor - SHOULD THROW AN ERROR
     q = 0;
-    id = NULL;
-
+    id = 0;
 }
 Joint::Joint(float q_init, int ID){
     cout<<"Initializing joint WITH INPUTS \n";

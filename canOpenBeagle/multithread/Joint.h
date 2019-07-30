@@ -1,9 +1,9 @@
 //
-// Created by William Campbell on 2019-07-24.
+// Created by William Campbell on 2019-07-30.
 //
 
-#ifndef CAPSTONE_JOINT_H
-#define CAPSTONE_JOINT_H
+#ifndef CANOPENBEAGLE_JOINT_H
+#define CANOPENBEAGLE_JOINT_H
 
 #include<iostream>
 using namespace std;

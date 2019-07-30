@@ -20,4 +20,5 @@ int main() {
         position+=15.0;
     }
     X2.printInfo();
+    return 0;
 }

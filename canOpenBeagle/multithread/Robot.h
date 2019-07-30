@@ -1,9 +1,9 @@
 //
-// Created by William Campbell on 2019-07-23.
+// Created by William Campbell on 2019-07-30.
 //
 
-#ifndef CAPSTONE_ROBOT_H
-#define CAPSTONE_ROBOT_H
+#ifndef CANOPENBEAGLE_ROBOT_H
+#define CANOPENBEAGLE_ROBOT_H
 #include "Joint.h"
 
 
