@@ -57,7 +57,7 @@ int getButton(int button, char *canReturnMessage){
             };
     canFeast(buttons[button-1], canReturnMessage);
 
-    printf("CAN return on button press is: %s", canReturnMessage);
+    //printf("CAN return on button press is: %s", canReturnMessage);
 
     stringExtract(canReturnMessage,&buttonMessage,2);
 
@@ -84,13 +84,13 @@ long getPos(int nodeid, char *canReturnMessage){
     strcat(getpos, dataType);
     canFeast(getpos, positionMessage);
 
-    printf("Position Message for node %d: %s",nodeid, positionMessage);
+    //printf("Position Message for node %d: %s",nodeid, positionMessage);
 
     stringExtract(positionMessage,&positionStr,2);
-    printf("Extracted Message for node %d: %s\n",nodeid, positionStr);
+   // printf("Extracted Message for node %d: %s\n",nodeid, positionStr);
 
     position=strToInt(positionStr);
-    printf("Position of node %d: %ld\n", nodeid, position);
+   // printf("Position of node %d: %ld\n", nodeid, position);
 
     return position;
 
@@ -109,19 +109,19 @@ void setAbsPosSmart(int nodeid, int position, char *canReturnMessage){
     strcpy(pos, buffer); //copy position to string
     strcat(movePos, pos); // concat position string to movepos message.
 
-    printf("%s\n",movePos);
+    //printf("%s\n",movePos);
 
     strcpy(cntrWordL, "[1] ");
     strcat(cntrWordL, nodeStr);
     strcat(cntrWordL, " write 0x6040 0 i16 47");
 
-    printf("%s\n",cntrWordL);
+   // printf("%s\n",cntrWordL);
 
     strcpy(cntrWordH, "[1] ");
     strcat(cntrWordH, nodeStr);
     strcat(cntrWordH, " write 0x6040 0 i16 63");
 
-    printf("%s\n",cntrWordH);
+    //printf("%s\n",cntrWordH);
 
     char* commList[]= {
             movePos, //move to this position (absolute)
@@ -172,7 +172,7 @@ static void sendCommand(int fd, char *command, size_t commandLength, char *canRe
         perror("Socket read failed");
         exit(EXIT_FAILURE);
     }
-    printf("%s", buf);
+    //printf("%s", buf);
     strcpy(canReturnMessage,buf);
 }
 
@@ -266,11 +266,12 @@ void sitStand(){
 
 
     initMotorPos(1);
-    initMotorPos(2);
-    initMotorPos(3);
-    initMotorPos(4);
+    //initMotorPos(2);
+    //initMotorPos(3);
+    //initMotorPos(4);
 
-    setAbsPosSmart(1, sitStandArrayHip[3], junk);
+    /*setAbsPosSmart(LHIP, sitStandArrayHip[3], junk);
+    setAbsPosSmart(LKNEE, sitStandArrayKnee[3], junk);
 
     sleep(2);
 
@@ -292,7 +293,7 @@ void sitStand(){
     preop(LHIP);
     preop(2);
     preop(3);
-    preop(4);
+    preop(4);*/
 
     /***************************************************************/
 
@@ -300,7 +301,6 @@ void sitStand(){
 
 
 
-/*
     int sitstate=0;
     int movestate=0;
 
@@ -308,7 +308,6 @@ void sitStand(){
     int button2Status=0;
     int button3Status=0;
 
-    char junk[STRING_LENGTH];
 
     while(1){
         button1Status=getButton(1, junk);
@@ -318,23 +317,25 @@ void sitStand(){
         if(button1Status==1 && movestate==0 && sitstate<10){
             movestate=1;
             setAbsPosSmart(LHIP, sitStandArrayHip[sitstate+1], junk);
+            printf("Sitting down\n");
         }
 
         if(sitstate<10 && movestate==1){
-            if(getPos(LHIP, junk)==sitStandArrayHip[sitstate+1]){
+            if(getPos(LHIP, junk) > (sitStandArrayHip[sitstate+1]-1000) && getPos(LHIP, junk) < (sitStandArrayHip[sitstate+1]+1000)){
                 sitstate++;
                 movestate=0;
             }
         }
 
 
-        if(button2Status==1 && movestate==0 && sitstate>10){
+        if(button2Status==1 && movestate==0 && sitstate>0){
             movestate=1;
             setAbsPosSmart(LHIP, sitStandArrayHip[sitstate-1], junk);
+            printf("Standing up\n");
         }
 
         if(sitstate>0 && movestate==1){
-            if(getPos(LHIP, junk)==sitStandArrayHip[sitstate-1]){
+            if(getPos(LHIP, junk) > (sitStandArrayHip[sitstate-1]-1000) && getPos(LHIP, junk) < (sitStandArrayHip[sitstate-1]+1000)){
                 sitstate--;
                 movestate=0;
             }
@@ -349,7 +350,6 @@ void sitStand(){
             break;
         }
     }
-*/
 
     /***************************************************************/
 }
