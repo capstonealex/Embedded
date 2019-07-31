@@ -15,14 +15,19 @@
 #define BUTTON_TWO 2
 #define BUTTON_THREE 3
 #define BUTTON_FOUR 4
+#define LHIP 1
+#define LKNEE 2
+#define RHIP 3
+#define RKNEE 4
+
 
 
 /* Helper functions */
 static void sendCommand(int fd, char *command, size_t commandLength, char *canReturnMessage);
 void canFeast (char *buf, char *canReturnMessage);
-void getButton(int button, char *canReturnMessage);
+int getButton(int button, char *canReturnMessage);
 // MAKE ME ACCEPT nodeID
-void getPos(int nodeid, char *canReturnMessage);
+long getPos(int nodeid, char *canReturnMessage);
 void setAbsPosSmart(int nodeide, int position, char *canReturnMessage);
 /* Helpers for int to string conversion */
 void itoa(int value, char* str, int base);
@@ -39,7 +44,9 @@ int main (){
     return 0;
 }
 
-void getButton(int button, char *canReturnMessage){
+int getButton(int button, char *canReturnMessage){
+    //char canReturnMessage[STRING_LENGTH];
+
     char buttons[][STRING_LENGTH]=
             {
                     "[1] 9 read 0x0101 1 u32", //button 1
@@ -48,10 +55,21 @@ void getButton(int button, char *canReturnMessage){
                     "[1] 9 read 0x0104 1 u32"//button 4
             };
     canFeast(buttons[button-1], canReturnMessage);
+
+    printf("CAN return on button press is: %s", canReturnMessage);
+
+    if(strcmp(canReturnMessage, "[1] 0x3F800000\r")==0)
+        return 1;
+    else
+        return 0;
 }
 
-void getPos(int nodeid, char *canReturnMessage){
+long getPos(int nodeid, char *canReturnMessage){
     char node[STRING_LENGTH], getpos[STRING_LENGTH], dataType[STRING_LENGTH], buffer[STRING_LENGTH];
+    char positionMessage[STRING_LENGTH];
+    char *positionStr;
+    long position;
+
     itoa(nodeid,buffer,DECIMAL);
     strcpy(getpos, "[1] ");
     strcpy(node, buffer);
@@ -60,13 +78,24 @@ void getPos(int nodeid, char *canReturnMessage){
     strcat(getpos, node);
     strcat(getpos, dataType);
     canFeast(getpos, canReturnMessage);
+
+    printf("Position Message for node %d: %s\n",nodeid, positionMessage);
+
+    stringExtract(positionMessage,&positionStr,2);
+    printf("Extracted Message for node %d: %s\n",nodeid, positionStr);
+
+    position=strToInt(positionStr);
+    printf("Position of node %d: %ld", nodeid, position);
+
+    return position;
+
 }
 
 void setAbsPosSmart(int nodeid, int position, char *canReturnMessage){
     char pos[STRING_LENGTH], movePos[STRING_LENGTH], buffer[STRING_LENGTH], nodeStr[STRING_LENGTH];
     strcpy(movePos, "[1] "); //Start message with "[1] "
     itoa(nodeid,buffer,DECIMAL); //convert nodeid to string
-    strcpy(nodeStr, buffer); //Copy  nodeid to string 
+    strcpy(nodeStr, buffer); //Copy  nodeid to string
     strcat(movePos, nodeStr); //Concat node to movepox
     strcat(movePos, " write 0x607A 0 i32 "); //concat remaining message to mocepos
     itoa(position,buffer,DECIMAL); //convert position to string
@@ -201,28 +230,129 @@ long strToInt(char str[]){
 
 void sitStand(){
     char junk[STRING_LENGTH];
-    setAbsPosSmart(100,5, junk);
 
-    /*char positionMessageNode2[STRING_LENGTH];
-    char *positionStrNode2;
-    char junk[STRING_LENGTH];
-    int sitState=0; //0 means fully standing, 9 means fully seated.
+    char positionMesNode1[STRING_LENGTH];
+    char positionMesNode2[STRING_LENGTH];
+    char positionMesNode3[STRING_LENGTH];
+    char positionMesNode4[STRING_LENGTH];
+
+    char *positionStrLHip; //Node 1
+    char *positionStrLknee; //Node 2
+    char *positionStrRHip; //Node 3
+    char *positionStrRKnee; //Node 4
+
+    long posLHip;
+    long posLKnee;
+    long posRHip;
+    long posRKnee;
+
+
+    initMotorPos(1);
     initMotorPos(2);
-    setAbsPosSmart(50000, junk);
-    sleep(2);
+    initMotorPos(3);
+    initMotorPos(4);
 
-    getPos(2,positionMessageNode2);
-    printf("Position Message is %s\n",positionMessageNode2);
+    posLHip=getPos(1,positionMesNode1);
+    posLKnee=getPos(2,positionMesNode2);
+    posRHip=getPos(3,positionMesNode3);
+    posRKnee=getPos(4,positionMesNode4);
 
-    //extracting 2nd string as that contains the position.
-    stringExtract(positionMessageNode2,&positionStrNode2,2);
-    printf("Extracted position Message is %s\n",positionStrNode2);
+/*    printf("Position Message is (node 1): %s\n",positionMesNode1);
+    printf("Position Message is (node 2): %s\n",positionMesNode2);
+    printf("Position Message is (node 3): %s\n",positionMesNode3);
+    printf("Position Message is (node 4): %s\n",positionMesNode4);
 
-    long positionNode2=strToInt(positionStrNode2);
-    printf("\nLeft Knee (node 2) positions is: %ld\n", positionNode2);
-    sleep(2);
+    stringExtract(positionMesNode1,&positionStrLHip,2);
+    stringExtract(positionMesNode2,&positionStrLknee,2);
+    stringExtract(positionMesNode3,&positionStrRHip,2);
+    stringExtract(positionMesNode4,&positionStrRKnee,2);
 
-    preop(2);*/
+    printf("Extracted Message is (node 1): %s\n",positionStrLHip);
+    printf("Extracted Message is (node 2): %s\n",positionStrLknee);
+    printf("Extracted Message is (node 3): %s\n",positionStrRHip);
+    printf("Extracted Message is (node 4): %s\n",positionStrRKnee);
+
+    posLHip=strToInt(positionStrLHip);
+    posLKnee=strToInt(positionStrLknee);
+    posRHip=strToInt(positionStrRHip);
+    posRKnee=strToInt(positionStrRKnee);
+
+*/
+
+    printf("Left Hip (node 1) positions is: %ld\n", posLHip);
+    printf("Left Knee (node 2) positions is: %ld\n", posLKnee);
+    printf("Right Hip (node 3) positions is: %ld\n", posRHip);
+    printf("Right Knee (node 4) positions is: %ld\n", posRKnee);
+
+    int button1Status=getButton(BUTTON_ONE, junk);
+    printf("Button 1 states is %d\n",button1Status);
+
+    sleep(1);
+
+    preop(LHIP);
+    preop(2);
+    preop(3);
+    preop(4);
+
+    /***************************************************************/
+
+
+/*
+
+    long sitStandArrayHip[]={23351, 26042, 40535, 68841, 106614, 147915, 189305, 227293, 255829, 270462, 273182 };
+    long sitStandArrayKnee[]={50525, 54356, 74110, 109922, 152065, 189037, 215074, 230660, 238160, 240601, 240891};
+
+    int sitstate=0;
+    int movestate=0;
+
+    int button1Status=0;
+    int button2Status=0;
+    int button3Status=0;
+
+    char junk[STRING_LENGTH];
+
+    while(1){
+        button1Status=getButton(1, junk);
+        button2Status=getButton(2, junk);
+        button3Status=getButton(3, junk);
+
+        if(button1Status==1 && movestate==0 && sitstate<10){
+            movestate=1;
+            setAbsPosSmart(LHIP, sitStandArrayHip[sitstate+1], junk);
+        }
+
+        if(sitstate<10 && movestate==1){
+            if(getPos(LHIP, junk)==sitStandArrayHip[sitstate+1]){
+                sitstate++;
+                movestate=0;
+            }
+        }
+
+
+        if(button2Status==1 && movestate==0 && sitstate>10){
+            movestate=1;
+            setAbsPosSmart(LHIP, sitStandArrayHip[sitstate-1], junk);
+        }
+
+        if(sitstate>0 && movestate==1){
+            if(getPos(LHIP, junk)==sitStandArrayHip[sitstate-1]){
+                sitstate--;
+                movestate=0;
+            }
+        }
+
+
+        if(button3Status==1){
+            preop(1);
+            preop(2);
+            preop(3);
+            preop(4);
+            break;
+        }
+    }
+*/
+
+    /***************************************************************/
 }
 
 //set node to preop mode
