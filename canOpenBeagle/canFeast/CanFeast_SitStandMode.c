@@ -46,6 +46,7 @@ int main (){
 
 int getButton(int button, char *canReturnMessage){
     //char canReturnMessage[STRING_LENGTH];
+    char *buttonMessage;
 
     char buttons[][STRING_LENGTH]=
             {
@@ -58,7 +59,11 @@ int getButton(int button, char *canReturnMessage){
 
     printf("CAN return on button press is: %s", canReturnMessage);
 
-    if(strcmp(canReturnMessage, "[1] 0x3F800000\r")==0)
+    stringExtract(canReturnMessage,&buttonMessage,2);
+
+    //printf("strcmp result is: %d\n", strcmp(canReturnMessage, "[1] 0x3F800000\r"));
+
+    if(strcmp(buttonMessage, "0x3F800000")==0)
         return 1;
     else
         return 0;
@@ -77,15 +82,15 @@ long getPos(int nodeid, char *canReturnMessage){
     //concatenate message
     strcat(getpos, node);
     strcat(getpos, dataType);
-    canFeast(getpos, canReturnMessage);
+    canFeast(getpos, positionMessage);
 
-    printf("Position Message for node %d: %s\n",nodeid, positionMessage);
+    printf("Position Message for node %d: %s",nodeid, positionMessage);
 
     stringExtract(positionMessage,&positionStr,2);
     printf("Extracted Message for node %d: %s\n",nodeid, positionStr);
 
     position=strToInt(positionStr);
-    printf("Position of node %d: %ld", nodeid, position);
+    printf("Position of node %d: %ld\n", nodeid, position);
 
     return position;
 
@@ -93,6 +98,8 @@ long getPos(int nodeid, char *canReturnMessage){
 
 void setAbsPosSmart(int nodeid, int position, char *canReturnMessage){
     char pos[STRING_LENGTH], movePos[STRING_LENGTH], buffer[STRING_LENGTH], nodeStr[STRING_LENGTH];
+    char cntrWordH[STRING_LENGTH], cntrWordL[STRING_LENGTH];
+    
     strcpy(movePos, "[1] "); //Start message with "[1] "
     itoa(nodeid,buffer,DECIMAL); //convert nodeid to string
     strcpy(nodeStr, buffer); //Copy  nodeid to string
@@ -104,10 +111,18 @@ void setAbsPosSmart(int nodeid, int position, char *canReturnMessage){
 
     printf("%s\n",movePos);
 
+    strcpy(cntrWordL, "[1] ");
+    strcat(cntrWordL, nodeStr);
+    strcat(cntrWordH, " write 0x6040 0 i16 47");
+    
+    strcpy(cntrWordH, "[1] ");
+    strcat(cntrWordH, nodeStr);
+    strcat(cntrWordH, " write 0x6040 0 i16 63");
+    
     char* commList[]= {
             movePos, //move to this position (absolute)
-            "[1] 2 write 0x6040 0 i16 47", //control word low
-            "[1] 2 write 0x6040 0 i16 63" //control word high
+            cntrWordL, //control word low
+            cntrWordH //control word high
     };
 
     int Num_of_Strings = sizeof(commList)/ sizeof(commList[0]);
@@ -229,17 +244,16 @@ long strToInt(char str[]){
 }
 
 void sitStand(){
+
+    long sitStandArrayHip[]={23351, 26042, 40535, 68841, 106614, 147915, 189305, 227293, 241666, 250000, 263888};
+    long sitStandArrayKnee[]={50525, 54356, 74110, 109922, 152065, 189037, 215074, 230660, 238160, 240601, 240891};
+
     char junk[STRING_LENGTH];
 
     char positionMesNode1[STRING_LENGTH];
     char positionMesNode2[STRING_LENGTH];
     char positionMesNode3[STRING_LENGTH];
     char positionMesNode4[STRING_LENGTH];
-
-    char *positionStrLHip; //Node 1
-    char *positionStrLknee; //Node 2
-    char *positionStrRHip; //Node 3
-    char *positionStrRKnee; //Node 4
 
     long posLHip;
     long posLKnee;
@@ -252,32 +266,14 @@ void sitStand(){
     initMotorPos(3);
     initMotorPos(4);
 
+    setAbsPosSmart(1, sitStandArrayHip[3], junk);
+
+    sleep(2);
+
     posLHip=getPos(1,positionMesNode1);
     posLKnee=getPos(2,positionMesNode2);
     posRHip=getPos(3,positionMesNode3);
     posRKnee=getPos(4,positionMesNode4);
-
-/*    printf("Position Message is (node 1): %s\n",positionMesNode1);
-    printf("Position Message is (node 2): %s\n",positionMesNode2);
-    printf("Position Message is (node 3): %s\n",positionMesNode3);
-    printf("Position Message is (node 4): %s\n",positionMesNode4);
-
-    stringExtract(positionMesNode1,&positionStrLHip,2);
-    stringExtract(positionMesNode2,&positionStrLknee,2);
-    stringExtract(positionMesNode3,&positionStrRHip,2);
-    stringExtract(positionMesNode4,&positionStrRKnee,2);
-
-    printf("Extracted Message is (node 1): %s\n",positionStrLHip);
-    printf("Extracted Message is (node 2): %s\n",positionStrLknee);
-    printf("Extracted Message is (node 3): %s\n",positionStrRHip);
-    printf("Extracted Message is (node 4): %s\n",positionStrRKnee);
-
-    posLHip=strToInt(positionStrLHip);
-    posLKnee=strToInt(positionStrLknee);
-    posRHip=strToInt(positionStrRHip);
-    posRKnee=strToInt(positionStrRKnee);
-
-*/
 
     printf("Left Hip (node 1) positions is: %ld\n", posLHip);
     printf("Left Knee (node 2) positions is: %ld\n", posLKnee);
@@ -297,11 +293,10 @@ void sitStand(){
     /***************************************************************/
 
 
+
+
+
 /*
-
-    long sitStandArrayHip[]={23351, 26042, 40535, 68841, 106614, 147915, 189305, 227293, 255829, 270462, 273182 };
-    long sitStandArrayKnee[]={50525, 54356, 74110, 109922, 152065, 189037, 215074, 230660, 238160, 240601, 240891};
-
     int sitstate=0;
     int movestate=0;
 
@@ -384,6 +379,7 @@ void initMotorPos(int nodeid){
     //concatenate message
     strcat(comm, node);
     strcat(comm, dataTail);
+    printf("Start motor, node %d, message: %s\n", nodeid, comm);
     canFeast(comm,canMessage);
 
     //creating message for position mode
@@ -393,5 +389,6 @@ void initMotorPos(int nodeid){
     //concatenate message
     strcat(comm, node);
     strcat(comm, dataTail);
+    printf("Position mode motor, node %d, message: %s\n", nodeid, comm);
     canFeast(comm,canMessage);
 }
