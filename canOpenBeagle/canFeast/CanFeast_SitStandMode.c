@@ -99,7 +99,7 @@ long getPos(int nodeid, char *canReturnMessage){
 void setAbsPosSmart(int nodeid, int position, char *canReturnMessage){
     char pos[STRING_LENGTH], movePos[STRING_LENGTH], buffer[STRING_LENGTH], nodeStr[STRING_LENGTH];
     char cntrWordH[STRING_LENGTH], cntrWordL[STRING_LENGTH];
-    
+
     strcpy(movePos, "[1] "); //Start message with "[1] "
     itoa(nodeid,buffer,DECIMAL); //convert nodeid to string
     strcpy(nodeStr, buffer); //Copy  nodeid to string
@@ -113,12 +113,16 @@ void setAbsPosSmart(int nodeid, int position, char *canReturnMessage){
 
     strcpy(cntrWordL, "[1] ");
     strcat(cntrWordL, nodeStr);
-    strcat(cntrWordH, " write 0x6040 0 i16 47");
-    
+    strcat(cntrWordL, " write 0x6040 0 i16 47");
+
+    printf("%s\n",cntrWordL);
+
     strcpy(cntrWordH, "[1] ");
     strcat(cntrWordH, nodeStr);
     strcat(cntrWordH, " write 0x6040 0 i16 63");
-    
+
+    printf("%s\n",cntrWordH);
+
     char* commList[]= {
             movePos, //move to this position (absolute)
             cntrWordL, //control word low
