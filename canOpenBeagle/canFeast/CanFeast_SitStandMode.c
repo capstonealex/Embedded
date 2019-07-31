@@ -23,7 +23,7 @@ void canFeast (char *buf, char *canReturnMessage);
 void getButton(int button, char *canReturnMessage);
 // MAKE ME ACCEPT nodeID
 void getPos(int nodeid, char *canReturnMessage);
-void setAbsPosSmart(int position, char *canReturnMessage);
+void setAbsPosSmart(int nodeide, int position, char *canReturnMessage);
 /* Helpers for int to string conversion */
 void itoa(int value, char* str, int base);
 void strreverse(char* begin, char* end);
@@ -62,14 +62,17 @@ void getPos(int nodeid, char *canReturnMessage){
     canFeast(getpos, canReturnMessage);
 }
 
-void setAbsPosSmart(int position, char *canReturnMessage){
-    char pos[STRING_LENGTH], movePos[STRING_LENGTH];
-    char buffer[STRING_LENGTH];
-    itoa(position,buffer,DECIMAL);
-    printf("Decimal value = %s\n", buffer);
-    strcpy(movePos, "[1] 2 write 0x607A 0 i32 ");
-    strcpy(pos, buffer);
-    strcat(movePos, pos);
+void setAbsPosSmart(int nodeid, int position, char *canReturnMessage){
+    char pos[STRING_LENGTH], movePos[STRING_LENGTH], buffer[STRING_LENGTH], nodeStr[STRING_LENGTH];
+    strcpy(movePos, "[1] "); //Start message with "[1] "
+    itoa(nodeid,buffer,DECIMAL); //convert nodeid to string
+    strcpy(nodeStr, buffer); //Copy  nodeid to string 
+    strcat(movePos, nodeStr); //Concat node to movepox
+    strcat(movePos, " write 0x607A 0 i32 "); //concat remaining message to mocepos
+    itoa(position,buffer,DECIMAL); //convert position to string
+    strcpy(pos, buffer); //copy position to string
+    strcat(movePos, pos); // concat position string to movepos message.
+
     printf("%s\n",movePos);
 
     char* commList[]= {
@@ -197,7 +200,10 @@ long strToInt(char str[]){
 }
 
 void sitStand(){
-    char positionMessageNode2[STRING_LENGTH];
+    char junk[STRING_LENGTH];
+    setAbsPosSmart(100,5, junk);
+
+    /*char positionMessageNode2[STRING_LENGTH];
     char *positionStrNode2;
     char junk[STRING_LENGTH];
     int sitState=0; //0 means fully standing, 9 means fully seated.
@@ -216,7 +222,7 @@ void sitStand(){
     printf("\nLeft Knee (node 2) positions is: %ld\n", positionNode2);
     sleep(2);
 
-    preop(2);
+    preop(2);*/
 }
 
 //set node to preop mode
