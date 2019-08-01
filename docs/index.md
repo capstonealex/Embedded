@@ -36,8 +36,8 @@ Follow these steps to start running a pre-configured VM .ova file on your own ma
 The pre- congigured VM ha been configured as outlined in the [workbench setup] section.
 Upon installation the user should be up and running with an environment able to develop software, test and cross compile to a real time linux os on a beagle bone black.
 
-1. Install [virtual box version 6.0.4](<https://www.virtualbox.org/wiki/Download_Old_Builds_6_0>).
-2. Download and install the VirtualBox Oracle VM VirtualBox [Extension Pack](https://www.virtualbox.org/wiki/Downloads).
+1. Install [VirtualBox version 6.0.4](<https://www.virtualbox.org/wiki/Download_Old_Builds_6_0>).
+2. Install the [VirtualBox 6.0.4 Oracle VM VirtualBox Extension Pack](<https://www.virtualbox.org/wiki/Download_Old_Builds_6_0>).
 2. Download workbench.ova: Currently hosted at the capstone google drive: [workbench.ova](https://drive.google.com/drive/folders/1lCGyRpQLjKOnCXbs27e6w6VfofizSCC8)
 
     * Google Drive Location: `Capstone Project - LOWER LIMB EXOSKELETON FOR GAIT ASSISTANCE\Embedded Team\Virtual Machines`
@@ -49,7 +49,7 @@ Upon installation the user should be up and running with an environment able to 
 
     * Select 70mb or more of video ram.
 
-5. Make sure to select the `reinitialize the MAC address of all the network cards option`.
+5. Make sure to select the `reinitialize the MAC address of all the network cards option`. <!-- I didn't see this when I tried -->
 
 6. Start your system and install virtual box Guest additions.
 
