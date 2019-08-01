@@ -20,6 +20,8 @@
 #define RHIP 3
 #define RKNEE 4
 #define POSCLEARANCE 5000
+#define PROFILEVELOCITY 100000
+#define PROFILEACCELERATION 50000
 
 
 
@@ -39,6 +41,8 @@ void sitStand();
 void preop(int nodeid);
 void initMotorPos(int nodeid);
 int checkPos(long hipTarget, long kneeTarget);
+void setProfileVelocity(int nodeid, long velocity);
+void setProfileAcceleration(int nodeid, long acceleration);
 
 int main (){
     printf("Welcome to CANfeast!\n");
@@ -89,10 +93,10 @@ long getPos(int nodeid, char *canReturnMessage){
     //printf("Position Message for node %d: %s",nodeid, positionMessage);
 
     stringExtract(positionMessage,&positionStr,2);
-   // printf("Extracted Message for node %d: %s\n",nodeid, positionStr);
+    // printf("Extracted Message for node %d: %s\n",nodeid, positionStr);
 
     position=strToInt(positionStr);
-   // printf("Position of node %d: %ld\n", nodeid, position);
+    // printf("Position of node %d: %ld\n", nodeid, position);
 
     return position;
 
@@ -117,7 +121,7 @@ void setAbsPosSmart(int nodeid, int position, char *canReturnMessage){
     strcat(cntrWordL, nodeStr);
     strcat(cntrWordL, " write 0x6040 0 i16 47");
 
-   // printf("%s\n",cntrWordL);
+    // printf("%s\n",cntrWordL);
 
     strcpy(cntrWordH, "[1] ");
     strcat(cntrWordH, nodeStr);
@@ -256,7 +260,7 @@ void sitStand(){
 
     char junk[STRING_LENGTH];
 
-    char positionMesNode1[STRING_LENGTH];
+    /*char positionMesNode1[STRING_LENGTH];
     char positionMesNode2[STRING_LENGTH];
     char positionMesNode3[STRING_LENGTH];
     char positionMesNode4[STRING_LENGTH];
@@ -264,13 +268,22 @@ void sitStand(){
     long posLHip;
     long posLKnee;
     long posRHip;
-    long posRKnee;
+    long posRKnee;*/
 
 
     initMotorPos(LHIP);
     initMotorPos(LKNEE);
     initMotorPos(RHIP);
     initMotorPos(RKNEE);
+
+    setProfileAcceleration(LHIP, PROFILEACCELERATION);
+    setProfileVelocity(LHIP,PROFILEVELOCITY);
+    setProfileAcceleration(LKNEE, PROFILEACCELERATION);
+    setProfileVelocity(LKNEE,PROFILEVELOCITY);
+    setProfileAcceleration(RHIP, PROFILEACCELERATION);
+    setProfileVelocity(RHIP,PROFILEVELOCITY);
+    setProfileAcceleration(RKNEE, PROFILEACCELERATION);
+    setProfileVelocity(RKNEE,PROFILEVELOCITY);
 
     int sitstate=0;
     int movestate=0;
@@ -289,9 +302,9 @@ void sitStand(){
             movestate=1;
             printf("Sitting down\n");
             setAbsPosSmart(LHIP, sitStandArrayHip[sitstate+1], junk);
-            // setAbsPosSmart(LKNEE, sitStandArrayHip[sitstate+1], junk);
-            // setAbsPosSmart(RHIP, sitStandArrayHip[sitstate+1], junk);
-            // setAbsPosSmart(LKNEE, sitStandArrayHip[sitstate+1], junk);
+            setAbsPosSmart(LKNEE, sitStandArrayKnee[sitstate+1], junk);
+            setAbsPosSmart(RHIP, sitStandArrayHip[sitstate+1], junk);
+            setAbsPosSmart(LKNEE, sitStandArrayKnee[sitstate+1], junk);
         }
 
         if(sitstate<10 && movestate==1){
@@ -305,10 +318,10 @@ void sitStand(){
         if(button2Status==1 && movestate==0 && sitstate>0){
             movestate=1;
             printf("Standing up\n");
-            setAbsPosSmart(LHIP, sitStandArrayHip[sitstate-1], junk);  
-            // setAbsPosSmart(LKNEE, sitStandArrayHip[sitstate-1], junk); 
-            // setAbsPosSmart(RHIP, sitStandArrayHip[sitstate-1], junk); 
-            // setAbsPosSmart(RKNEE, sitStandArrayHip[sitstate-1], junk); 
+            setAbsPosSmart(LHIP, sitStandArrayHip[sitstate-1], junk);
+            setAbsPosSmart(LKNEE, sitStandArrayKnee[sitstate-1], junk);
+            setAbsPosSmart(RHIP, sitStandArrayHip[sitstate-1], junk);
+            setAbsPosSmart(RKNEE, sitStandArrayKnee[sitstate-1], junk);
         }
 
         if(sitstate>0 && movestate==1){
@@ -378,17 +391,68 @@ void initMotorPos(int nodeid){
 //To check if current position is within POSCLEARANCE of target position. Return 1 if true.
 int checkPos(long hipTarget, long kneeTarget){
 
-    //The positions could be polled and stored earlier for more readable code. But getpos uses canfeast which has overhead. 
+    //The positions could be polled and stored earlier for more readable code. But getpos uses canfeast which has overhead.
     //Since C support short circuit evaluation, using getPos in if statement is more efficient.
     char junk[STRING_LENGTH];
     if(getPos(LHIP, junk) > (hipTarget-POSCLEARANCE) && getPos(LHIP, junk) < (hipTarget+POSCLEARANCE) &&
-            getPos(RHIP, junk) > (hipTarget-POSCLEARANCE) && getPos(RHIP, junk) < (hipTarget+POSCLEARANCE)){
+       getPos(RHIP, junk) > (hipTarget-POSCLEARANCE) && getPos(RHIP, junk) < (hipTarget+POSCLEARANCE)){
 
         if(getPos(LKNEE, junk) > (kneeTarget-POSCLEARANCE) && getPos(LKNEE, junk) < (kneeTarget+POSCLEARANCE) &&
            getPos(RKNEE, junk) > (kneeTarget-POSCLEARANCE) && getPos(RKNEE, junk) < (kneeTarget+POSCLEARANCE)) {
             return 1;
         }
-            return 0;
+        return 0;
     }
     return 0;
+}
+
+void setProfileVelocity(int nodeid, long velocity){
+    char node[STRING_LENGTH], comm[STRING_LENGTH], buffer[STRING_LENGTH], velMessage[STRING_LENGTH];
+    char junk[STRING_LENGTH];
+
+    strcpy(comm, "[1] ");
+    itoa(nodeid,buffer,DECIMAL);
+
+    strcpy(node, buffer);
+    strcat(comm, node);
+    strcat(comm, " write 0x6081 0 i32 ");
+    itoa(velocity,buffer,DECIMAL);
+    strcpy(velMessage, buffer);
+    strcat(comm, velMessage);
+
+    printf("Velocity message %s\n", comm);
+
+    canFeast(comm, junk);
+}
+
+
+//setting acceleration for position mode. Using same value for accel and decel
+void setProfileAcceleration(int nodeid, long acceleration){
+    char node[STRING_LENGTH], commAcc[STRING_LENGTH], commDec[STRING_LENGTH], buffer[STRING_LENGTH], accelMessage[STRING_LENGTH];
+    char junk[STRING_LENGTH];
+
+    strcpy(commAcc, "[1] ");
+    strcpy(commDec, "[1] ");
+
+    itoa(nodeid,buffer,DECIMAL);
+    strcpy(node, buffer);
+
+    strcat(commAcc, node);
+    strcat(commDec, node);
+
+    strcat(commAcc, " write 0x6083 0 i32 ");
+    strcat(commDec, " write 0x6084 0 i32 ");
+
+    itoa(acceleration,buffer,DECIMAL);
+    strcpy(accelMessage, buffer);
+
+    strcat(commAcc, accelMessage);
+    strcat(commDec, accelMessage);
+
+    printf("Acceleration message %s\n%s\n", commAcc, commDec);
+
+    canFeast(commAcc, junk);
+    canFeast(commDec, junk);
+
+
 }
