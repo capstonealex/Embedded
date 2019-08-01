@@ -19,6 +19,7 @@
 #define LKNEE 2
 #define RHIP 3
 #define RKNEE 4
+#define POSCLEARANCE 5000
 
 
 
@@ -37,6 +38,7 @@ long strToInt(char str[]);
 void sitStand();
 void preop(int nodeid);
 void initMotorPos(int nodeid);
+int checkPos(long hipTarget, long kneeTarget);
 
 int main (){
     printf("Welcome to CANfeast!\n");
@@ -285,12 +287,15 @@ void sitStand(){
 
         if(button1Status==1 && movestate==0 && sitstate<10){
             movestate=1;
-            setAbsPosSmart(LHIP, sitStandArrayHip[sitstate+1], junk);
             printf("Sitting down\n");
+            setAbsPosSmart(LHIP, sitStandArrayHip[sitstate+1], junk);
+            // setAbsPosSmart(LKNEE, sitStandArrayHip[sitstate+1], junk);
+            // setAbsPosSmart(RHIP, sitStandArrayHip[sitstate+1], junk);
+            // setAbsPosSmart(LKNEE, sitStandArrayHip[sitstate+1], junk);
         }
 
         if(sitstate<10 && movestate==1){
-            if(getPos(LHIP, junk) > (sitStandArrayHip[sitstate+1]-1000) && getPos(LHIP, junk) < (sitStandArrayHip[sitstate+1]+1000)){
+            if(checkPos(sitStandArrayHip[sitstate+1], sitStandArrayKnee[sitstate+1]==1)){
                 sitstate++;
                 movestate=0;
             }
@@ -299,12 +304,15 @@ void sitStand(){
 
         if(button2Status==1 && movestate==0 && sitstate>0){
             movestate=1;
-            setAbsPosSmart(LHIP, sitStandArrayHip[sitstate-1], junk);
             printf("Standing up\n");
+            setAbsPosSmart(LHIP, sitStandArrayHip[sitstate-1], junk);  
+            // setAbsPosSmart(LKNEE, sitStandArrayHip[sitstate-1], junk); 
+            // setAbsPosSmart(RHIP, sitStandArrayHip[sitstate-1], junk); 
+            // setAbsPosSmart(RKNEE, sitStandArrayHip[sitstate-1], junk); 
         }
 
         if(sitstate>0 && movestate==1){
-            if(getPos(LHIP, junk) > (sitStandArrayHip[sitstate-1]-1000) && getPos(LHIP, junk) < (sitStandArrayHip[sitstate-1]+1000)){
+            if(checkPos(sitStandArrayHip[sitstate-1], sitStandArrayKnee[sitstate-1]==1)){
                 sitstate--;
                 movestate=0;
             }
@@ -352,7 +360,7 @@ void initMotorPos(int nodeid){
     //concatenate message
     strcat(comm, node);
     strcat(comm, dataTail);
-    printf("Start motor, node %d, message: %s\n", nodeid, comm);
+    //printf("Start motor, node %d, message: %s\n", nodeid, comm);
     canFeast(comm,canMessage);
 
     //creating message for position mode
@@ -362,6 +370,25 @@ void initMotorPos(int nodeid){
     //concatenate message
     strcat(comm, node);
     strcat(comm, dataTail);
-    printf("Position mode motor, node %d, message: %s\n", nodeid, comm);
+    //printf("Position mode motor, node %d, message: %s\n", nodeid, comm);
     canFeast(comm,canMessage);
+}
+
+
+//To check if current position is within POSCLEARANCE of target position. Return 1 if true.
+int checkPos(long hipTarget, long kneeTarget){
+
+    //The positions could be polled and stored earlier for more readable code. But getpos uses canfeast which has overhead. 
+    //Since C support short circuit evaluation, using getPos in if statement is more efficient.
+    char junk[STRING_LENGTH];
+    if(getPos(LHIP, junk) > (hipTarget-POSCLEARANCE) && getPos(LHIP, junk) < (hipTarget+POSCLEARANCE) &&
+            getPos(RHIP, junk) > (hipTarget-POSCLEARANCE) && getPos(RHIP, junk) < (hipTarget+POSCLEARANCE)){
+
+        if(getPos(LKNEE, junk) > (kneeTarget-POSCLEARANCE) && getPos(LKNEE, junk) < (kneeTarget+POSCLEARANCE) &&
+           getPos(RKNEE, junk) > (kneeTarget-POSCLEARANCE) && getPos(RKNEE, junk) < (kneeTarget+POSCLEARANCE)) {
+            return 1;
+        }
+            return 0;
+    }
+    return 0;
 }
