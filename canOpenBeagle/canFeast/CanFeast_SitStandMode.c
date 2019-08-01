@@ -265,41 +265,10 @@ void sitStand(){
     long posRKnee;
 
 
-    initMotorPos(1);
-    //initMotorPos(2);
-    //initMotorPos(3);
-    //initMotorPos(4);
-
-    /*setAbsPosSmart(LHIP, sitStandArrayHip[3], junk);
-    setAbsPosSmart(LKNEE, sitStandArrayKnee[3], junk);
-
-    sleep(2);
-
-    posLHip=getPos(1,positionMesNode1);
-    posLKnee=getPos(2,positionMesNode2);
-    posRHip=getPos(3,positionMesNode3);
-    posRKnee=getPos(4,positionMesNode4);
-
-    printf("Left Hip (node 1) positions is: %ld\n", posLHip);
-    printf("Left Knee (node 2) positions is: %ld\n", posLKnee);
-    printf("Right Hip (node 3) positions is: %ld\n", posRHip);
-    printf("Right Knee (node 4) positions is: %ld\n", posRKnee);
-
-    int button1Status=getButton(BUTTON_ONE, junk);
-    printf("Button 1 states is %d\n",button1Status);
-
-    sleep(1);
-
-    preop(LHIP);
-    preop(2);
-    preop(3);
-    preop(4);*/
-
-    /***************************************************************/
-
-
-
-
+    initMotorPos(LHIP);
+    initMotorPos(LKNEE);
+    initMotorPos(RHIP);
+    initMotorPos(RKNEE);
 
     int sitstate=0;
     int movestate=0;
@@ -310,9 +279,9 @@ void sitStand(){
 
 
     while(1){
-        button1Status=getButton(1, junk);
-        button2Status=getButton(2, junk);
-        button3Status=getButton(3, junk);
+        button1Status=getButton(BUTTON_ONE, junk);
+        button2Status=getButton(BUTTON_TWO, junk);
+        button3Status=getButton(BUTTON_THREE, junk);
 
         if(button1Status==1 && movestate==0 && sitstate<10){
             movestate=1;
