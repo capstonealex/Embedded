@@ -115,19 +115,19 @@ void setAbsPosSmart(int nodeid, int position, char *canReturnMessage){
     strcpy(pos, buffer); //copy position to string
     strcat(movePos, pos); // concat position string to movepos message.
 
-    //printf("%s\n",movePos);
+    printf("Move pose comm: %s\n",movePos);
 
     strcpy(cntrWordL, "[1] ");
     strcat(cntrWordL, nodeStr);
     strcat(cntrWordL, " write 0x6040 0 i16 47");
 
-    // printf("%s\n",cntrWordL);
+    printf("Control Word comm: %s\n",cntrWordL);
 
     strcpy(cntrWordH, "[1] ");
     strcat(cntrWordH, nodeStr);
     strcat(cntrWordH, " write 0x6040 0 i16 63");
 
-    //printf("%s\n",cntrWordH);
+    printf("Control Word Comm%s\n",cntrWordH);
 
     char* commList[]= {
             movePos, //move to this position (absolute)
@@ -260,17 +260,6 @@ void sitStand(){
 
     char junk[STRING_LENGTH];
 
-    /*char positionMesNode1[STRING_LENGTH];
-    char positionMesNode2[STRING_LENGTH];
-    char positionMesNode3[STRING_LENGTH];
-    char positionMesNode4[STRING_LENGTH];
-
-    long posLHip;
-    long posLKnee;
-    long posRHip;
-    long posRKnee;*/
-
-
     initMotorPos(LHIP);
     initMotorPos(LKNEE);
     initMotorPos(RHIP);
@@ -292,7 +281,6 @@ void sitStand(){
     int button2Status=0;
     int button3Status=0;
 
-
     while(1){
         button1Status=getButton(BUTTON_ONE, junk);
         button2Status=getButton(BUTTON_TWO, junk);
@@ -304,11 +292,11 @@ void sitStand(){
             setAbsPosSmart(LHIP, sitStandArrayHip[sitstate+1], junk);
             setAbsPosSmart(LKNEE, sitStandArrayKnee[sitstate+1], junk);
             setAbsPosSmart(RHIP, sitStandArrayHip[sitstate+1], junk);
-            setAbsPosSmart(LKNEE, sitStandArrayKnee[sitstate+1], junk);
+            setAbsPosSmart(RKNEE, sitStandArrayKnee[sitstate+1], junk);
         }
 
         if(sitstate<10 && movestate==1){
-            if(checkPos(sitStandArrayHip[sitstate+1], sitStandArrayKnee[sitstate+1]==1)){
+            if(checkPos(sitStandArrayHip[sitstate+1], sitStandArrayKnee[sitstate+1])==1){
                 sitstate++;
                 movestate=0;
             }
@@ -325,7 +313,7 @@ void sitStand(){
         }
 
         if(sitstate>0 && movestate==1){
-            if(checkPos(sitStandArrayHip[sitstate-1], sitStandArrayKnee[sitstate-1]==1)){
+            if(checkPos(sitStandArrayHip[sitstate-1], sitStandArrayKnee[sitstate-1])==1){
                 sitstate--;
                 movestate=0;
             }
@@ -373,7 +361,7 @@ void initMotorPos(int nodeid){
     //concatenate message
     strcat(comm, node);
     strcat(comm, dataTail);
-    //printf("Start motor, node %d, message: %s\n", nodeid, comm);
+    printf("Start motor, node %d, message: %s\n", nodeid, comm);
     canFeast(comm,canMessage);
 
     //creating message for position mode
@@ -383,7 +371,7 @@ void initMotorPos(int nodeid){
     //concatenate message
     strcat(comm, node);
     strcat(comm, dataTail);
-    //printf("Position mode motor, node %d, message: %s\n", nodeid, comm);
+    printf("Position mode motor, node %d, message: %s\n", nodeid, comm);
     canFeast(comm,canMessage);
 }
 
@@ -396,7 +384,6 @@ int checkPos(long hipTarget, long kneeTarget){
     char junk[STRING_LENGTH];
     if(getPos(LHIP, junk) > (hipTarget-POSCLEARANCE) && getPos(LHIP, junk) < (hipTarget+POSCLEARANCE) &&
        getPos(RHIP, junk) > (hipTarget-POSCLEARANCE) && getPos(RHIP, junk) < (hipTarget+POSCLEARANCE)){
-
         if(getPos(LKNEE, junk) > (kneeTarget-POSCLEARANCE) && getPos(LKNEE, junk) < (kneeTarget+POSCLEARANCE) &&
            getPos(RKNEE, junk) > (kneeTarget-POSCLEARANCE) && getPos(RKNEE, junk) < (kneeTarget+POSCLEARANCE)) {
             return 1;
