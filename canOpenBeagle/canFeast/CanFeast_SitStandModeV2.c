@@ -1,5 +1,5 @@
 /*
- * ALEX Exoskeleton. 
+ * ALEX Exoskeleton.
  * Program for sit stand mode on the Fourier X2 exoskeleton.
  */
 
@@ -33,6 +33,16 @@
 //Velocity and acceleration for position mode move
 #define PROFILEVELOCITY 300000
 #define PROFILEACCELERATION 50000
+//Knee motor reading and corresponding angle. Used for mapping between degree and motor values.
+#define KNEE_MOTOR_POS1 250000
+#define KNEE_MOTOR_DEG1 90
+#define KNEE_MOTOR_POS2 0
+#define KNEE_MOTOR_DEG2 0
+//Hip motor reading and corresponding angle. Used for mapping between degree and motor values.
+#define HIP_MOTOR_POS1 250000
+#define HIP_MOTOR_DEG1 90
+#define HIP_MOTOR_POS2 0
+#define HIP_MOTOR_DEG2 180
 
 
 /*
@@ -73,6 +83,10 @@ int checkPos(long hipTarget, long kneeTarget);
 void setProfileVelocity(int nodeid, long velocity);
 //Sets profile acceleration and deceleration for position mode motion.
 void setProfileAcceleration(int nodeid, long acceleration);
+//Used to convert position array from degrees to motors counts as used in CANopen
+void motorPosArrayConverter(const double origArr[], long newArr[], int arrSize, int nodeid);
+//calculate A and B in the formula y=Ax+B. Use by motorPosArrayConverter()
+void calcAB(long y1, long x1, long y2, long x2, double *A, double *B);
 
 int main (){
     printf("Welcome to CANfeast!\n");
@@ -84,8 +98,40 @@ int main (){
 void sitStand(){
 
     //Array of trajectory points.
-    long sitStandArrayHip[]={23351, 26042, 40535, 68841, 106614, 147915, 189305, 227293, 241666, 250000, 263888};
-    long sitStandArrayKnee[]={50525, 54356, 74110, 109922, 152065, 189037, 215074, 230660, 238160, 240601, 240891};
+    //smallest index is standing
+    double sitStandArrHip_degrees[]={
+            171.5932928,
+            170.6247195,
+            165.4071417,
+            155.2170037,
+            141.6186214,
+            126.7503007,
+            111.8500781,
+            98.17421981,
+            93,
+            90,
+            85
+    };
+    double sitStandArrKnee_degrees[]={
+            18.18910485,
+            19.56831896,
+            26.67960225,
+            39.57206594,
+            54.74348215,
+            68.05336053,
+            77.4266519,
+            83.03778535,
+            85.73771647,
+            86.61634762,
+            86.7210792
+    };
+
+    int arrSize = sizeof(sitStandArrHip_degrees)/ sizeof(sitStandArrHip_degrees[0]);
+    long sitStandArrayHip[arrSize];
+    long sitStandArrayKnee[arrSize];
+
+    motorPosArrayConverter(sitStandArrHip_degrees, sitStandArrayHip, arrSize, LHIP);
+    motorPosArrayConverter(sitStandArrKnee_degrees, sitStandArrayKnee, arrSize, LKNEE);
 
     //Used to store the canReturnMessage. Not used currently, hence called junk.
     //Should pass this to calling function for possible error handling.
@@ -129,7 +175,7 @@ void sitStand(){
         button3Status=getButton(BUTTON_THREE, junk);
 
         //Button has to be pressed & Exo not moving & array not at end. If true, execute move.
-        if(button1Status==1 && movestate==0 && sitstate<10){
+        if(button1Status==1 && movestate==0 && sitstate<(arrSize-1)){
             movestate=1;
             printf("Sitting down\n");
             setAbsPosSmart(LHIP, sitStandArrayHip[sitstate+1], junk);
@@ -137,7 +183,7 @@ void sitStand(){
             setAbsPosSmart(RHIP, sitStandArrayHip[sitstate+1], junk);
             setAbsPosSmart(RKNEE, sitStandArrayKnee[sitstate+1], junk);
         }
-        
+
         //If target position is reached, then increment sitstate and set movestate to 0.
         if(sitstate<10 && movestate==1){
             if(checkPos(sitStandArrayHip[sitstate+1], sitStandArrayKnee[sitstate+1])==1){
@@ -179,6 +225,7 @@ void sitStand(){
 int getButton(int button, char *canReturnMessage){
     //char canReturnMessage[STRING_LENGTH];
     char *buttonMessage;
+    char *buttonPressed = "0x3F800000";
 
     char buttons[][STRING_LENGTH]=
             {
@@ -190,12 +237,12 @@ int getButton(int button, char *canReturnMessage){
     canFeast(buttons[button-1], canReturnMessage);
 
     //printf("CAN return on button press is: %s", canReturnMessage);
-
+    //Button pressed returns "[1] 0x3F800000\n". Extracting 2nd string to compare.
     stringExtract(canReturnMessage,&buttonMessage,2);
 
     //printf("strcmp result is: %d\n", strcmp(canReturnMessage, "[1] 0x3F800000\r"));
 
-    if(strcmp(buttonMessage, "0x3F800000")==0)
+    if(strcmp(buttonMessage, buttonPressed)==0)
         return 1;
     else
         return 0;
@@ -478,13 +525,13 @@ void setProfileVelocity(int nodeid, long velocity){
     canFeast(comm, junk);
 }
 
-//Sets profile acceleration and deceleration for position mode motion. 
+//Sets profile acceleration and deceleration for position mode motion.
 //Using same value for acceleration and deceleration.
 void setProfileAcceleration(int nodeid, long acceleration){
     char node[STRING_LENGTH], commAcc[STRING_LENGTH], commDec[STRING_LENGTH], buffer[STRING_LENGTH], accelMessage[STRING_LENGTH];
     char junk[STRING_LENGTH];
 
-    //Create a message to be sent using canFeast. 
+    //Create a message to be sent using canFeast.
     // "[1] <nodeid> write 0x6083 0 i32 <acceleration>"
     // "[1] <nodeid> write 0x6084 0 i32 <deceleration>"
     strcpy(commAcc, "[1] ");
@@ -509,4 +556,28 @@ void setProfileAcceleration(int nodeid, long acceleration){
 
     canFeast(commAcc, junk);
     canFeast(commDec, junk);
+}
+
+//Used to convert position array from degrees to motors counts as used in CANopen
+void motorPosArrayConverter(const double origArr[], long newArr[], int arrSize, int nodeid){
+    double A=0;
+    double B=0;
+
+    if(nodeid==1 || nodeid==3)
+        calcAB(HIP_MOTOR_POS1, HIP_MOTOR_DEG1, HIP_MOTOR_POS2, HIP_MOTOR_DEG2, &A, &B);
+
+    if(nodeid==2 || nodeid==4)
+        calcAB(KNEE_MOTOR_POS1, KNEE_MOTOR_DEG1, KNEE_MOTOR_POS2, KNEE_MOTOR_DEG2, &A, &B);
+
+    for(int i=0; i<arrSize; i++){
+        newArr[i]=(long)(A*origArr[i]+B);
+    }
+}
+
+//calculate A and B in the formula y=Ax+B. Use by motorPosArrayConverter()
+void calcAB(long y1, long x1, long y2, long x2, double *A, double *B){
+    *A=1.0*(y2-y1)/(x2-x1);
+    //printf("A is %f\n", *A);
+    *B=1.0*(y1*x2-y2*x1)/(x2-x1);
+    //printf("B is %f\n", *B);
 }
