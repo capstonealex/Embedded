@@ -43,7 +43,9 @@
 #define HIP_MOTOR_DEG1 90
 #define HIP_MOTOR_POS2 0
 #define HIP_MOTOR_DEG2 180
-
+//standing or sitting state
+#define STANDING 0
+#define SITTING 10
 
 /*
  Most functions defined here use canReturnMessage as a pass-by-reference string.
@@ -54,7 +56,7 @@
  */
 
 //State machine with sit-stand logic
-void sitStand();
+void sitStand(int state);
 //For sending socket commands
 static void sendCommand(int fd, char *command, size_t commandLength, char *canReturnMessage);
 //Sets up sockets and calls sendCommand()
@@ -90,12 +92,12 @@ void calcAB(long y1, long x1, long y2, long x2, double *A, double *B);
 
 int main (){
     printf("Welcome to CANfeast!\n");
-    sitStand();
+    sitStand(STANDING);
     return 0;
 }
 
 //State machine with sit-stand logic
-void sitStand(){
+void sitStand(int state){
 
     //Array of trajectory points.
     //smallest index is standing
@@ -155,7 +157,7 @@ void sitStand(){
 
     //Use to maintain states.
     //sitstate goes from 0 to 10, indicating the 11 indices of the sitstandArrays
-    int sitstate=0;
+    int sitstate=state;
     //movestate is 1 if moving, else 0
     int movestate=0;
 
