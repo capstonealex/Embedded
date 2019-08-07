@@ -44,8 +44,8 @@
 #define HIP_MOTOR_POS2 0
 #define HIP_MOTOR_DEG2 180
 //standing or sitting state
-#define STANDING 0
-#define SITTING 10
+#define STANDING -1
+#define SITTING 11
 
 /*
  Most functions defined here use canReturnMessage as a pass-by-reference string.
@@ -92,7 +92,7 @@ void calcAB(long y1, long x1, long y2, long x2, double *A, double *B);
 
 int main (){
     printf("Welcome to CANfeast!\n");
-    sitStand(STANDING);
+    sitStand(SITTING);
     return 0;
 }
 
@@ -141,6 +141,10 @@ void sitStand(int sitstate){
     //Should pass this to calling function for possible error handling.
     char junk[STRING_LENGTH];
 
+    while(getButton(BUTTON_FOUR, junk)==0){
+        printf("LHIP: %ld, LKNEE: %ld, RHIP: %ld, RKNEE: %ld\n", getPos(LHIP, junk), getPos(LKNEE, junk), getPos(RHIP, junk), getPos(RKNEE, junk));
+    }
+
     //Initialise 4 joints
     initMotorPos(LHIP);
     initMotorPos(LKNEE);
@@ -167,6 +171,7 @@ void sitStand(int sitstate){
     int button1Status=0;
     int button2Status=0;
     int button3Status=0;
+
 
     //Statemachine loop.
     //Exits when button 3 is pressed.
