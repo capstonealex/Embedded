@@ -34,18 +34,18 @@
 #define PROFILEVELOCITY 300000
 #define PROFILEACCELERATION 50000
 //Knee motor reading and corresponding angle. Used for mapping between degree and motor values.
-#define KNEE_MOTOR_POS1 250000
+#define KNEE_MOTOR_POS1 250880
 #define KNEE_MOTOR_DEG1 90
 #define KNEE_MOTOR_POS2 0
 #define KNEE_MOTOR_DEG2 0
 //Hip motor reading and corresponding angle. Used for mapping between degree and motor values.
-#define HIP_MOTOR_POS1 250000
+#define HIP_MOTOR_POS1 250880
 #define HIP_MOTOR_DEG1 90
 #define HIP_MOTOR_POS2 0
 #define HIP_MOTOR_DEG2 180
 //standing or sitting state
-#define STANDING 0
-#define SITTING 10
+#define STANDING -1
+#define SITTING 11
 
 /*
  Most functions defined here use canReturnMessage as a pass-by-reference string.
@@ -92,15 +92,17 @@ void calcAB(long y1, long x1, long y2, long x2, double *A, double *B);
 
 int main (){
     printf("Welcome to CANfeast!\n");
-    sitStand(STANDING);
+    sitStand(SITTING);
     return 0;
 }
 
 //State machine with sit-stand logic
 void sitStand(int sitstate){
 
-    //Array of trajectory points.
+    //Array of trajectory points from R&D team
     //smallest index is standing
+    //IMPORTANT: Update state arg passed to sitstand() from main.
+    //The state value should be 1 position outside array index (ie -1 or 11 for a 11 item array).
     double sitStandArrHip_degrees[]={
             171.5932928,
             170.6247195,
@@ -110,9 +112,9 @@ void sitStand(int sitstate){
             126.7503007,
             111.8500781,
             98.17421981,
-            93,
-            90,
-            85
+            87.90148218,
+            82.63339525,
+            81.65449369
     };
     double sitStandArrKnee_degrees[]={
             18.18910485,
@@ -141,6 +143,10 @@ void sitStand(int sitstate){
     //Should pass this to calling function for possible error handling.
     char junk[STRING_LENGTH];
 
+    while(getButton(BUTTON_FOUR, junk)==0){
+        printf("LHIP: %ld, LKNEE: %ld, RHIP: %ld, RKNEE: %ld\n", getPos(LHIP, junk), getPos(LKNEE, junk), getPos(RHIP, junk), getPos(RKNEE, junk));
+    }
+
     //Initialise 4 joints
     initMotorPos(LHIP);
     initMotorPos(LKNEE);
@@ -168,6 +174,7 @@ void sitStand(int sitstate){
     int button2Status=0;
     int button3Status=0;
 
+
     //Statemachine loop.
     //Exits when button 3 is pressed.
     //Button 1 sits more, button 2 stands more.
@@ -191,6 +198,7 @@ void sitStand(int sitstate){
         //If target position is reached, then increment sitstate and set movestate to 0.
         if(sitstate<10 && movestate==1){
             if(checkPos(sitStandArrayHip[sitstate+1], sitStandArrayKnee[sitstate+1])==1){
+                printf("Position reached.\n");
                 sitstate++;
                 movestate=0;
             }
@@ -209,6 +217,7 @@ void sitStand(int sitstate){
         //If target position is reached, then decrease sitstate and set movestate to 0.
         if(sitstate>0 && movestate==1){
             if(checkPos(sitStandArrayHip[sitstate-1], sitStandArrayKnee[sitstate-1])==1){
+                printf("Position reached.\n");
                 sitstate--;
                 movestate=0;
             }
@@ -295,7 +304,7 @@ void setAbsPosSmart(int nodeid, int position, char *canReturnMessage){
     itoa(nodeid,buffer,DECIMAL); //convert nodeid to string
     strcpy(nodeStr, buffer); //Copy  nodeid to string
     strcat(movePos, nodeStr); //Concat node to movepox
-    strcat(movePos, " write 0x607A 0 i32 "); //concat remaining message to mocepos
+    strcat(movePos, " write 0x607A 0 i32 -- "); //concat remaining message to movepos
     itoa(position,buffer,DECIMAL); //convert position to string
     strcpy(pos, buffer); //copy position to string
     strcat(movePos, pos); // concat position string to movepos message.
