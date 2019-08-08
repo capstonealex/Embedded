@@ -304,7 +304,7 @@ void setAbsPosSmart(int nodeid, int position, char *canReturnMessage){
     itoa(nodeid,buffer,DECIMAL); //convert nodeid to string
     strcpy(nodeStr, buffer); //Copy  nodeid to string
     strcat(movePos, nodeStr); //Concat node to movepox
-    strcat(movePos, " write 0x607A 0 i32 "); //concat remaining message to mocepos
+    strcat(movePos, " write 0x607A 0 i32 -- "); //concat remaining message to movepos
     itoa(position,buffer,DECIMAL); //convert position to string
     strcpy(pos, buffer); //copy position to string
     strcat(movePos, pos); // concat position string to movepos message.
