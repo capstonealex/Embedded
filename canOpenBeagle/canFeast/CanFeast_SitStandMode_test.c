@@ -99,8 +99,10 @@ int main (){
 //State machine with sit-stand logic
 void sitStand(int sitstate){
 
-    //Array of trajectory points.
+    //Array of trajectory points from R&D team
     //smallest index is standing
+    //IMPORTANT: Update state arg passed to sitstand() from main.
+    //The state value should be 1 position outside array index (ie -1 or 11 for a 11 item array).
     double sitStandArrHip_degrees[]={
             171.5932928,
             170.6247195,
@@ -196,6 +198,7 @@ void sitStand(int sitstate){
         //If target position is reached, then increment sitstate and set movestate to 0.
         if(sitstate<10 && movestate==1){
             if(checkPos(sitStandArrayHip[sitstate+1], sitStandArrayKnee[sitstate+1])==1){
+                printf("Position reached.\n");
                 sitstate++;
                 movestate=0;
             }
@@ -214,6 +217,7 @@ void sitStand(int sitstate){
         //If target position is reached, then decrease sitstate and set movestate to 0.
         if(sitstate>0 && movestate==1){
             if(checkPos(sitStandArrayHip[sitstate-1], sitStandArrayKnee[sitstate-1])==1){
+                printf("Position reached.\n");
                 sitstate--;
                 movestate=0;
             }
