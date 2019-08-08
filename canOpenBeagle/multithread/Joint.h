@@ -24,9 +24,9 @@ class Joint {
 public:
     Joint();
     Joint(float q_init, int ID);
-    void applyPos(float q);
     void setId(int ID);
     int getId();
+    void applyPos(float q);
     float getPos();
     void printInfo();
 };

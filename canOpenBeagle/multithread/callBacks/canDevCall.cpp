@@ -3,7 +3,7 @@
 
 #include<iostream>
 
-std::string canFestSend(std::string commandMessage, std::string(* canDevUpdate)(std::string) )
+std::string canFeastGet(std::string commandMessage, std::string(* canDevUpdate)(std::string) )
 {
     // set up some dummy variables
     std::string success = "yea";
@@ -12,8 +12,8 @@ std::string canFestSend(std::string commandMessage, std::string(* canDevUpdate)(
     std::cout<<"Canfeast Request to network"<<"\n";
     // raw message parsing with canDev object dictionary
     //Implement after raw messaging works, should receive
-        // q, qd or value of want
-        // access internal hash table and use that value to send over canFeast or to perfor getBeagle (XADRESS)
+        // q, qd or info requested
+        // access internal hash table and use that value to send over canFeast or to perform getBeagle (XADRESS)
 
     // Call the callBack provided i.e. function pointer to jointUpdate
     success = canDevUpdate(commandMessage);
@@ -31,7 +31,7 @@ std::string jointUpdate(std::string data)
 
 
 int main(){
-    std::string msg = canFestSend("WILL", &jointUpdate);
+    std::string msg = canFeastGet("WILL", &jointUpdate);
     std::cout << msg<<std::endl;
     return 0;
 }
