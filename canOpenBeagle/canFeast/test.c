@@ -92,7 +92,14 @@ void calcAB(long y1, long x1, long y2, long x2, double *A, double *B);
 
 int main (){
     printf("Welcome to CANfeast!\n");
-    sitStand(SITTING);
+    //sitStand(SITTING);
+    char junk[STRING_LENGTH];
+    initMotorPos(LHIP);
+    setAbsPosSmart(LHIP, 10000, junk);
+    sleep(5);
+    long pos=getPos(LHIP, junk);
+    printf("Position: %ld\n", pos);
+    preop(LHIP);
     return 0;
 }
 
