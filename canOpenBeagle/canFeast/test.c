@@ -31,8 +31,8 @@
 //Clearance used when doing point to point motion
 #define POSCLEARANCE 5000
 //Velocity and acceleration for position mode move
-#define PROFILEVELOCITY 200000
-#define PROFILEACCELERATION 40000
+#define PROFILEVELOCITY 300000
+#define PROFILEACCELERATION 50000
 //Knee motor reading and corresponding angle. Used for mapping between degree and motor values.
 #define KNEE_MOTOR_POS1 250880
 #define KNEE_MOTOR_DEG1 90
@@ -92,7 +92,14 @@ void calcAB(long y1, long x1, long y2, long x2, double *A, double *B);
 
 int main (){
     printf("Welcome to CANfeast!\n");
-    sitStand(SITTING);
+    //sitStand(SITTING);
+    char junk[STRING_LENGTH];
+    initMotorPos(LHIP);
+    setAbsPosSmart(LHIP, 10000, junk);
+    sleep(5);
+    long pos=getPos(LHIP, junk);
+    printf("Position: %ld\n", pos);
+    preop(LHIP);
     return 0;
 }
 
