@@ -9,9 +9,9 @@
 
 class CanDevice {
     int nodeID; // canNode address on the network
-    std::string canFeastGet(std::string commandMessage, std::string(* canDevUpdate)(std::string));
-    // std:: canDevUpate(std::string data); // implement for each specific can device needing a callback
-    std::string jointUpdate(std::string data);
+//    std::string canFeastGet(std::string commandMessage, std::string(* canDevUpdate)(std::string));
+//    // std:: canDevUpate(std::string data); // implement for each specific can device needing a callback
+//    std::string jointUpdate(std::string data);
 
     // objectDictionary should be a hash between specific commands and the correct OD address
     //  std::string objectDictionary;
@@ -25,11 +25,12 @@ class CanDevice {
 public:
     // set and get Object dictionary paramaters
     // All dictionary commands
-    std::string position = "[1] 2 read 0x6063 0 i32";// for testing purposes just a string of hard set commands set and get pos //display current knee position
-    std::string setAbsPosition = "[1] 2 write 0x607A 0 i32 50000"; //move to this position (absolute)
-    void setOD(std::string objectAddress);
-    void getOD(std::string objectAddress);
-
+//    std::string position = "[1] 2 read 0x6063 0 i32";// for testing purposes just a string of hard set commands set and get pos //display current knee position
+//    std::string setAbsPosition = "[1] 2 write 0x607A 0 i32 50000"; //move to this position (absolute)
+//    void setOD(std::string objectAddress);
+//    void getOD(std::string objectAddress);
+std::string canFeastGet(std::string commandMessage, std::string(* canDevUpdate)(std::string));
+std::string jointUpdate(std::string data);
 
 };
 

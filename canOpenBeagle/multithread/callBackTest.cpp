@@ -6,9 +6,13 @@
 
 
 int main(){
+
     CanDevice testDev;
-    std::string test = testDev.position;
-    std::cout<< test;
+    std::string msg = testDev.canFeastGet("WILL", &testDev.jointUpdate);
+    std::cout << msg<<std::endl;
+//
+//    std::string test = testDev.position;
+//    std::cout<< test;
 //    std::string msg = canFeastGet("WILL", &jointUpdate);
 //    std::cout << msg<<std::endl;
     return 0;

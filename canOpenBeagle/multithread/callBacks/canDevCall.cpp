@@ -3,7 +3,7 @@
 
 #include<iostream>
 
-std::string canFeastGet(std::string commandMessage, std::string(* canDevUpdate)(std::string) )
+std::string canFeastGet(std::string commandMessage, std::string(* canDevUpdate)(std::string))
 {
     // set up some dummy variables
     std::string success = "yea";
