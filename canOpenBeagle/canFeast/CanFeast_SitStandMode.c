@@ -44,8 +44,9 @@
 #define HIP_MOTOR_POS2 0
 #define HIP_MOTOR_DEG2 180
 //standing or sitting state
-#define STANDING -1
-#define SITTING 11
+//Arbitrarily using 1 and 2 here. The actual sitstate is automatically calculated in sitStand()
+#define STANDING 1
+#define SITTING 2
 
 /*
  Most functions defined here use canReturnMessage as a pass-by-reference string.
@@ -97,12 +98,11 @@ int main (){
 }
 
 //State machine with sit-stand logic
-void sitStand(int sitstate){
+void sitStand(int state){
 
     //Array of trajectory points from R&D team
     //smallest index is standing
     //IMPORTANT: Update state arg passed to sitstand() from main.
-    //The state value should be 1 position outside array index (ie -1 or 11 for a 11 item array).
     double sitStandArrHip_degrees[]={
             171.5932928,
             170.6247195,
@@ -138,6 +138,13 @@ void sitStand(int sitstate){
     //Converting from degrees to motor drive compatible values.
     motorPosArrayConverter(sitStandArrHip_degrees, sitStandArrayHip, arrSize, LHIP);
     motorPosArrayConverter(sitStandArrKnee_degrees, sitStandArrayKnee, arrSize, LKNEE);
+
+    //The sitstate value should be 1 position outside array index (ie -1 or 11 for a 11 item array).
+    int sitstate = 1;
+    if(state==SITTING)
+        sitstate=arrSize;
+    if(state==STANDING)
+        sitstate=-1;
 
     //Used to store the canReturnMessage. Not used currently, hence called junk.
     //Should pass this to calling function for possible error handling.
