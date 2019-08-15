@@ -18,9 +18,14 @@
 #ifndef BUF_SIZE
 #define BUF_SIZE 100000
 #endif
-int canFeastUp(int *fd);
-void canFeast(int,fd, char *command, char *canReturnMessage);
-int canFeastDown(int *fd);
+
+//String Length for defining fixed sized char array
+#define STRING_LENGTH 50
+#define MAX_STRINGS 40
+
+void canFeastUp(int *fd);
+void canFeast(int *fd, char *command, char *canReturnMessage);
+void canFeastDown(int *fd);
 
 // Test code
 int main (/*int argc, char *argv[]*/){
@@ -30,7 +35,7 @@ int main (/*int argc, char *argv[]*/){
     printf("Welcome to canFeastOpen test!\n");
     int socket;
     //set up canFeasts socket
-    canFeastUp(socket);
+    canFeastUp(&socket);
     char commList[][MAX_STRINGS]=
             {
                     "[1] 4 start", //go to start mode
@@ -41,17 +46,20 @@ int main (/*int argc, char *argv[]*/){
 
     int Num_of_Strings = sizeof(commList)/MAX_STRINGS;
 
-    for(int i=0; i<Num_of_Strings; ++i)
-        canFeast(socket, commList[i],junk);
+    for(int i=0; i<Num_of_Strings; ++i) {
+        canFeast(&socket, commList[i], junk);
+    }
+    canFeastDown(&socket);
     return 1;
+
 }
 
-int canFeastUp(int *fd) {
+void canFeastUp(int *fd) {
     char *socketPath = "/tmp/CO_command_socket";  /* Name of the local domain socket, configurable by arguments. */
     struct sockaddr_un addr;
 
-    fd = socket(AF_UNIX, SOCK_STREAM, 0);
-    if (fd == -1) {
+    *fd = socket(AF_UNIX, SOCK_STREAM, 0);
+    if (*fd == -1) {
         perror("Socket creation failed");
         exit(EXIT_FAILURE);
     }
@@ -59,25 +67,25 @@ int canFeastUp(int *fd) {
     addr.sun_family = AF_UNIX;
     strncpy(addr.sun_path, socketPath, sizeof(addr.sun_path) - 1);
 // Try to make a connection to the local UNIT AF_UNIX SOCKET, quit if unavailable
-    if (connect(fd, (struct sockaddr *) &addr, sizeof(struct sockaddr_un)) == -1) {
+    if (connect(*fd, (struct sockaddr *) &addr, sizeof(struct sockaddr_un)) == -1) {
         perror("Socket connection failed");
         exit(EXIT_FAILURE);
     }
 }
-void canFeast(int,fd, char *command, char *canReturnMessage) {
+void canFeast(int *fd, char *command, char *canReturnMessage) {
     int commandLength = strlen(command);
     size_t n;
     char buf[BUF_SIZE];
 
-    if (write(fd, command, commandLength) != commandLength){
+    if (write(*fd, command, commandLength) != commandLength){
         perror("Socket write failed");
         exit(EXIT_FAILURE);
     }
 
-    n = read(fd, buf, sizeof(buf));
+    n = read(*fd, buf, sizeof(buf));
     if (n == -1){
         perror("Socket read failed");
-        close(fd);
+        close(*fd);
         exit(EXIT_FAILURE);
     }
     printf("%s", buf);
@@ -85,9 +93,9 @@ void canFeast(int,fd, char *command, char *canReturnMessage) {
 
 }
 
-int canFeastDown(int *fd) {
-    print("closing socket...\n");
+void canFeastDown(int *fd) {
+    printf("closing socket...\n");
     //close socket
-    close(fd);
-    print("socket close\n");
+    close(*fd);
+    printf("socket close\n");
 }
