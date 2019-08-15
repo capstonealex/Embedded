@@ -31,8 +31,8 @@
 //Clearance used when doing point to point motion
 #define POSCLEARANCE 5000
 //Velocity and acceleration for position mode move
-#define PROFILEVELOCITY 300000
-#define PROFILEACCELERATION 50000
+#define PROFILEVELOCITY 200000
+#define PROFILEACCELERATION 40000
 //Knee motor reading and corresponding angle. Used for mapping between degree and motor values.
 #define KNEE_MOTOR_POS1 250880
 #define KNEE_MOTOR_DEG1 90
