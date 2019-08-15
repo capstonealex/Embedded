@@ -59,15 +59,16 @@
 //State machine with sit-stand logic
 void sitStand(int state);
 //For sending socket commands
-static void sendCommand(int fd, char *command, size_t commandLength, char *canReturnMessage);
-//Sets up sockets and calls sendCommand()
-void canFeast (char *buf, char *canReturnMessage);
+void canFeastUp(int *canSocket);
+void canFeast(int *canSocket, char *command, char *canReturnMessage);
+void canFeastDown(int *canSocket);
+void canFeastErrorHandler(int *canSocket, char *command, char *canReturnMessage);
 //Used to read button status. Returns 1 if button is pressed
-int getButton(int button, char *canReturnMessage);
+int getButton(int *canSocket, int button, char *canReturnMessage);
 //Reads position of specified node
-long getPos(int nodeid, char *canReturnMessage);
+long getPos(int *canSocket, int nodeid, char *canReturnMessage);
 //Sets target position of node and moves it to that position.
-void setAbsPosSmart(int nodeide, int position, char *canReturnMessage);
+void setAbsPosSmart(int *canSocket, int nodeide, int position, char *canReturnMessage);
 //Converts integer to string
 void itoa(int value, char* str, int base);
 //Reverses a string. Used by itoa()
@@ -77,15 +78,15 @@ void stringExtract(char *origStr, char **extractStr, int pos);
 //Converts strings to integer and returns it.
 long strToInt(char str[]);
 //Sets specified node to preop mode
-void preop(int nodeid);
+void preop(int *canSocket, int nodeid);
 //Sets node to start mode and sets it to position move mode.
-void initMotorPos(int nodeid);
+void initMotorPos(int *canSocket, int nodeid);
 //Checks for 4 joints are within +-POSCLEARANCE of the hipTarget and kneeTarget values. Returns 1 if true.
-int checkPos(long hipTarget, long kneeTarget);
+int checkPos(int *canSocket, long hipTarget, long kneeTarget);
 //Sets profile velocity for position mode motion.
-void setProfileVelocity(int nodeid, long velocity);
+void setProfileVelocity(int *canSocket,int nodeid, long velocity);
 //Sets profile acceleration and deceleration for position mode motion.
-void setProfileAcceleration(int nodeid, long acceleration);
+void setProfileAcceleration(int *canSocket, int nodeid, long acceleration);
 //Used to convert position array from degrees to motors counts as used in CANopen
 void motorPosArrayConverter(const double origArr[], long newArr[], int arrSize, int nodeid);
 //calculate A and B in the formula y=Ax+B. Use by motorPosArrayConverter()
@@ -99,7 +100,6 @@ int main (){
 
 //State machine with sit-stand logic
 void sitStand(int state){
-
     //Array of trajectory points from R&D team
     //smallest index is standing
     //IMPORTANT: Update state arg passed to sitstand() from main.
@@ -146,29 +146,32 @@ void sitStand(int state){
     if(state==STANDING)
         sitstate=-1;
 
+    // Set up socket to canOpend
+    int socket;
+    canFeastUp(&socket);
     //Used to store the canReturnMessage. Not used currently, hence called junk.
     //Should pass this to calling function for possible error handling.
     char junk[STRING_LENGTH];
 
-    while(getButton(BUTTON_FOUR, junk)==0){
-        printf("LHIP: %ld, LKNEE: %ld, RHIP: %ld, RKNEE: %ld\n", getPos(LHIP, junk), getPos(LKNEE, junk), getPos(RHIP, junk), getPos(RKNEE, junk));
+    while(getButton(&socket,BUTTON_FOUR, junk)==0){
+        printf("LHIP: %ld, LKNEE: %ld, RHIP: %ld, RKNEE: %ld\n", getPos(&socket,LHIP, junk), getPos(&socket,LKNEE, junk), getPos(&socket,RHIP, junk), getPos(&socket,RKNEE, junk));
     }
 
     //Initialise 4 joints
-    initMotorPos(LHIP);
-    initMotorPos(LKNEE);
-    initMotorPos(RHIP);
-    initMotorPos(RKNEE);
+    initMotorPos(&socket,LHIP);
+    initMotorPos(&socket,LKNEE);
+    initMotorPos(&socket,RHIP);
+    initMotorPos(&socket,RKNEE);
 
     //Sets profile velocity, acceleration & deceleration for the joints.
-    setProfileAcceleration(LHIP, PROFILEACCELERATION);
-    setProfileVelocity(LHIP,PROFILEVELOCITY);
-    setProfileAcceleration(LKNEE, PROFILEACCELERATION);
-    setProfileVelocity(LKNEE,PROFILEVELOCITY);
-    setProfileAcceleration(RHIP, PROFILEACCELERATION);
-    setProfileVelocity(RHIP,PROFILEVELOCITY);
-    setProfileAcceleration(RKNEE, PROFILEACCELERATION);
-    setProfileVelocity(RKNEE,PROFILEVELOCITY);
+    setProfileAcceleration(&socket,LHIP, PROFILEACCELERATION);
+    setProfileVelocity(&socket,LHIP,PROFILEVELOCITY);
+    setProfileAcceleration(&socket,LKNEE, PROFILEACCELERATION);
+    setProfileVelocity(&socket,LKNEE,PROFILEVELOCITY);
+    setProfileAcceleration(&socket,RHIP, PROFILEACCELERATION);
+    setProfileVelocity(&socket,RHIP,PROFILEVELOCITY);
+    setProfileAcceleration(&socket,RKNEE, PROFILEACCELERATION);
+    setProfileVelocity(&socket,RKNEE,PROFILEVELOCITY);
 
     //Use to maintain states.
     //sitstate goes from 0 to 10, indicating the 11 indices of the sitstandArrays
@@ -188,18 +191,18 @@ void sitStand(int state){
     while(1){
 
         //read button state
-        button1Status=getButton(BUTTON_ONE, junk);
-        button2Status=getButton(BUTTON_TWO, junk);
-        button3Status=getButton(BUTTON_THREE, junk);
+        button1Status=getButton(&socket,BUTTON_ONE, junk);
+        button2Status=getButton(&socket,BUTTON_TWO, junk);
+        button3Status=getButton(&socket,BUTTON_THREE, junk);
 
         //Button has to be pressed & Exo not moving & array not at end. If true, execute move.
         if(button1Status==1 && movestate==0 && sitstate<(arrSize-1)){
             movestate=1;
             printf("Sitting down\n");
-            setAbsPosSmart(LHIP, sitStandArrayHip[sitstate+1], junk);
-            setAbsPosSmart(LKNEE, sitStandArrayKnee[sitstate+1], junk);
-            setAbsPosSmart(RHIP, sitStandArrayHip[sitstate+1], junk);
-            setAbsPosSmart(RKNEE, sitStandArrayKnee[sitstate+1], junk);
+            setAbsPosSmart(&socket,LHIP, sitStandArrayHip[sitstate+1], junk);
+            setAbsPosSmart(&socket,LKNEE, sitStandArrayKnee[sitstate+1], junk);
+            setAbsPosSmart(&socket,RHIP, sitStandArrayHip[sitstate+1], junk);
+            setAbsPosSmart(&socket,RKNEE, sitStandArrayKnee[sitstate+1], junk);
         }
 
         //If target position is reached, then increment sitstate and set movestate to 0.
@@ -215,10 +218,10 @@ void sitStand(int state){
         if(button2Status==1 && movestate==0 && sitstate>0){
             movestate=1;
             printf("Standing up\n");
-            setAbsPosSmart(LHIP, sitStandArrayHip[sitstate-1], junk);
-            setAbsPosSmart(LKNEE, sitStandArrayKnee[sitstate-1], junk);
-            setAbsPosSmart(RHIP, sitStandArrayHip[sitstate-1], junk);
-            setAbsPosSmart(RKNEE, sitStandArrayKnee[sitstate-1], junk);
+            setAbsPosSmart(&socket,LHIP, sitStandArrayHip[sitstate-1], junk);
+            setAbsPosSmart(&socket,LKNEE, sitStandArrayKnee[sitstate-1], junk);
+            setAbsPosSmart(&socket,RHIP, sitStandArrayHip[sitstate-1], junk);
+            setAbsPosSmart(&socket,RKNEE, sitStandArrayKnee[sitstate-1], junk);
         }
 
         //If target position is reached, then decrease sitstate and set movestate to 0.
@@ -232,17 +235,17 @@ void sitStand(int state){
 
         //if button 3 pressed, then set to preop and exit.
         if(button3Status==1){
-            preop(1);
-            preop(2);
-            preop(3);
-            preop(4);
+            preop(&socket,1);
+            preop(&socket,2);
+            preop(&socket,3);
+            preop(&socket,4);
             break;
         }
     }
 }
 
 //Used to read button status. Returns 1 if button is pressed
-int getButton(int button, char *canReturnMessage){
+int getButton(int *canSocket, int button, char *canReturnMessage){
     //char canReturnMessage[STRING_LENGTH];
     char *buttonMessage;
     char *buttonPressed = "0x3F800000";
@@ -254,7 +257,7 @@ int getButton(int button, char *canReturnMessage){
                     "[1] 9 read 0x0103 1 u32", //button 3
                     "[1] 9 read 0x0104 1 u32"//button 4
             };
-    canFeast(buttons[button-1], canReturnMessage);
+    canFeast(canSocket,buttons[button-1], canReturnMessage);
 
     //printf("CAN return on button press is: %s", canReturnMessage);
     //Button pressed returns "[1] 0x3F800000\n". Extracting 2nd string to compare.
@@ -269,7 +272,7 @@ int getButton(int button, char *canReturnMessage){
 }
 
 //Reads position of specified node
-long getPos(int nodeid, char *canReturnMessage){
+long getPos(int *canSocket, int nodeid, char *canReturnMessage){
     char node[STRING_LENGTH], getpos[STRING_LENGTH], dataType[STRING_LENGTH], buffer[STRING_LENGTH];
     char positionMessage[STRING_LENGTH];
     char *positionStr;
@@ -285,7 +288,7 @@ long getPos(int nodeid, char *canReturnMessage){
     strcat(getpos, node);
     strcat(getpos, dataType);
     //Send message
-    canFeast(getpos, positionMessage);
+    canFeast(canSocket,getpos, positionMessage);
 
     //printf("Position Message for node %d: %s",nodeid, positionMessage);
 
@@ -302,7 +305,7 @@ long getPos(int nodeid, char *canReturnMessage){
 }
 
 //Sets target position of node and moves it to that position.
-void setAbsPosSmart(int nodeid, int position, char *canReturnMessage){
+void setAbsPosSmart(int *canSocket, int nodeid, int position, char *canReturnMessage){
     char pos[STRING_LENGTH], movePos[STRING_LENGTH], buffer[STRING_LENGTH], nodeStr[STRING_LENGTH];
     char cntrWordH[STRING_LENGTH], cntrWordL[STRING_LENGTH];
 
@@ -342,52 +345,93 @@ void setAbsPosSmart(int nodeid, int position, char *canReturnMessage){
     //Sending array of messages.
     int Num_of_Strings = sizeof(commList)/ sizeof(commList[0]);
     for(int i=0; i<Num_of_Strings; ++i)
-        canFeast(commList[i],canReturnMessage);
+        canFeast(canSocket,commList[i],canReturnMessage);
 }
 
-//Sets up sockets and calls sendCommand()
-void canFeast(char *buf, char *canReturnMessage) {
+// Creates a socket connection to canopend using a pointer to int socket
+
+void canFeastUp(int *canSocket) {
     char *socketPath = "/tmp/CO_command_socket";  /* Name of the local domain socket, configurable by arguments. */
-    int fd;
     struct sockaddr_un addr;
 
-    fd = socket(AF_UNIX, SOCK_STREAM, 0);
-    if (fd == -1){
+    *canSocket = socket(AF_UNIX, SOCK_STREAM, 0);
+    if (*canSocket == -1) {
         perror("Socket creation failed");
         exit(EXIT_FAILURE);
     }
     memset(&addr, 0, sizeof(struct sockaddr_un));
     addr.sun_family = AF_UNIX;
     strncpy(addr.sun_path, socketPath, sizeof(addr.sun_path) - 1);
-    // Try to make a connection to the local UNIT AF_UNIX SOCKET, quit if unavailable
-    if (connect(fd, (struct sockaddr *)&addr, sizeof(struct sockaddr_un)) == -1){
+// Try to make a connection to the local UNIT AF_UNIX SOCKET, quit if unavailable
+    if (connect(*canSocket, (struct sockaddr *) &addr, sizeof(struct sockaddr_un)) == -1) {
         perror("Socket connection failed");
         exit(EXIT_FAILURE);
     }
-    sendCommand(fd, buf, strlen(buf),canReturnMessage);
-    //close socket
-    close(fd);
 }
-
-//For sending socket commands
-static void sendCommand(int fd, char *command, size_t commandLength, char *canReturnMessage)
-{
+void canFeastDown(int *canSocket) {
+    printf("closing socket...\n");
+    //close socket
+    close(*canSocket);
+    printf("socket close\n");
+}
+void canFeast(int *canSocket, char *command, char *canReturnMessage) {
+    int commandLength = strlen(command);
     size_t n;
     char buf[BUF_SIZE];
 
-    if (write(fd, command, commandLength) != commandLength){
+    if (write(*canSocket, command, commandLength) != commandLength){
         perror("Socket write failed");
         exit(EXIT_FAILURE);
     }
 
-    n = read(fd, buf, sizeof(buf));
+    n = read(*canSocket, buf, sizeof(buf));
     if (n == -1){
         perror("Socket read failed");
+        close(*canSocket);
         exit(EXIT_FAILURE);
     }
-    //printf("%s", buf);
+    printf("%s", buf);
     strcpy(canReturnMessage,buf);
+
 }
+// Error handling -> reset socket and try again when sockets fail.
+void canFeastErrorHandler(int *canSocket, char *command, char *canReturnMessage) {
+    int commandLength = strlen(command);
+    int recconects;
+    size_t n;
+    char buf[BUF_SIZE];
+
+    if (write(*canSocket, command, commandLength) != commandLength){
+        perror("Socket write failed, attempting again");
+        canFeast(canSocket, command, canReturnMessage);
+    }
+    while((write(*canSocket, command, commandLength) != commandLength) && recconects!= MAX_RECONNECTS){
+        perror("Socket write failed, attempting again");
+        //shut down socket
+        canFeastDown(canSocket);
+        //recreate socket
+        canFeastUp(canSocket);
+        recconects ++;
+        // try to send again
+    }
+
+
+    n = read(*canSocket, buf, sizeof(buf));
+    if (n == -1){
+        perror("Socket read failed, attempting to send command again");
+        //shut down socket
+        canFeastDown(canSocket);
+        //recreate socket
+        canFeastUp(canSocket);
+        // try to send again
+        canFeast( canSocket, command, canReturnMessage);
+        exit(EXIT_FAILURE);
+    }
+    printf("%s", buf);
+    strcpy(canReturnMessage,buf);
+
+}
+
 
 //Definitionof itoa(int to string conversion) and helper Kernighan & Ritchie's Ansi C.
 //char *  itoa ( int value, char * str, int base );
@@ -464,7 +508,7 @@ long strToInt(char str[]){
 }
 
 //set node to preop mode
-void preop(int nodeid){
+void preop(int *canSocket,int nodeid){
     char junk[STRING_LENGTH];
     char node[STRING_LENGTH], preop[STRING_LENGTH], dataTail[STRING_LENGTH], buffer[STRING_LENGTH];
 
@@ -477,11 +521,11 @@ void preop(int nodeid){
     strcat(preop, node);
     strcat(preop, dataTail);
     //printf("\nNode %d is now in preop state\n",nodeid);
-    canFeast(preop,junk);
+    canFeast(canSocket,preop,junk);
 }
 
 //start motor and set to position mode.
-void initMotorPos(int nodeid){
+void initMotorPos(int *canSocket, int nodeid){
     char node[STRING_LENGTH], comm[STRING_LENGTH], dataTail[STRING_LENGTH], buffer[STRING_LENGTH];
     itoa(nodeid,buffer,DECIMAL);
 
@@ -495,7 +539,7 @@ void initMotorPos(int nodeid){
     strcat(comm, node);
     strcat(comm, dataTail);
     //printf("Start motor, node %d, message: %s\n", nodeid, comm);
-    canFeast(comm,canMessage);
+    canFeast(canSocket,comm,canMessage);
 
     //Create a message to be sent using canFeast. "[1] <nodeid> write 0x6060 0 i8 1".
     strcpy(comm, "[1] ");
@@ -505,11 +549,11 @@ void initMotorPos(int nodeid){
     strcat(comm, node);
     strcat(comm, dataTail);
     //printf("Position mode motor, node %d, message: %s\n", nodeid, comm);
-    canFeast(comm,canMessage);
+    canFeast(canSocket,comm,canMessage);
 }
 
 //Checks for 4 joints are within +-POSCLEARANCE of the hipTarget and kneeTarget values. Returns 1 if true.
-int checkPos(long hipTarget, long kneeTarget){
+int checkPos(int *canSocket, long hipTarget, long kneeTarget){
 
     //The positions could be polled and stored earlier for more readable code. But getpos uses canfeast which has overhead.
     //Since C support short circuit evaluation, using getPos in if statement is more efficient.
@@ -526,7 +570,7 @@ int checkPos(long hipTarget, long kneeTarget){
 }
 
 //Sets profile velocity for position mode motion.
-void setProfileVelocity(int nodeid, long velocity){
+void setProfileVelocity(int *canSocket, int nodeid, long velocity){
     char node[STRING_LENGTH], comm[STRING_LENGTH], buffer[STRING_LENGTH], velMessage[STRING_LENGTH];
     char junk[STRING_LENGTH];
 
@@ -542,12 +586,12 @@ void setProfileVelocity(int nodeid, long velocity){
 
     //printf("Velocity message %s\n", comm);
 
-    canFeast(comm, junk);
+    canFeast(canSocket,comm, junk);
 }
 
 //Sets profile acceleration and deceleration for position mode motion.
 //Using same value for acceleration and deceleration.
-void setProfileAcceleration(int nodeid, long acceleration){
+void setProfileAcceleration(int *canSocket, int nodeid, long acceleration){
     char node[STRING_LENGTH], commAcc[STRING_LENGTH], commDec[STRING_LENGTH], buffer[STRING_LENGTH], accelMessage[STRING_LENGTH];
     char junk[STRING_LENGTH];
 
@@ -574,8 +618,8 @@ void setProfileAcceleration(int nodeid, long acceleration){
 
     //printf("Acceleration message %s\n%s\n", commAcc, commDec);
 
-    canFeast(commAcc, junk);
-    canFeast(commDec, junk);
+    canFeast(canSocket,commAcc, junk);
+    canFeast(canSocket,commDec, junk);
 }
 
 //Used to convert position array from degrees to motors counts as used in CANopen
