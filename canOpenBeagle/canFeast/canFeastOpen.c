@@ -19,13 +19,15 @@
 #define BUF_SIZE 100000
 #endif
 
-//String Length for defining fixed sized char array
 #define STRING_LENGTH 50
 #define MAX_STRINGS 40
+#define MAX_RECONNECTS 10
+
 
 void canFeastUp(int *fd);
 void canFeast(int *fd, char *command, char *canReturnMessage);
 void canFeastDown(int *fd);
+void canFeastErrorHandler(int *fd, char *command, char *canReturnMessage);
 
 // Test code
 int main (/*int argc, char *argv[]*/){
@@ -86,6 +88,43 @@ void canFeast(int *fd, char *command, char *canReturnMessage) {
     if (n == -1){
         perror("Socket read failed");
         close(*fd);
+        exit(EXIT_FAILURE);
+    }
+    printf("%s", buf);
+    strcpy(canReturnMessage,buf);
+
+}
+// Error handling -> reset socket and try again when sockets fail.
+void canFeastErrorHandler(int *fd, char *command, char *canReturnMessage) {
+    int commandLength = strlen(command);
+    int recconects;
+    size_t n;
+    char buf[BUF_SIZE];
+
+    if (write(*fd, command, commandLength) != commandLength){
+        perror("Socket write failed, attempting again");
+        canFeast( fd, command, canReturnMessage);
+    }
+    while((write(*fd, command, commandLength) != commandLength) && recconects!= MAX_RECONNECTS){
+        perror("Socket write failed, attempting again");
+        //shut down socket
+        canFeastDown(fd);
+        //recreate socket
+        canFeastUp(fd);
+        recconects ++;
+        // try to send again
+    }
+
+
+    n = read(*fd, buf, sizeof(buf));
+    if (n == -1){
+        perror("Socket read failed, attempting to send command again");
+        //shut down socket
+        canFeastDown(fd);
+        //recreate socket
+        canFeastUp(fd);
+        // try to send again
+        canFeast( fd, command, canReturnMessage);
         exit(EXIT_FAILURE);
     }
     printf("%s", buf);
