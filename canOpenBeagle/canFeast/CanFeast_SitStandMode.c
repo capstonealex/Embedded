@@ -110,7 +110,7 @@ void sitStand(int state)
     //smallest index is standing
     //IMPORTANT: Update state arg passed to sitstand() from main.
 
-    //Test 10-5
+/*     //onyl knee
     double sitStandArrHip_degrees[] = {
         99.602,
         99.602,
@@ -140,8 +140,8 @@ void sitStand(int state)
         88.464
 
 
-    };
-/* 
+    }; */
+
     //Test 10-5
     double sitStandArrHip_degrees[] = {
         167.600,
@@ -172,7 +172,7 @@ void sitStand(int state)
         88.464
 
 
-    }; */
+    };
 
 /*     //Test 30-25
     double sitStandArrHip_degrees[] = {
