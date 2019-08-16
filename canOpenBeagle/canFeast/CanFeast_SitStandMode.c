@@ -16,6 +16,7 @@
 #endif
 //String Length for defining fixed sized char array
 #define STRING_LENGTH 50
+#define MAX_RECONNECTS 10
 //Base for int to str conversion
 #define DECIMAL 10
 //Exo skeleton user buttons
@@ -207,7 +208,7 @@ void sitStand(int state){
 
         //If target position is reached, then increment sitstate and set movestate to 0.
         if(sitstate<10 && movestate==1){
-            if(checkPos(sitStandArrayHip[sitstate+1], sitStandArrayKnee[sitstate+1])==1){
+            if(checkPos(&socket,sitStandArrayHip[sitstate+1], sitStandArrayKnee[sitstate+1])==1){
                 printf("Position reached.\n");
                 sitstate++;
                 movestate=0;
@@ -226,7 +227,7 @@ void sitStand(int state){
 
         //If target position is reached, then decrease sitstate and set movestate to 0.
         if(sitstate>0 && movestate==1){
-            if(checkPos(sitStandArrayHip[sitstate-1], sitStandArrayKnee[sitstate-1])==1){
+            if(checkPos(&socket,sitStandArrayHip[sitstate-1], sitStandArrayKnee[sitstate-1])==1){
                 printf("Position reached.\n");
                 sitstate--;
                 movestate=0;
@@ -558,10 +559,10 @@ int checkPos(int *canSocket, long hipTarget, long kneeTarget){
     //The positions could be polled and stored earlier for more readable code. But getpos uses canfeast which has overhead.
     //Since C support short circuit evaluation, using getPos in if statement is more efficient.
     char junk[STRING_LENGTH];
-    if(getPos(LHIP, junk) > (hipTarget-POSCLEARANCE) && getPos(LHIP, junk) < (hipTarget+POSCLEARANCE) &&
-       getPos(RHIP, junk) > (hipTarget-POSCLEARANCE) && getPos(RHIP, junk) < (hipTarget+POSCLEARANCE)){
-        if(getPos(LKNEE, junk) > (kneeTarget-POSCLEARANCE) && getPos(LKNEE, junk) < (kneeTarget+POSCLEARANCE) &&
-           getPos(RKNEE, junk) > (kneeTarget-POSCLEARANCE) && getPos(RKNEE, junk) < (kneeTarget+POSCLEARANCE)) {
+    if(getPos(canSocket,LHIP, junk) > (hipTarget-POSCLEARANCE) && getPos(canSocket,LHIP, junk) < (hipTarget+POSCLEARANCE) &&
+       getPos(canSocket,RHIP, junk) > (hipTarget-POSCLEARANCE) && getPos(canSocket,RHIP, junk) < (hipTarget+POSCLEARANCE)){
+        if(getPos(canSocket,LKNEE, junk) > (kneeTarget-POSCLEARANCE) && getPos(canSocket,LKNEE, junk) < (kneeTarget+POSCLEARANCE) &&
+           getPos(canSocket,RKNEE, junk) > (kneeTarget-POSCLEARANCE) && getPos(canSocket,RKNEE, junk) < (kneeTarget+POSCLEARANCE)) {
             return 1;
         }
         return 0;
