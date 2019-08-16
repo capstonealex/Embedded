@@ -46,8 +46,8 @@
 #define HIP_MOTOR_DEG2 180
 //standing or sitting state
 //Arbitrarily using 1 and 2 here. The actual sitstate is automatically calculated in sitStand()
-#define STANDING 1
-#define SITTING 2
+#define STANDING 111
+#define SITTING 222
 
 /*
  Most functions defined here use canReturnMessage as a pass-by-reference string.
@@ -392,7 +392,7 @@ void canFeast(int *canSocket, char *command, char *canReturnMessage) {
         close(*canSocket);
         exit(EXIT_FAILURE);
     }
-    printf("%s", buf);
+    //printf("%s", buf);
     strcpy(canReturnMessage,buf);
 
 }
