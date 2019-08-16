@@ -95,7 +95,16 @@ void calcAB(long y1, long x1, long y2, long x2, double *A, double *B);
 
 int main (){
     printf("Welcome to CANfeast!\n");
-    sitStand(SITTING);
+    //sitStand(SITTING);
+    int socket;
+    canFeastUp(&socket);
+    char junk[STRING_LENGTH];
+    long pos1;
+    for(int i=0; i<1000; i++){
+        pos1 = getPos(&socket, LKNEE, junk);
+    }
+    printf("Position: %ld\n",pos1);
+    canFeastDown(&socket);
     return 0;
 }
 
@@ -243,7 +252,6 @@ void sitStand(int state){
             break;
         }
     }
-    canFeastDown(&socket);
 }
 
 //Used to read button status. Returns 1 if button is pressed
@@ -392,7 +400,7 @@ void canFeast(int *canSocket, char *command, char *canReturnMessage) {
         close(*canSocket);
         exit(EXIT_FAILURE);
     }
-    printf("%s", buf);
+    //printf("%s", buf);
     strcpy(canReturnMessage,buf);
 
 }
