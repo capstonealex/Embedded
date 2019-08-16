@@ -123,12 +123,10 @@ void canFeastErrorHandler(int *canSocket, char *command, char *canReturnMessage)
         //recreate socket
         canFeastUp(canSocket);
         // try to send again
-        canFeast( canSocket, command, canReturnMessage);
-        exit(EXIT_FAILURE);
+        canFeastErrorHandler( canSocket, command, canReturnMessage);
     }
     printf("%s", buf);
     strcpy(canReturnMessage,buf);
-
 }
 
 void canFeastDown(int *canSocket) {

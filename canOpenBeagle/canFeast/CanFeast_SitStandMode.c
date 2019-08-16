@@ -243,6 +243,7 @@ void sitStand(int state){
             break;
         }
     }
+    canFeastDown(&socket)
 }
 
 //Used to read button status. Returns 1 if button is pressed
