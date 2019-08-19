@@ -13,4 +13,5 @@ nav:
     - CANbus: canbus.md
     - CANopen: canopen.md
     - CANopen Hardware: canopenHardware.md
+    - RnD Trajectory Test: rnd_test.md
   # - About: about.md
