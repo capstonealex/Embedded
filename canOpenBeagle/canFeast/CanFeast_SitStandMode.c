@@ -110,39 +110,6 @@ void sitStand(int state)
     //smallest index is standing
     //IMPORTANT: Update state arg passed to sitstand() from main.
 
-/*     //onyl knee
-    double sitStandArrHip_degrees[] = {
-        99.602,
-        99.602,
-        99.602,
-        99.602,
-        99.602,
-        99.602,
-        99.602,
-        99.602,
-        99.602,
-        99.602,
-        99.602
-
-
-    };
-    double sitStandArrKnee_degrees[] = {
-        25.609,
-        27.736,
-        38.469,
-        57.179,
-        77.553,
-        92.420,
-        98.357,
-        97.044,
-        92.634,
-        89.229,
-        88.464
-
-
-    }; */
-
-    //Test 10-5
     double sitStandArrHip_degrees[] = {
         167.600,
         165.973,
@@ -155,8 +122,6 @@ void sitStand(int state)
         99.057,
         99.448,
         99.602
-
-
     };
     double sitStandArrKnee_degrees[] = {
         25.609,
@@ -170,66 +135,7 @@ void sitStand(int state)
         92.634,
         89.229,
         88.464
-
-
     };
-
-/*     //Test 30-25
-    double sitStandArrHip_degrees[] = {
-        180.000,
-        177.624,
-        165.488,
-        143.861,
-        119.234,
-        99.133,
-        87.247,
-        82.567,
-        82.206,
-        83.075,
-        83.358
-    };
-    double sitStandArrKnee_degrees[] = {
-        0.000,
-        2.956,
-        17.914,
-        44.113,
-        72.923,
-        94.504,
-        100.133,
-        100.917,
-        99.171,
-        95.206,
-        94.292
-    };
-
-    //Test 25-20
-    double sitStandArrHip_degrees[] = {
-        180.000,
-        177.780,
-        166.435,
-        146.194,
-        123.091,
-        104.133,
-        92.759,
-        88.071,
-        87.462,
-        88.123,
-        88.358
-
-    };
-    double sitStandArrKnee_degrees[] = {
-        0.000,
-        2.956,
-        17.914,
-        44.113,
-        72.923,
-        94.504,
-        100.133,
-        100.917,
-        99.171,
-        95.206,
-        94.292
-    }; */
 
     int arrSize = sizeof(sitStandArrHip_degrees) / sizeof(sitStandArrHip_degrees[0]);
     //These arrays store the converted values of joint. These can be sent to the motor.
@@ -278,7 +184,7 @@ void sitStand(int state)
     //Use to maintain states.
     //sitstate goes from 0 to 10, indicating the 11 indices of the sitstandArrays
     //sitstate is obtained as argument to this function.
-    //movestate is 1 if moving, else 0
+    //movestate can be STATEIMMOBILE, STATESITTING or STATESTANDING
     int movestate = STATEIMMOBILE;
 
     //Used to check if button is pressed.
