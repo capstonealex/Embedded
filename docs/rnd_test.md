@@ -17,7 +17,7 @@
 6. Power on the X2 with both hips and knees fully flexed backwards. Keep holding the joints back for a few seconds before releasing. This sets the zero at the back joint limits. 
 7. Got the Putty terminal, change to your working directory.
 8. Run `sudo chmod a+x <filename>`. Password is `temppwd`. Do this for the 2 script files (.sh). (EOL error explanation.). Only needed for 1st time when downloaded from github.
-9. Run `./InitHardware.sh`. From home folder. Restart BBB this script has issues. 
+9. Run `./InitHardware.sh`. From home folder. Restart BBB this script has issues. Let this run in the background. 
 10. Open another terminal on Putty and connect to the BBB.
 11. Raise the X2 fully off the ground and run `./homeCalibration.sh`. The joints will move to home position, which is fully straight. 
 12. At this point, the system is read to go. Programs can now be run on it. CANfeast_tra has a frame work for testing. It contains an array with positions. Modify with new trajectories. Copy this file onto the working folder. Program logic and buttons. Proram initialise with seated or sitting. sitting is largest array index. 
