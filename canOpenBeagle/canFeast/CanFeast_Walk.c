@@ -138,7 +138,7 @@ void sitStand(int *socket, int initState)
 
     //Array of trajectory points from R&D team
     //smallest index is standing
-    //IMPORTANT: Update state arg passed to sitstand() from main.
+    //IMPORTANT: Update initState arg passed to sitstand() from main.
 
     double sitStandArrHip_degrees[] = {
             171.59,
@@ -177,6 +177,7 @@ void sitStand(int *socket, int initState)
     motorPosArrayConverter(sitStandArrKnee_degrees, sitStandArrayKnee, arrSize, LKNEE);
 
     //The sitstate value should be 1 position outside array index (ie -1 or 11 for a 11 item array).
+    //This is required since 1st iteration of statemachine goes to array index sitstate+1 or sitstate-1
     int sitstate = 1;
     if (initState == SITTING)
         sitstate = arrSize;
@@ -184,8 +185,7 @@ void sitStand(int *socket, int initState)
         sitstate = -1;
 
     //Use to maintain states.
-    //sitstate goes from 0 to 10, indicating the 11 indices of the sitstandArrays
-    //sitstate is obtained as argument to this function.
+    //sitstate goes from 0 to arrsize-1, indicating the indices of the sitstandArrays
     //movestate can be STATEIMMOBILE, STATESITTING or STATESTANDING
     int movestate = STATEIMMOBILE;
 
@@ -196,7 +196,8 @@ void sitStand(int *socket, int initState)
     int button4Status = 0;
 
     //Statemachine loop.
-    //Exits when button 3 is pressed.
+    //Kill motor and end program when button 3 is pressed.
+    //Button 4 exits state machine
     //Button 1 sits more, button 2 stands more.
     while (1)
     {
@@ -256,30 +257,29 @@ void sitStand(int *socket, int initState)
         }
 
         //if button 3 pressed, then set to preop and exit.
-        if (button3Status == 1 && )
+        if (button3Status == 1)
         {
             stopExo(socket);
             canFeastDown(socket);
             exit(EXIT_SUCCESS);
         }
 
-        if (button4Status == 1 && ((array end && initState)||(array beginning && initState)))
+        //Exit statemachine only if button 4 pressed and gone from sitting to standing or vice versa.
+        if (button4Status == 1 && ((sitstate==arrSize-1 && initState==STANDING)||(sitstate==0 && initState==SITTING)))
         {
             break;
         }
     }
 }
 
+
+//Walking state machine
 void walkMode(int *socket){
 
     //Used to store the canReturnMessage. Not used currently, hence called junk.
-    //Should pass this to calling function for possible error handling.
     char junk[STRING_LENGTH];
 
     //Array of trajectory points from R&D team
-    //smallest index is standing
-    //IMPORTANT: Update state arg passed to sitstand() from main.
-
     double walkArrLHip_degrees[] = {
             171.59,
             170.89,
@@ -427,22 +427,24 @@ void walkMode(int *socket){
     motorPosArrayConverter(walkArrRHip_degrees, walkArrRHip, arrSize, RHIP);
     motorPosArrayConverter(walkArrRKnee_degrees, walkArrRKnee, arrSize, RKNEE);
 
-    //The sitstate value should be 1 position outside array index (ie -1 or 11 for a 11 item array).
-    int sitstate = -1;
+    //The walkstate value should be 1 position outside array index (ie -1 or 11 for a 11 item array).
+    //This is required because the 1st iteration of statemachine goes to array position walkstate+1
+    int walkstate = -1;
 
     //Use to maintain states.
-    //sitstate goes from 0 to 10, indicating the 11 indices of the sitstandArrays
-    //sitstate is obtained as argument to this function.
-    //movestate can be STATEIMMOBILE, STATESITTING or STATESTANDING
+    //walkstate can be STATEIMMOBILE, WALKINGFORWARD or WALKINGBACK
     int movestate = STATEIMMOBILE;
 
     //Used to check if button is pressed.
     int button1Status = 0;
     int button2Status = 0;
     int button3Status = 0;
+    int button4Status = 0;
+    
 
     //Statemachine loop.
-    //Exits when button 3 is pressed.
+    //Kill motor and program when button 3 is pressed.
+    //Exits state machine when button 4 pressed
     //Button 1 sits more, button 2 stands more.
     while (1)
     {
@@ -451,58 +453,66 @@ void walkMode(int *socket){
         button1Status = getButton(socket, BUTTON_ONE, junk);
         button2Status = getButton(socket, BUTTON_TWO, junk);
         button3Status = getButton(socket, BUTTON_THREE, junk);
+        button4Status = getButton(socket, BUTTON_FOUR, junk);
 
         //Button has to be pressed & Exo not moving & array not at end. If true, execute move.
-        if (button1Status == 1 && movestate == STATEIMMOBILE && sitstate < (arrSize - 1))
+        if (button1Status == 1 && movestate == STATEIMMOBILE && walkstate < (arrSize - 1))
         {
             movestate = WALKINGFORWARD;
             printf("Walking forward\n");
-            setAbsPosSmart(socket, LHIP, walkArrLHip[sitstate + 1], junk);
-            setAbsPosSmart(socket, LKNEE, walkArrLKnee[sitstate + 1], junk);
-            setAbsPosSmart(socket, RHIP, walkArrRHip[sitstate + 1], junk);
-            setAbsPosSmart(socket, RKNEE, walkArrRKnee[sitstate + 1], junk);
+            setAbsPosSmart(socket, LHIP, walkArrLHip[walkstate + 1], junk);
+            setAbsPosSmart(socket, LKNEE, walkArrLKnee[walkstate + 1], junk);
+            setAbsPosSmart(socket, RHIP, walkArrRHip[walkstate + 1], junk);
+            setAbsPosSmart(socket, RKNEE, walkArrRKnee[walkstate + 1], junk);
         }
 
-        //If target position is reached, then increment sitstate and set movestate to 0.
-        if (sitstate < (arrSize-1) && movestate == WALKINGFORWARD)
+        //If target position is reached, then increment walkstate and set movestate to 0.
+        if (walkstate < (arrSize-1) && movestate == WALKINGFORWARD)
         {
-            if (checkPos(socket, walkArrLHip[sitstate + 1], walkArrLKnee[sitstate + 1], walkArrRHip[sitstate + 1], walkArrRKnee[sitstate + 1]) == 1)
+            if (checkPos(socket, walkArrLHip[walkstate + 1], walkArrLKnee[walkstate + 1], walkArrRHip[walkstate + 1], walkArrRKnee[walkstate + 1]) == 1)
             {
                 printf("Position reached.\n");
-                sitstate++;
-                if(sitstate==arrSize)
+                walkstate++;
+                if(walkstate==arrSize)
                     printf("first position\n");
                 movestate = STATEIMMOBILE;
             }
         }
 
         //Button has to be pressed & Exo not moving & array not at end. If true, execute move.
-        if (button2Status == 1 && movestate == STATEIMMOBILE && sitstate > 0)
+        if (button2Status == 1 && movestate == STATEIMMOBILE && walkstate > 0)
         {
             movestate = WALKINGBACK;
             printf("Walking backward\n");
-            setAbsPosSmart(socket, LHIP, walkArrLHip[sitstate - 1], junk);
-            setAbsPosSmart(socket, LKNEE, walkArrLKnee[sitstate - 1], junk);
-            setAbsPosSmart(socket, RHIP, walkArrRHip[sitstate - 1], junk);
-            setAbsPosSmart(socket, RKNEE, walkArrRKnee[sitstate - 1], junk);
+            setAbsPosSmart(socket, LHIP, walkArrLHip[walkstate - 1], junk);
+            setAbsPosSmart(socket, LKNEE, walkArrLKnee[walkstate - 1], junk);
+            setAbsPosSmart(socket, RHIP, walkArrRHip[walkstate - 1], junk);
+            setAbsPosSmart(socket, RKNEE, walkArrRKnee[walkstate - 1], junk);
         }
 
-        //If target position is reached, then decrease sitstate and set movestate to 0.
-        if (sitstate > 0 && movestate == WALKINGBACK)
+        //If target position is reached, then decrease walkstate and set movestate to 0.
+        if (walkstate > 0 && movestate == WALKINGBACK)
         {
-            if (checkPos(socket, walkArrLHip[sitstate - 1], walkArrLKnee[sitstate - 1], walkArrRHip[sitstate - 1], walkArrRKnee[sitstate - 1]) == 1)
+            if (checkPos(socket, walkArrLHip[walkstate - 1], walkArrLKnee[walkstate - 1], walkArrRHip[walkstate - 1], walkArrRKnee[walkstate - 1]) == 1)
             {
                 printf("Position reached.\n");
-                sitstate--;
-                if(sitstate==0)
+                walkstate--;
+                if(walkstate==0)
                     printf("final position\n");
                 movestate = STATEIMMOBILE;
             }
         }
 
-        //if button 3 pressed, then set to preop and exit.
+        //if button 3 pressed, then set to preop and exit program.
         if (button3Status == 1)
         {
+            stopExo(socket);
+            canFeastDown(socket);
+            exit(EXIT_SUCCESS);
+        }
+
+        //Only exit state machine if button 4 pressed and at end of walking array. 
+        if(button4Status==1 && walkstate==(arrSize-1)){
             break;
         }
     }
