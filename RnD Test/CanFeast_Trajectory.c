@@ -215,7 +215,7 @@ void sitStand(int state)
         }
 
         //If target position is reached, then increment sitstate and set movestate to 0.
-        if (sitstate < 10 && movestate == STATESITTING)
+        if (sitstate < (arrSize - 1) && movestate == STATESITTING)
         {
             if (checkPos(&socket, sitStandArrayHip[sitstate + 1], sitStandArrayKnee[sitstate + 1]) == 1)
             {
@@ -250,10 +250,10 @@ void sitStand(int state)
         //if button 3 pressed, then set to preop and exit.
         if (button3Status == 1)
         {
-            preop(&socket, 1);
-            preop(&socket, 2);
-            preop(&socket, 3);
-            preop(&socket, 4);
+            preop(&socket, LHIP);
+            preop(&socket, LKNEE);
+            preop(&socket, RHIP);
+            preop(&socket, RKNEE);
             break;
         }
     }
