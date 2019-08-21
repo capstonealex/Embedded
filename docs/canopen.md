@@ -13,11 +13,15 @@
 
 6.	2nd terminal: Navigate to canopend folder.  
       ```
+      cd CANopenSocket/canopend
+      make
       app/canopend can1 -i 100 -c ""
       ```
 
       The 100
        in the above line is the master node ID. Using 0 here throws an error. For now, use a large unused ID.
+       
+       Note: the "make" step is only required for 1st run.
 
 8.	3rd terminal: navigate to canopencomm folder
    
@@ -27,7 +31,7 @@
       ./canopencomm –help
       ```
       
-      Note: the "make" step is only required once.
+      Note: the "make" step is only required for 1st run.
 
 9. Following can be used to set the heartbeat 1 every 5000ms. The 1st 6 is the node ID: `./canopencomm [1] 6 write 0x1017 0 i16 5000`
 
