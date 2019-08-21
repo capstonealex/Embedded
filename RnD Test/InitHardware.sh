@@ -19,5 +19,5 @@ sudo ifconfig can1 up
 #Setting up slave nodes
 cd /home/debian/CANopenSocket/canopend
 
-#Setting up master node
+#Setting up master node at 100
 app/canopend can1 -i 100 -c ""

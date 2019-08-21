@@ -136,6 +136,8 @@ echo "current right knee value"
 echo "current right hip value"
 ./canopencomm [1] 3 read 0x6063 0 i32
 
+#Setting motors to preop
+echo "Motors to preop"
 ./canopencomm 1 preop
 ./canopencomm 2 preop
 ./canopencomm 3 preop
