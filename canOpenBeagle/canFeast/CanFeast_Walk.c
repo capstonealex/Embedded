@@ -63,7 +63,7 @@
  */
 
 //State machine with sit-stand logic
-void sitStand(int *socket, int state);
+void sitStand(int *socket, int initState);
 //For sending socket commands
 void canFeastUp(int *canSocket);
 void canFeast(int *canSocket, char *command, char *canReturnMessage);
@@ -110,6 +110,8 @@ int main()
     int socket;
     char junk[STRING_LENGTH];
 
+    canFeastUp(&socket);
+
     while (getButton(&socket, BUTTON_FOUR, junk) == 0)
     {
         printf("LHIP: %ld, LKNEE: %ld, RHIP: %ld, RKNEE: %ld\n", getPos(&socket, LHIP, junk), getPos(&socket, LKNEE, junk), getPos(&socket, RHIP, junk), getPos(&socket, RKNEE, junk));
@@ -121,11 +123,13 @@ int main()
     sitStand(&socket, STANDING);
     stopExo(&socket);
 
+    canFeastDown(&socket);
+
     return 0;
 }
 
 //State machine with sit-stand logic
-void sitStand(int *socket, int state)
+void sitStand(int *socket, int initState)
 {
 
     //Used to store the canReturnMessage. Not used currently, hence called junk.
@@ -174,9 +178,9 @@ void sitStand(int *socket, int state)
 
     //The sitstate value should be 1 position outside array index (ie -1 or 11 for a 11 item array).
     int sitstate = 1;
-    if (state == SITTING)
+    if (initState == SITTING)
         sitstate = arrSize;
-    if (state == STANDING)
+    if (initState == STANDING)
         sitstate = -1;
 
     //Use to maintain states.
@@ -189,6 +193,7 @@ void sitStand(int *socket, int state)
     int button1Status = 0;
     int button2Status = 0;
     int button3Status = 0;
+    int button4Status = 0;
 
     //Statemachine loop.
     //Exits when button 3 is pressed.
@@ -200,6 +205,7 @@ void sitStand(int *socket, int state)
         button1Status = getButton(socket, BUTTON_ONE, junk);
         button2Status = getButton(socket, BUTTON_TWO, junk);
         button3Status = getButton(socket, BUTTON_THREE, junk);
+        button4Status = getButton(socket, BUTTON_FOUR, junk);
 
         //Button has to be pressed & Exo not moving & array not at end. If true, execute move.
         if (button1Status == 1 && movestate == STATEIMMOBILE && sitstate < (arrSize - 1))
@@ -213,7 +219,7 @@ void sitStand(int *socket, int state)
         }
 
         //If target position is reached, then increment sitstate and set movestate to 0.
-        if (sitstate < (arrSize-1)) && movestate == STATESITTING)
+        if (sitstate < (arrSize-1) && movestate == STATESITTING)
         {
             if (checkPos(socket, sitStandArrayHip[sitstate + 1], sitStandArrayKnee[sitstate + 1], sitStandArrayHip[sitstate + 1], sitStandArrayKnee[sitstate + 1]) == 1)
             {
@@ -250,7 +256,14 @@ void sitStand(int *socket, int state)
         }
 
         //if button 3 pressed, then set to preop and exit.
-        if (button3Status == 1)
+        if (button3Status == 1 && )
+        {
+            stopExo(socket);
+            canFeastDown(socket);
+            exit(EXIT_SUCCESS);
+        }
+
+        if (button4Status == 1 && ((array end && initState)||(array beginning && initState)))
         {
             break;
         }
@@ -451,7 +464,7 @@ void walkMode(int *socket){
         }
 
         //If target position is reached, then increment sitstate and set movestate to 0.
-        if (sitstate < (arrSize-1)) && movestate == WALKINGFORWARD)
+        if (sitstate < (arrSize-1) && movestate == WALKINGFORWARD)
         {
             if (checkPos(socket, walkArrLHip[sitstate + 1], walkArrLKnee[sitstate + 1], walkArrRHip[sitstate + 1], walkArrRKnee[sitstate + 1]) == 1)
             {
@@ -609,6 +622,8 @@ void canFeastUp(int *canSocket)
     struct sockaddr_un addr;
 
     *canSocket = socket(AF_UNIX, SOCK_STREAM, 0);
+    printf("Socket: %d\n",*canSocket);
+
     if (*canSocket == -1)
     {
         perror("Socket creation failed");
@@ -924,7 +939,6 @@ void calcAB(long y1, long x1, long y2, long x2, double *A, double *B)
 }
 
 void initExo(int *socket){
-    canFeastUp(socket);
 
     //Initialise 4 joints
     initMotorPos(socket, LHIP);
@@ -949,5 +963,4 @@ void stopExo(int *socket){
     preop(socket, LKNEE);
     preop(socket, RHIP);
     preop(socket, RKNEE);
-    canFeastDown(socket);
 }
