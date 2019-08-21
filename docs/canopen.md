@@ -15,6 +15,7 @@
       ```
       cd CANopenSocket/canopend
       make
+      app/canopend -help
       app/canopend can1 -i 100 -c ""
       ```
 
