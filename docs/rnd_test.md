@@ -1,5 +1,16 @@
 # Procedure for Testing Trajectories on BBB
 
+## Startup Sequence
+This is summary of the startup procedure. Following this out of sequence may cause SDO timeouts. For more details on each step, read the sections below. 
+
+1. Power on X2 with joints fully bent back.
+2. Connect ethernet cable to BBB cape CAN pins. 
+3. Power on BBB (connect USB cable to PC).
+4. Run `./InitHardware.sh` on terminal 1.
+5. Run `./homeCalibration.sh` on terminal 2.
+6. Copy the required c program to working folder in BBB and compile using `gcc <filename>.c -Wall`.
+7. Control X2 using handheld buttons. 
+
 ## Initial Setup
 1. The files you require for testing are stored in the `RnD_Trajectory_Test` branch of Embedded Github, under [RnD Test Folder](https://github.com/capstonealex/Embedded/tree/RnD_Trajectory_Test/RnD%20Test). The files you need are `InitHardware.sh`, `homeCalibration.sh`, and `CanFeast_Trajectory.c`. Clone this branch to your PC.
 2. Use the BBB with number 1 written on the ethernet port for your tests. 
@@ -50,3 +61,8 @@
 2. Switch off the X2 using the green button on the back.
 3. Switch off BBB with small black button near the ethernet port.
 4. Disconnect the cables. 
+
+## Troubleshooting
+
+### Tracking Error (Knee Motor Disable)
+If you exceed the motor torque on the knees, they may go to a tracking fault state. To fix this, first exit the program using button 3 (yellow). To unlatch this fault, run the `./resetTrackingError.sh`. This script is stored in the [RnD Test Folder](https://github.com/capstonealex/Embedded/tree/RnD_Trajectory_Test/RnD%20Test). 
