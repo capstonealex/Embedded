@@ -131,7 +131,7 @@ int main()
 //State machine with sit-stand logic
 void sitStand(int *socket, int initState)
 {
-
+    printf("Sit Stand Mode\n");
     //Used to store the canReturnMessage. Not used currently, hence called junk.
     //Should pass this to calling function for possible error handling.
     char junk[STRING_LENGTH];
@@ -226,8 +226,8 @@ void sitStand(int *socket, int initState)
             {
                 printf("Position reached.\n");
                 sitstate++;
-                if(sitstate==arrSize)
-                    printf("first position\n");
+                if(sitstate==(arrSize-1))
+                    printf("fully seated position\n");
                 movestate = STATEIMMOBILE;
             }
         }
@@ -251,7 +251,7 @@ void sitStand(int *socket, int initState)
                 printf("Position reached.\n");
                 sitstate--;
                 if(sitstate==0)
-                    printf("final position\n");
+                    printf("full standing position\n");
                 movestate = STATEIMMOBILE;
             }
         }
@@ -259,6 +259,7 @@ void sitStand(int *socket, int initState)
         //if button 3 pressed, then set to preop and exit.
         if (button3Status == 1)
         {
+            printf("Terminating Program (sitstand)\n");
             stopExo(socket);
             canFeastDown(socket);
             exit(EXIT_SUCCESS);
@@ -275,6 +276,8 @@ void sitStand(int *socket, int initState)
 
 //Walking state machine
 void walkMode(int *socket){
+
+    printf("Walk Mode\n");
 
     //Used to store the canReturnMessage. Not used currently, hence called junk.
     char junk[STRING_LENGTH];
@@ -473,8 +476,8 @@ void walkMode(int *socket){
             {
                 printf("Position reached.\n");
                 walkstate++;
-                if(walkstate==arrSize)
-                    printf("first position\n");
+                if(walkstate==(arrSize-1))
+                    printf("final array position\n");
                 movestate = STATEIMMOBILE;
             }
         }
@@ -498,7 +501,7 @@ void walkMode(int *socket){
                 printf("Position reached.\n");
                 walkstate--;
                 if(walkstate==0)
-                    printf("final position\n");
+                    printf("first array position\n");
                 movestate = STATEIMMOBILE;
             }
         }
@@ -506,6 +509,7 @@ void walkMode(int *socket){
         //if button 3 pressed, then set to preop and exit program.
         if (button3Status == 1)
         {
+            printf("Terminating Program (walk mode)\n");
             stopExo(socket);
             canFeastDown(socket);
             exit(EXIT_SUCCESS);

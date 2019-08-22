@@ -215,7 +215,7 @@ void sitStand(int state)
         }
 
         //If target position is reached, then increment sitstate and set movestate to 0.
-        if (sitstate < (arrSize-1)) && movestate == STATESITTING)
+        if (sitstate < (arrSize-1) && movestate == STATESITTING)
         {
             if (checkPos(&socket, sitStandArrayHip[sitstate + 1], sitStandArrayKnee[sitstate + 1]) == 1)
             {
