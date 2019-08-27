@@ -19,7 +19,7 @@ Joint::Joint(float q_init, int ID){
 }
 void Joint::applyPos(float q){
     // std::lock_guard <std::mutex> lockGuard(std::mutex);
-    std::unique_lock l(mutex_);
+//    std::unique_lock lock(mutex_);
     //Safety checks.
     // Is joint where we think it is? or within safe range of it?
     // are we trying to move to a pos within the joints limits?
@@ -44,7 +44,7 @@ int  Joint::getId()
     return id;
 }
 float Joint::getPos(){
-    std::shared_lock l(mutex_);
+//    std::shared_lock l(mutex_);
 //    std::lock_guard <std::mutex> lockGuard(std::mutex);
     return q;
 }
