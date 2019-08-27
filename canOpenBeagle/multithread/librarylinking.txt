@@ -1,0 +1,26 @@
+1. Create c file.c and file.h for library functions of interest
+2. Compile the .c file
+    gcc -c -Wall -Werror -fpic canFeast.c
+    fpic creates generates position independent code (PIC) for shared libraries. Object file.
+    Position Independent Code means that the generated machine code is not dependent on being located at a specific address in order to work.
+    -> this creates canFeast.o
+3. Create shared object library
+     gcc -shared -o libcanFeast.so canFeast.o
+     -> created a shared libary libcanFeast.so
+     -> can be dynamically linked to new executables
+4. Call canFeast functions from you cpp file.
+    -> Must include extern argument
+    -> extern tells the C++ compiler that the functions
+     declared in the header file are C functions.
+    extern "C" {
+    #include "canFeast.c"
+    }
+5. Compiler you cpp file
+     g++ -o foo foo.cpp -L. -lcanFeast
+     -L.<directory of library>, just L. for same
+     -l<name of library file minus the lib at start and .so>
+     e.g. lcanFeast for libcanFeast.so
+
+Linking canFeast to pollTest
+     g++ -std=c++17 -o poll pollTest.cpp -L. -lcanFeast
+
