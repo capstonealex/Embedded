@@ -152,8 +152,6 @@ void sitStand(int state)
         sitstate = arrSize;
     if (state == STANDING)
         sitstate = -1;
-
-    // Sta
     // Set up socket to canOpend
     int socket;
     canFeastUp(&socket);

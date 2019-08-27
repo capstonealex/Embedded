@@ -51,3 +51,6 @@ float Joint::getPos(){
 void Joint::printInfo(){
     cout<<"Joint id number "<<id<<" @ pos "<<q<<"\n";
 }
+void Joint::posCallBack(float qReal){
+    q = qReal;
+}

@@ -29,6 +29,8 @@ public:
     void applyPos(float q);
     float getPos();
     void printInfo();
+    //callback functions for this devices canDevice object
+    void posCallBack(float qReal); // Mainatain real world position in joint object
 };
 
 
