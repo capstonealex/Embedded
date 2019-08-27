@@ -17,7 +17,7 @@ class Joint {
     float q, qd;
     float maxq, minq;
     void setPos(float qd);
-    mutable std::shared_mutex mutex_;
+//    mutable std::shared_mutex mutex_;
     //Will: Add other vars after initial test implimentation up and running
     // qd, qdd,T, mode. limts, Transformation, Reduction Ratio(CONST)
     // Candev* copley;// pointer to this joints asssiated candevice (COPLEY DRIVER)
