@@ -27,8 +27,8 @@ int main() {
     initexo(X2);
     int readCounts = 1000;
     cout<<"Input the positions to send to joints 1 to 4"<<"\n";
-    std::thread readT (readThread,std::ref(X2), readCounts);
-    std::thread criticalT (criticalThreadTest,std::ref(X2));
+    std::thread readT (readThread,ref(X2), readCounts);
+    std::thread criticalT (criticalThreadTest,ref(X2));
     std::cout << "main, critical and read thread now execute concurrently...\n";
 
     readT.join();                // pauses until first finishes
