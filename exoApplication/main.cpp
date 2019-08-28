@@ -19,12 +19,13 @@ int main() {
     std::string messageSent = "[1] 4 read 0x1017 0 i16";
     std::string messageRecieved;
     X2.canFeastUp(&socket);
+    int n = 0;
     while(n<100) {
         X2.canFeast(&socket, messageSent, messageRecieved);
         n++;
     }
     cout<< messageRecieved;
-    X2.canFeastDown(&socket)
+    X2.canFeastDown(&socket);
 
     return 0;
 }

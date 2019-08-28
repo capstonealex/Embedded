@@ -10,16 +10,17 @@
 class Robot {
 private:
     enum{ NUM_JOINTS = 4};
-    //For sending socket commands
-    void canFeastUp(int *canSocket);
-    void canFeast(int *canSocket, char *command, char *canReturnMessage);
-    void canFeastDown(int *canSocket);
-//    void canFeastErrorHandler(int *canSocket, char *command, char *canReturnMessage);
+
 
 public:
     Robot();
     Joint joints[NUM_JOINTS];
     void printInfo();
+    //For sending socket commands
+    void canFeastUp(int *canSocket);
+    void canFeast(int *canSocket, char *command, char *canReturnMessage);
+    void canFeastDown(int *canSocket);
+//    void canFeastErrorHandler(int *canSocket, char *command, char *canReturnMessage);
     // CanDevice** canDev[]l;
     //canFeasat constants
     const int BUF_SIZE =100000;
@@ -36,8 +37,6 @@ public:
     const int LKNEE=2;
     const int RHIP =3;
     const int RKNEE= 4;
-
-
 };
 
 
