@@ -2,7 +2,7 @@
 // Created by William Campbell on 2019-08-08.
 //
 
-#include "CanDevice.h"
+#include "../../exoApplication/CanDevice.h"
 
 
 int main(){

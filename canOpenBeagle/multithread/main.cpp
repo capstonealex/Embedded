@@ -4,7 +4,7 @@
 //// ALEX EXOSKELETON MULTITHREAD ROBOTIC MAIN
 ////
 //// For mutex locking functions we have in place use C++17 standard.
-#include "Robot.h"
+#include "../../exoApplication/Robot.h"
 #include <thread>         // std::thread
 #include <fstream>      // fstream to write read values to
 /* Helper functions */

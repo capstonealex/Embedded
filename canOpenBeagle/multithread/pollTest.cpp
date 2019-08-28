@@ -5,7 +5,7 @@
 // Callback of response to robot joint objects
 //
 
-#include "Robot.h"
+#include "../../exoApplication/Robot.h"
 #include <thread>         // std::thread
 #include <fstream>      // fstream to write read values to
 
