@@ -56,6 +56,7 @@ void Robot::canFeastDown(int *canSocket)
     close(*canSocket);
     printf("socket close\n");
 }
+//// Sends message over a canSocket established connection
 void Robot::canFeast(int *canSocket, char *command, char *canReturnMessage)
 {
     int commandLength = strlen(command);
