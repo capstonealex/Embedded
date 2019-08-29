@@ -37,21 +37,31 @@ The debian packages compiled in this section can be found [here](https://drive.g
 
 - If you want to go back to the old kernel, edit the `/boot/uEnv.txt` file in the SD card debian image. Change the line `uname_r=<kernel>` to the appropriate kernel version. Then [flash](https://embeded.readthedocs.io/en/latest/bbb/#getting-and-flashing-bbb-images) the BBB with this image. Make sure you only use kernels that are installed on the system. You can check installed kernels by running `dpkg --list | grep linux-image`
 
+## Real-time Tests
+### Cyclic Test
+* Download the rt-test files from [https://mirrors.edge.kernel.org/pub/linux/utils/rt-tests/](https://mirrors.edge.kernel.org/pub/linux/utils/rt-tests/)
+* Extract them into a folder. 
+* Run `make all`. Run 'make NUMA=0' if you encounter errors with the former. 
+* `sudo ./cyclictest -p 80` while in the working folder will start the cyclic test. `-p 80` is for priority.
+* Run a cpu stress test at same time while benchmarking. Get debian package for stress from here [https://packages.debian.org/stretch/armhf/stress/download](https://packages.debian.org/stretch/armhf/stress/download). Copy to BBB and install using dpkg.
+* Follow instructions here http://zeuzoix.github.io/techeuphoria/posts/2015/04/21/benchmarking-rt-preempt-kernel-on-beaglebone-black/
+* More instructions here: [https://wiki.linuxfoundation.org/realtime/documentation/howto/tools/rt-tests](https://wiki.linuxfoundation.org/realtime/documentation/howto/tools/rt-tests) and [https://web.archive.org/web/20160716124520/https://rt.wiki.kernel.org/index.php/Cyclictest](https://web.archive.org/web/20160716124520/https://rt.wiki.kernel.org/index.php/Cyclictest) (accessed via wayback machine)
+
 ## Sources
 
-- Manual installation of kernel files (build_kernel.sh method) https://www.digikey.com/eewiki/display/linuxonarm/BeagleBone+Black#BeagleBoneBlack-InstallKernelandRootFileSystem
-- BBB Github wiki about kernel cross compilation https://github.com/beagleboard/linux/wiki
+- Manual installation of kernel files (build_kernel.sh method) [https://www.digikey.com/eewiki/display/linuxonarm/BeagleBone](https://www.digikey.com/eewiki/display/linuxonarm/BeagleBone)+Black#BeagleBoneBlack-InstallKernelandRootFileSystem
+- BBB Github wiki about kernel cross compilation [https://github.com/beagleboard/linux/wiki](https://github.com/beagleboard/linux/wiki)
 - [Robert Nelson's Repo](https://github.com/RobertCNelson/ti-linux-kernel-dev)
 
 # Developer Section
 
 There is an alternate script `build_kernel.sh` that can be used to make non-debian specific kernel files. In step 4 of the "Building Kernel" section, run this script instead to generate kernel files. In step 7, the deploy folder will contain `4.14.108-ti-rt-r103.zimage`, `4.14.108-ti-rt-r103-dtbs.tar.gz` and `4.14.108-ti-rt-r103-module.tar.gz` files. The file names will depend on the kernel version you checked out earlier. Now, follow the instructions below to install these kernel files.
 
-## Installing the kernel built with build_kernel.sh method
+### Installing the kernel built with build_kernel.sh method
 
 1. [Live boot](https://embeded.readthedocs.io/en/latest/bbb/#getting-and-flashing-bbb-images) the BBB using a functioning image on SD card.
 2. Copy the zimage and 2 tar.gz files from the deploy folder on to the BBB.
-   - The zimage should be placed in the `\boot\` folder and renamed to `vmlinuz-<kernel_version>`. Remove the `.zimage` extension from the file name. This can also be done via terminal: `sudo cp -v <kernel_version>.zImage /boot/vmlinuz-<kernel_version>`. Replace <kernel_version> with the compiled kernel version.
+   - The zimage should be placed in the `\boot\` folder and renamed to `vmlinuz-<kernel_version>`. Remove the `.zimage` extension from the file name. This can also be done via terminal: `sudo cp -v <kernel_version>.zImage /boot/vmlinuz-<kernel_version>`. Replace `<kernel_version>` with the compiled kernel version.
    - The device tree binaries files (dtbs) should be extracted and copied to `/boot/dtbs/` folder.
      `sudo mkdir -p /boot/dtbs/<kernel_version>/` followed by `sudo tar xfv <kernel_version>-dtbs.tar.gz -C /boot/dtbs/<kernel_version>/`
    - The kernel modules should be copied to `/` (i.e root) folder. `sudo tar xfv <kernel_version>-modules.tar.gz -C /`

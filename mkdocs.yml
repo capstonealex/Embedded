@@ -8,8 +8,11 @@ nav:
   - Eclipse w/ cross compliation: eclipse.md
   - Beagle Bone Black: bbb.md
   - Beagle Bone Kernel: kernel.md
+  - Calibrating X2: calibration.md
   # - Everthing below this is in-development components. Move completed sections above.
   - IN-DEVELOPMENT:
     - CANbus: canbus.md
     - CANopen: canopen.md
+    - CANopen Hardware: canopenHardware.md
+    - RnD Trajectory Test: rnd_test.md
   # - About: about.md
