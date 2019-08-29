@@ -37,7 +37,7 @@ This is summary of the startup procedure. Following this out of sequence may cau
 
       * If you get a bad interpreter error, this is due to End-of-Line character being different on Windos, Mac and Unix. Use a text editor like notepad++ to change this. On notepad++, this is `Edit > EOL Conversion > Unix (LF)`.
 
-4. Run `./InitHardware.sh`. This starts the communication with the X2. No more instructions are issued on this terminal. But make sure that this process is running (i.e. the terminal prompt doesn't show.) and does not terminate. Restart BBB and redo these steps if this process fails.  
+4. Run `./InitHardware.sh`. This starts the communication with the X2. No more instructions are issued on this terminal. But make sure that this process is running (i.e. the terminal prompt doesn't show.) and does not terminate. Check troubleshooting section below for fix if this socket fails/closes.  
 5. Open another terminal on Putty and connect to the BBB.
 6. Raise the X2 fully off the ground and run `./homeCalibration.sh`. The joints will move to home position, which is fully straight. 
       * The calibration step needs to be rerun if and only if the X2 is switched off.
@@ -64,5 +64,11 @@ This is summary of the startup procedure. Following this out of sequence may cau
 
 ## Troubleshooting
 
-### Tracking Error (Knee Motor Disable)
-If you exceed the motor torque on the knees, they may go to a tracking fault state. To fix this, first exit the program using button 3 (yellow). To unlatch this fault, run the `./resetTrackingError.sh`. This script is stored in the [RnD Test Folder](https://github.com/capstonealex/Embedded/tree/RnD_Trajectory_Test/RnD%20Test). 
+### Tracking Error (Motor Getting Disabled)
+If you exceed the motor torque on the joint, they may go to a tracking fault state. To fix this, first exit the program using button 3 (yellow). To unlatch this fault, run the `./resetTrackingError.sh`. This script is stored in the [RnD Test Folder](https://github.com/capstonealex/Embedded/tree/RnD_Trajectory_Test/RnD%20Test). 
+
+### Socket failure recovery
+If the `InitHardware` terminal script stops running. This means the socket between the main Robot application running canFeast failed, or some socket error occured. To fix this:
+1. In a terminal type: 'unlink /tmp/CO_command_socket'.
+2. Run `./InitHardware.sh`.
+3. Begin your application again.
