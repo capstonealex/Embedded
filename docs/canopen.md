@@ -94,7 +94,7 @@ Currently, an ethernet cable (accessible from outside) is connected to the exosk
 
 ## Socket failure recovery
 * If the socket between the main Robot application running canFeast fails, or any socket error occurs follow bellow.
-1. In a terminal type: 'unlink /tmp/CO_command_socket'.
+1. In a terminal type: `unlink /tmp/CO_command_socket`.
 2. End and restart canopend `app/canopend can1 -i 100 -c ""`.
 3. Begin your application again.
 
