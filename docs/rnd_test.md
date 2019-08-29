@@ -69,6 +69,7 @@ If you exceed the motor torque on the joint, they may go to a tracking fault sta
 
 ### Socket failure recovery
 If the `InitHardware` terminal script stops running. This means the socket between the main Robot application running canFeast failed, or some socket error occured. To fix this:
+
 1. In a terminal type: 'unlink /tmp/CO_command_socket'.
 2. Run `./InitHardware.sh`.
 3. Begin your application again.
