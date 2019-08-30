@@ -15,4 +15,5 @@ nav:
     - CANopen: canopen.md
     - CANopen Hardware: canopenHardware.md
     - RnD Trajectory Test: rnd_test.md
+    - Setting Up PDOs: PDOprotocol.md
   # - About: about.md
