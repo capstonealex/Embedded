@@ -23,18 +23,20 @@ public:
 
     // CanDevice** canDev[]l;
     //canFeasat constants
-    unsigned int  MAX_RECONNECTS =10;
-    unsigned int  DECIMAL =10;
+    const int BUF_SIZE =100000;
+    const int STRING_LENGTH =50;
+    const int MAX_RECONNECTS =10;
+    const int DECIMAL =10;
     // Exo user buttons
-    unsigned int  BUTTON_ONE =1;
-    unsigned int  BUTTON_TWO =2;
-    unsigned int  BUTTON_THREE= 3;
-    unsigned int  BUTTON_FOUR =4;
+    const int BUTTON_ONE =1;
+    const int BUTTON_TWO =2;
+    const int BUTTON_THREE= 3;
+    const int BUTTON_FOUR =4;
     //Node ID for the 4 joints
-    unsigned int  LHIP =1;
-    unsigned int  LKNEE=2;
-    unsigned int  RHIP =3;
-    unsigned int  RKNEE= 4;
+    const int LHIP =1;
+    const int LKNEE=2;
+    const int RHIP =3;
+    const int RKNEE= 4;
 
 
 };

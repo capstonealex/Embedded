@@ -3,7 +3,7 @@
 //
 
 #include "Joint.h"
-#include <stdlib.h>
+
 Joint::Joint(){
     //Default constructor - SHOULD THROW AN ERROR
     q = 0;
@@ -43,13 +43,10 @@ int  Joint::getId()
 {
     return id;
 }
-void Joint::getPos(int *canSocket){
+float Joint::getPos(){
 //    std::shared_lock l(mutex_);
-//    std::lock_guard <std::mutex> lockGuard(std::mutex)
-//    char qr[STRING_LENGTH];
-//    char messageSent[]= "[1] 100 read 0x1017 0 i16";
-//    copley.canFeast(socket, messageSent, qr);
-//    return atof(qr);
+//    std::lock_guard <std::mutex> lockGuard(std::mutex);
+    return q;
 }
 void Joint::printInfo(){
     cout<<"Joint id number "<<id<<" @ pos "<<q<<"\n";

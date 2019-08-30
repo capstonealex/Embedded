@@ -4,6 +4,7 @@
 ////
 //// For mutex locking functions we have in place use C++17 standard.
 #include "Robot.h"
+#include "Joint.h"
 
 /* Helper functions */
 void initexo(Robot& robot);
@@ -18,11 +19,10 @@ int main() {
     //Used to store the canReturnMessage. Not used currently, hence called junk.
     //Should pass this to calling function for possible error handling.
     char messageRecieved[STRING_LENGTH];
-    char messageSent[]= "[1] 100 read 0x1017 0 i16";
+    char messageSent[STRING_LENGTH]= "[1] 100 read 0x1017 0 i16";
     X2.canFeastUp(&socket);
     while(true) {
-//       X2.canFeast(&socket, messageSent, messageRecieved);
-        X2.joints[1].copley.canFeast(&socket, messageSent, messageRecieved);
+        X2.canFeast(&socket, messageSent, messageRecieved);
         cout<< (char *)messageRecieved;
         std::cin.ignore();
     }

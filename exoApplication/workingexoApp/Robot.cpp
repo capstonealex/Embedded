@@ -57,28 +57,28 @@ void Robot::canFeastDown(int *canSocket)
     printf("socket close\n");
 }
 //// Sends message over a canSocket established connection
-//void Robot::canFeast(int *canSocket, char *command, char *canReturnMessage)
-//{
-//    int commandLength = strlen(command);
-//    size_t n;
-//    char buf[BUF_SIZE];
-//
-//    if (write(*canSocket, command, commandLength) != commandLength)
-//    {
-//        perror("Socket write failed");
-//        exit(EXIT_FAILURE);
-//    }
-//
-//    n = read(*canSocket, buf, sizeof(buf));
-//    if (n == -1)
-//    {
-//        perror("Socket read failed");
-//        close(*canSocket);
-//        exit(EXIT_FAILURE);
-//    }
-//    //printf("%s", buf);
-//    strcpy(canReturnMessage, buf);
-//}
+void Robot::canFeast(int *canSocket, char *command, char *canReturnMessage)
+{
+    int commandLength = strlen(command);
+    size_t n;
+    char buf[BUF_SIZE];
+
+    if (write(*canSocket, command, commandLength) != commandLength)
+    {
+        perror("Socket write failed");
+        exit(EXIT_FAILURE);
+    }
+
+    n = read(*canSocket, buf, sizeof(buf));
+    if (n == -1)
+    {
+        perror("Socket read failed");
+        close(*canSocket);
+        exit(EXIT_FAILURE);
+    }
+    //printf("%s", buf);
+    strcpy(canReturnMessage, buf);
+}
 // Error handling -> reset socket and try again when sockets fail.
 //void canFeastErrorHandler(int *canSocket, char *command, char *canReturnMessage)
 //{
