@@ -50,5 +50,6 @@ For the X2 the actual position and velocity are set up to be sent out at a rate 
 ##Initialising Sync Message
 
 Initialising the sync message is done in 2 steps and can be on any node you desire, provided it is capable of producing a sync message.
+
 - Set 0x1005 sub 0 to 0x40000080.
 - Set 0x1006 sub 0 to 1000. (Time period in microseconds)
