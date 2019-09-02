@@ -60,7 +60,7 @@ In order to set up PDOs at the master end, an appropriate canopen object diction
 
 This can be done by editing the eds in CANopenSocket. This must be edited to include any objects required to communicate with the nodes. The number of total PDOs must also be edited to account for all the nodes on the network. For example if you have 4 nodes each using 4 useful TPDOs, the master must have 16 RPDOs to recieve all the messages and map them to the appropriate objects.
 
-In order to add an object to the dictionary, the desired addresses must be added and then the object must be defined.
+In order to add an object to the dictionary, the desired addresses must be added and then the object must be defined. For the purposes of the project it was decided to use the indeces of the nodes for the variables and then use the subindeces to store the data for the motor corresponding to that subindex.
 The following shows an example of an EDS master mapping (Note: this is not the only way to map the objects required, it would be just as valid to make the motor the index and the various parameters the sub indeces. This is just an example of how it is implemented in the X2 with each node being mapped to its corresponding subindex for each object):
 
 \[6040\]
@@ -146,3 +146,4 @@ These can be then mapped to the correct mapping by editing the parameters manual
 ```c
 /*1600*/ {{0x2L, 0x60640120L, 0x606c0120L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L},
 ```
+
