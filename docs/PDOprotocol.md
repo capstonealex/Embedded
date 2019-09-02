@@ -63,12 +63,13 @@ This can be done by editing the eds in CANopenSocket. This must be edited to inc
 In order to add an object to the dictionary, the desired addresses must be added and then the object must be defined. For the purposes of the project it was decided to use the indeces of the nodes for the variables and then use the subindeces to store the data for the motor corresponding to that subindex.
 The following shows an example of an EDS master mapping (Note: this is not the only way to map the objects required, it would be just as valid to make the motor the index and the various parameters the sub indeces. This is just an example of how it is implemented in the X2 with each node being mapped to its corresponding subindex for each object):
 
-\[6040\]
+```c
+[6040]
 ParameterName=Control words
 ObjectType=9
 SubNumber = 5
 
-\[6040sub0\]
+[6040sub0]
 ParameterName=Number of Motors
 ObjectType=7
 DataType=5
@@ -78,33 +79,34 @@ DefaultValue=4
 LowLimit=4
 HighLimit=4
 
-\[6040sub1\]
+[6040sub1]
 ParameterName=Motor 1
 ObjectType=7
 DataType=6
 AccessType=RW
 PDOMapping=1
 
-\[6040sub2\]
+[6040sub2]
 ParameterName=Motor 2
 ObjectType=7
 DataType=6
 AccessType=RW
 PDOMapping=1
 
-\[6040sub3\]
+[6040sub3]
 ParameterName=Motor 3
 ObjectType=7
 DataType=6
 AccessType=RW
 PDOMapping=1
 
-\[6040sub4\]
+[6040sub4]
 ParameterName=Motor 4
 ObjectType=7
 DataType=6
 AccessType=RW
 PDOMapping=1
+```
 
 For the index you must define the parameter name and subindex number. The object type for an object with sub indeces is always 9.
 
@@ -137,7 +139,7 @@ In the CO_OD.c file, the PDO communication and mapping parameters for the first 
 /*1600*/ {{0x0L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L},
 ```
 
-These can be then mapped to the correct mapping by editing the parameters manually. Each element in the brackets corresponds to the subindeces of the object. in the example below, there are 2 objects mapped with index 6040 sub1 and 606C sub1 respectively (actual postion for motor 1 & actual velocity for motor 1) with a COB_ID. Note: the COB_ID of a RPDO on the master must match the COB_ID of the node TPDO it is expecting the information to come from.
+These can be then mapped to the desired mapping by editing the parameters manually. Each element in the brackets corresponds to the subindeces of the object. in the example below, there are 2 objects mapped with index 6040 sub1 and 606C sub1 respectively (actual postion for motor 1 & actual velocity for motor 1) with a COB_ID. Note: the COB_ID of a RPDO on the master must match the COB_ID of the node TPDO it is expecting the information to come from.
 
 ```c
 /*1400*/ {{0x2L, 0x0181L, 0xffL},
