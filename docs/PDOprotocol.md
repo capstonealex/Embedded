@@ -139,7 +139,7 @@ In the CO_OD.c file, the PDO communication and mapping parameters for the first 
 /*1600*/ {{0x0L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L},
 ```
 
-These can be then mapped to the desired mapping by editing the parameters manually. Each element in the brackets corresponds to the subindeces of the object. in the example below, there are 2 objects mapped with index 6040 sub1 and 606C sub1 respectively (actual postion for motor 1 & actual velocity for motor 1) with a COB_ID. Note: the COB_ID of a RPDO on the master must match the COB_ID of the node TPDO it is expecting the information to come from.
+These can be then mapped to the desired mapping by editing the parameters manually. Each element in the brackets corresponds to the subindeces of the object. in the example below, there are 2 objects mapped with index 6040 sub1 and 606C sub1 respectively (actual postion for motor 1 & actual velocity for motor 1) with a COB_ID. (Note: the COB_ID of a RPDO on the master must match the COB_ID of the node TPDO it is expecting the information to come from)
 
 ```c
 /*1400*/ {{0x2L, 0x0181L, 0xffL},
