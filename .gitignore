@@ -5,3 +5,9 @@
 *.log
 *.cmake
 *clion-log.txt
+StateMachine/cmake-build-debug/CMakeFiles/clion-environment.txt
+StateMachine/cmake-build-debug/CMakeFiles/cmake.check_cache
+StateMachine/cmake-build-debug/CMakeFiles/Makefile2
+StateMachine/cmake-build-debug/CMakeFiles/progress.marks
+StateMachine/cmake-build-debug/CMakeFiles/TargetDirectories.txt
+StateMachine/CMakeLists.txt
