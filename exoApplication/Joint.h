@@ -18,7 +18,7 @@ using namespace std;
 class Joint {
     //Private members
     int id;
-    float q, qd;
+    float q;
     float maxq, minq;
     void setPos(float qd);
     void canFeast(int *canSocket, char *command, char *canReturnMessage);
@@ -32,11 +32,13 @@ public:
     Joint(float q_init, int ID);
     void setId(int ID);
     int getId();
-    void applyPos(float q);
+    void applyPos(float qd);
     string getPos(int *canSocket);
     void printInfo();
     //callback functions for this devices canDevice object
     void posCallBack(float qReal); // Mainatain real world position in joint object
+    string posTest(int *canSocket);
+    string multiPosTest(int *canSocket);
 };
 
 

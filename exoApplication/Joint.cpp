@@ -19,12 +19,12 @@ Joint::Joint(float q_init, int ID){
     q = q_init;
     id = ID;
 }
-void Joint::applyPos(float q){
-    // std::lock_guard <std::mutex> lockGuard(std::mutex);
-    // std::unique_lock lock(mutex_);
+void Joint::applyPos(float qd){
     //Safety checks.
     // Is joint where we think it is? or within safe range of it?
     // are we trying to move to a pos within the joints limits?
+    ///// Testing for PDOs
+
     if(q>minq && q<maxq) {
         qd = q;
         Joint::setPos(qd);
@@ -53,6 +53,27 @@ string Joint::getPos(int *canSocket){
     return pos;
 
 }
+string Joint::posTest(int *canSocket){
+    char getpos[STRING_LENGTH];
+    char messageSent[]= "[1] 100 read 0x6063 1 i32";
+
+    canFeast(canSocket, messageSent, getpos);
+    std::string pos(getpos);
+    return pos;
+
+}
+string Joint::multiPosTest(int *canSocket){
+    char getpos[STRING_LENGTH];
+    std::string message = "[1] 100 read 0x6064 " + std::to_string(this->id) + " i32";
+    //// Convert all to char arrays and send off as char messageSent
+    char messageSent[message.size() + 1];
+    strcpy(messageSent, message.c_str());
+
+    canFeast(canSocket, messageSent, getpos);
+    std::string pos(getpos);
+    return pos;
+
+}
 void Joint::printInfo(){
     cout<<"Joint id number "<<id<<" @ pos "<<q<<"\n";
 }
@@ -62,7 +83,7 @@ void Joint::posCallBack(float qReal){
 void Joint::canFeast(int *canSocket, char *command, char *canReturnMessage)
 {
     int commandLength = strlen(command);
-    size_t n;
+    int n;
     char buf[100000];
 
     if (write(*canSocket, command, commandLength) != commandLength)
