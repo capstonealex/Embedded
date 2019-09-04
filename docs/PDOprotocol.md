@@ -149,3 +149,9 @@ These can be then mapped to the desired mapping by editing the parameters manual
 /*1600*/ {{0x2L, 0x60640120L, 0x606c0120L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L},
 ```
 
+##Deployment
+
+To deploy:
+
+in the directory CANopenSocket/canopend/objDict, replace the CO_OD.c/h files with the project customised files.
+Remake canopend and run using the commands in the CANopen/MISC section.
