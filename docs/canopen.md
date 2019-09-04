@@ -11,28 +11,18 @@
 4.	Connect to drive using serial. Reset the drive using CME to clear network errors. Also check bitrate and note the node ID.
 5.	Open 3 terminals on BBB. On first terminal: `candump can1`
 
-6.	2nd terminal: Navigate to canopend folder.
-
+6.	2nd terminal: Navigate to canopend folder.  
       ```
       cd CANopenSocket/canopend
       make
-      app/canopend --help
-      echo - > od6_storage
-      echo - > od6_storage_auto
-      app/canopend can1 -i 6 -s od6_storage -a od6_storage_auto
-      ```
-
-      Replace 6 with node address of drive, both for "od" and for "-i 6". Note: the "make" step is only required once. 
-
-7. Ctrl+z, to start another process.
-   
-      ```
-      bg
+      app/canopend -help
       app/canopend can1 -i 100 -c ""
       ```
 
       The 100
        in the above line is the master node ID. Using 0 here throws an error. For now, use a large unused ID.
+       
+       Note: the "make" step is only required for 1st run.
 
 8.	3rd terminal: navigate to canopencomm folder
    
@@ -42,7 +32,7 @@
       ./canopencomm –help
       ```
       
-      Note: the "make" step is only required once.
+      Note: the "make" step is only required for 1st run.
 
 9. Following can be used to set the heartbeat 1 every 5000ms. The 1st 6 is the node ID: `./canopencomm [1] 6 write 0x1017 0 i16 5000`
 
@@ -78,15 +68,8 @@ Currently, an ethernet cable (accessible from outside) is connected to the exosk
 
 4. On a BBB with CANopenSocket installed, open 3 terminals. 
 5. On terminal 1: `candump can1`
-6. On terminal 2: `cd CANopenSocket/canopend`. Then issue below command for each node after replace <NODE_ID> with correct ID. You can use ctrl + z and type `bg` to start another process for each of the node. 
 
-      ```
-      echo - > od<NODE_ID>_storage
-      echo - > od<NODE_ID>_storage_auto
-      app/canopend can1 -i <NODE_ID> -s od<NODE_ID>_storage -a od<NODE_ID>_storage_auto
-      ```
-
-8. In terminal 2, start one more process (ctrl + z and `bg`) for the master: `app/canopend can1 -i 100 -c ""`. At this stage, you should be able to see the heartbeat in terminal 1.
+8. In terminal 2, run following for the master: `cd CANopenSocket/canopend` followed by `app/canopend can1 -i 100 -c ""`. At this stage, you should be able to see the heartbeat in terminal 1 if it is setup.
 
 9. On terminal 3: `cd CANopenSocket/canopencomm`. Now you can start issuing CANopen commands. See next steps for issuing relative position command to left knee motor. 
 
@@ -109,9 +92,22 @@ Currently, an ethernet cable (accessible from outside) is connected to the exosk
 14. Read status word: `./canopencomm [1] 2 read 0x6041 0 i16`. Should be 1591 (to be verified) if ready for motion. Convert 1591 to binary and compare to the bits in the manual for 0x6041 to get more details. 
 15. Control word (0x6040) can now be used for motion. We need to change bit 4 from low to high to start motion. The entire control word goes from 0000000001101111 (decimal 111) to 0000000001111111 (decimal 127). So send, `./canopencomm [1] 2 write 0x6040 0 i16 111` followed by `./canopencomm [1] 2 write 0x6040 0 i16 127`. This should move the knee. See profile position mode for details on bits 4-6. For remaining bits, see control word in manual.
 
+## Socket failure recovery
+* If the socket between the main Robot application running canFeast fails, or any socket error occurs follow bellow.
+1. In a terminal type: `unlink /tmp/CO_command_socket`.
+2. End and restart canopend `app/canopend can1 -i 100 -c ""`.
+3. Begin your application again.
+
 ## MISC
 * The zero (home) position of the motor set to current position when exo skeleton is powered on. 
 * To send negative values in canopencomm, use -- -number. The -- specifies that the number is a value and not an option for the command.
+* To add virtual nodes when using vcan, do the following step after step 5. On terminal 2: `cd CANopenSocket/canopend`. Then issue below command for each node after replace <NODE_ID> with correct ID. You can use ctrl + z and type `bg` to start another process for each of the node. 
+
+      ```
+      echo - > od<NODE_ID>_storage
+      echo - > od<NODE_ID>_storage_auto
+      app/canopend can1 -i <NODE_ID> -s od<NODE_ID>_storage -a od<NODE_ID>_storage_auto
+      ```
 
 ## Resources to look into
  - **Basics of CANopen**
