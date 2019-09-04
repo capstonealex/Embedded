@@ -1,2 +1,7 @@
 *.xml
 *.iml
+*.cxx
+*.bin
+*.log
+*.cmake
+*clion-log.txt

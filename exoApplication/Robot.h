@@ -17,7 +17,6 @@ public:
     void printInfo();
     //For sending socket commands
     void canFeastUp(int *canSocket);
-    void canFeast(int *canSocket, char *command, char *canReturnMessage);
     void canFeastDown(int *canSocket);
 //    void canFeastErrorHandler(int *canSocket, char *command, char *canReturnMessage);
 

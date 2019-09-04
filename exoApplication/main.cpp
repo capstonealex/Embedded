@@ -2,13 +2,13 @@
 //// Created by William Campbell on 2019-07-01.
 //// ALEX EXOSKELETON MULTITHREAD ROBOTIC MAIN
 ////
-//// For mutex locking functions we have in place use C++17 standard.
 #include "Robot.h"
 
 /* Helper functions */
 void initexo(Robot& robot);
 const int NUM_JOINTS = 4;
-const int STRING_LENGTH =50;
+//const int STRING_LENGTH =50;
+const int NUM_POLLS = 30;
 int main() {
     Robot X2;
     initexo(X2);
@@ -17,17 +17,15 @@ int main() {
     int socket;
     //Used to store the canReturnMessage. Not used currently, hence called junk.
     //Should pass this to calling function for possible error handling.
-    char messageRecieved[STRING_LENGTH];
-    char messageSent[]= "[1] 100 read 0x1017 0 i16";
     X2.canFeastUp(&socket);
-    while(true) {
-//       X2.canFeast(&socket, messageSent, messageRecieved);
-        X2.joints[1].copley.canFeast(&socket, messageSent, messageRecieved);
-        cout<< (char *)messageRecieved;
+    int n = 0;
+    std::string currentPos;
+    while(n<NUM_POLLS) {
+        currentPos = X2.joints[1].getPos(&socket);
+        std::cout << "current motor pos:" <<currentPos;
         std::cin.ignore();
     }
     X2.canFeastDown(&socket);
-
     return 0;
 }
 
@@ -39,7 +37,7 @@ void initexo(Robot& X2){
 /*   X2.printInfo();*/
     ////    initialize all joints to Current read position (STATE) or homing sequence?
     float position = 90.0;
-    cout<<"----------Reading actual joint pos and internalizing----------\n";
+    std:: cout<<"----------Reading actual joint pos and internalizing----------\n";
     for (auto x=0;x< NUM_JOINTS;x++){
         X2.joints[x].applyPos(position);
         position+=15.0;

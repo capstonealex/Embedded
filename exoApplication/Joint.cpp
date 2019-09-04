@@ -2,8 +2,10 @@
 // Created by William Campbell on 2019-07-24.
 //
 
-#include "Joint.h"
-#include <stdlib.h>
+# include "Joint.h"
+# include <stdlib.h>
+# include <string>
+const int STRING_LENGTH =50;
 Joint::Joint(){
     //Default constructor - SHOULD THROW AN ERROR
     q = 0;
@@ -43,17 +45,39 @@ int  Joint::getId()
 {
     return id;
 }
-void Joint::getPos(int *canSocket){
-//    std::shared_lock l(mutex_);
-//    std::lock_guard <std::mutex> lockGuard(std::mutex)
-//    char qr[STRING_LENGTH];
-//    char messageSent[]= "[1] 100 read 0x1017 0 i16";
-//    copley.canFeast(socket, messageSent, qr);
-//    return atof(qr);
+string Joint::getPos(int *canSocket){
+    char getpos[STRING_LENGTH];
+    char messageSent[]= "[1] 100 read 0x1017 0 i16";
+    canFeast(canSocket, messageSent, getpos);
+    std::string pos(getpos);
+    return pos;
+
 }
 void Joint::printInfo(){
     cout<<"Joint id number "<<id<<" @ pos "<<q<<"\n";
 }
 void Joint::posCallBack(float qReal){
     q = qReal;
+}
+void Joint::canFeast(int *canSocket, char *command, char *canReturnMessage)
+{
+    int commandLength = strlen(command);
+    size_t n;
+    char buf[100000];
+
+    if (write(*canSocket, command, commandLength) != commandLength)
+    {
+        perror("Socket write failed");
+        exit(EXIT_FAILURE);
+    }
+
+    n = read(*canSocket, buf, sizeof(buf));
+    if (n == -1)
+    {
+        perror("Socket read failed");
+        close(*canSocket);
+        exit(EXIT_FAILURE);
+    }
+    //printf("%s", buf);
+    strcpy(canReturnMessage, buf);
 }

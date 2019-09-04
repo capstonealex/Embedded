@@ -1,14 +1,18 @@
 //
-// Created by ALEX EXOSKELETON on 2019-09-02.
+// Created by William Campbell on 2019-09-04.
 //
-// Abstract class of a a state machines State member.
 
+#include "State.h"
+State::State(){
 
-Class State{
+}
+void State::entry(void){
 
-        public:
-        virtual void entry(void)  = 0;
-        virtual void during(void) = 0;
-        virtual void exit(void)  = 0;
+}
+void State::during(void){
 
-};
+}
+void State::exit(void) {
+
+}
+
