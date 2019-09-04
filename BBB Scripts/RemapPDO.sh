@@ -138,3 +138,15 @@ cd /home/debian/CANopenSocket/canopencomm
 ./canopencomm [1] 2 write 0x1402 1 u32 0x402
 ./canopencomm [1] 3 write 0x1402 1 u32 0x403
 ./canopencomm [1] 4 write 0x1402 1 u32 0x404
+
+#Start nodes
+./canopencomm [1] 1 start
+./canopencomm [1] 2 start
+./canopencomm [1] 3 start
+./canopencomm [1] 4 start
+
+#control word zero, so motors can move
+./canopencomm [1] 1 write 0x6040 0 i16 0
+./canopencomm [1] 2 write 0x6040 0 i16 0
+./canopencomm [1] 3 write 0x6040 0 i16 0
+./canopencomm [1] 4 write 0x6040 0 i16 0
