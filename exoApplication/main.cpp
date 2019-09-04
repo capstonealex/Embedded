@@ -21,9 +21,10 @@ int main() {
     int n = 0;
     std::string currentPos;
     while(n<NUM_POLLS) {
-        currentPos = X2.joints[1].getPos(&socket);
-        std::cout << "current motor pos:" <<currentPos;
-        std::cin.ignore();
+        for (auto i=0; i<4 ;i++) {
+            currentPos = X2.joints[i].multiPosTest(&socket);
+            std::cout << "current motor pos:" << currentPos;
+        }
     }
     X2.canFeastDown(&socket);
     return 0;

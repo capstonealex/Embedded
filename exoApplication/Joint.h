@@ -34,10 +34,10 @@ public:
     int getId();
     void applyPos(float qd);
     string getPos(int *canSocket);
+    string posTest(int *canSocket);
     void printInfo();
     //callback functions for this devices canDevice object
     void posCallBack(float qReal); // Mainatain real world position in joint object
-    string posTest(int *canSocket);
     string multiPosTest(int *canSocket);
 };
 

@@ -62,13 +62,12 @@ string Joint::posTest(int *canSocket){
     return pos;
 
 }
-string Joint::multiPosTest(int *canSocket){
+string Joint::multiPosTestT(int *canSocket){
     char getpos[STRING_LENGTH];
     std::string message = "[1] 100 read 0x6064 " + std::to_string(this->id) + " i32";
     //// Convert all to char arrays and send off as char messageSent
     char messageSent[message.size() + 1];
     strcpy(messageSent, message.c_str());
-
     canFeast(canSocket, messageSent, getpos);
     std::string pos(getpos);
     return pos;
