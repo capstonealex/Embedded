@@ -5,7 +5,7 @@
 #  RECIEVE
 #  Created by Robert Gadsby on 14/08/2019.
 #
-
+cd /home/debian/CANopenSocket/canopencomm
 
 #TRANSMIT POS AND VEL
 
