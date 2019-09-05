@@ -51,6 +51,8 @@
 #define STATESTANDING 1
 #define STATESITTING 2
 #define STATEIMMOBILE 0
+#define WALKINGFORWARD 1
+#define WALKINGBACK 2
 
 /*
  Most functions defined here use canReturnMessage as a pass-by-reference string.
@@ -61,7 +63,7 @@
  */
 
 //State machine with sit-stand logic
-void sitStand(int state);
+void sitStand(int *socket, int initState);
 //For sending socket commands
 void canFeastUp(int *canSocket);
 void canFeast(int *canSocket, char *command, char *canReturnMessage);
@@ -86,7 +88,7 @@ void preop(int *canSocket, int nodeid);
 //Sets node to start mode and sets it to position move mode.
 void initMotorPos(int *canSocket, int nodeid);
 //Checks for 4 joints are within +-POSCLEARANCE of the hipTarget and kneeTarget values. Returns 1 if true.
-int checkPos(int *canSocket, long hipTarget, long kneeTarget);
+int checkPos(int *canSocket, long lhipTarget, long lkneeTarget, long rhipTarget, long rkneeTarget);
 //Sets profile velocity for position mode motion.
 void setProfileVelocity(int *canSocket, int nodeid, long velocity);
 //Sets profile acceleration and deceleration for position mode motion.
@@ -95,46 +97,74 @@ void setProfileAcceleration(int *canSocket, int nodeid, long acceleration);
 void motorPosArrayConverter(const double origArr[], long newArr[], int arrSize, int nodeid);
 //calculate A and B in the formula y=Ax+B. Use by motorPosArrayConverter()
 void calcAB(long y1, long x1, long y2, long x2, double *A, double *B);
+//Function to set motors to start mode and set accelerations/velocities.
+void initExo(int *socket);
+//Function to walk
+void walkMode(int *socket);
+//Function to put motors to preop.
+void stopExo(int *socket);
 
 int main()
 {
     printf("Welcome to CANfeast!\n");
-    sitStand(SITTING);
+    int socket;
+    char junk[STRING_LENGTH];
+
+    canFeastUp(&socket);
+
+    while (getButton(&socket, BUTTON_FOUR, junk) == 0)
+    {
+        printf("LHIP: %ld, LKNEE: %ld, RHIP: %ld, RKNEE: %ld\n", getPos(&socket, LHIP, junk), getPos(&socket, LKNEE, junk), getPos(&socket, RHIP, junk), getPos(&socket, RKNEE, junk));
+    }
+
+    initExo(&socket);
+    sitStand(&socket, SITTING);
+    walkMode(&socket);
+    sitStand(&socket, STANDING);
+    stopExo(&socket);
+
+    canFeastDown(&socket);
+
     return 0;
 }
 
 //State machine with sit-stand logic
-void sitStand(int state)
+void sitStand(int *socket, int initState)
 {
+    printf("Sit Stand Mode\n");
+    //Used to store the canReturnMessage. Not used currently, hence called junk.
+    //Should pass this to calling function for possible error handling.
+    char junk[STRING_LENGTH];
+
     //Array of trajectory points from R&D team
     //smallest index is standing
-    //IMPORTANT: Update state arg passed to sitstand() from main.
+    //IMPORTANT: Update initState arg passed to sitstand() from main.
 
     double sitStandArrHip_degrees[] = {
-        167.600,
-        165.973,
-        157.654,
-        142.798,
-        125.808,
-        111.804,
-        103.302,
-        99.671,
-        99.057,
-        99.448,
-        99.602
+            171.59,
+            169.97,
+            161.72,
+            147.06,
+            130.51,
+            117.26,
+            109.84,
+            107.45,
+            107.89,
+            108.86,
+            109.13
     };
     double sitStandArrKnee_degrees[] = {
-        25.609,
-        27.736,
-        38.469,
-        57.179,
-        77.553,
-        92.420,
-        98.357,
-        97.044,
-        92.634,
-        89.229,
-        88.464
+            18.19,
+            20.59,
+            32.71,
+            53.84,
+            76.85,
+            93.64,
+            100.35,
+            98.88,
+            93.91,
+            90.07,
+            89.20
     };
 
     int arrSize = sizeof(sitStandArrHip_degrees) / sizeof(sitStandArrHip_degrees[0]);
@@ -147,43 +177,15 @@ void sitStand(int state)
     motorPosArrayConverter(sitStandArrKnee_degrees, sitStandArrayKnee, arrSize, LKNEE);
 
     //The sitstate value should be 1 position outside array index (ie -1 or 11 for a 11 item array).
+    //This is required since 1st iteration of statemachine goes to array index sitstate+1 or sitstate-1
     int sitstate = 1;
-    if (state == SITTING)
+    if (initState == SITTING)
         sitstate = arrSize;
-    if (state == STANDING)
+    if (initState == STANDING)
         sitstate = -1;
 
-    // Set up socket to canOpend
-    int socket;
-    canFeastUp(&socket);
-    //Used to store the canReturnMessage. Not used currently, hence called junk.
-    //Should pass this to calling function for possible error handling.
-    char junk[STRING_LENGTH];
-
-    while (getButton(&socket, BUTTON_FOUR, junk) == 0)
-    {
-        printf("LHIP: %ld, LKNEE: %ld, RHIP: %ld, RKNEE: %ld\n", getPos(&socket, LHIP, junk), getPos(&socket, LKNEE, junk), getPos(&socket, RHIP, junk), getPos(&socket, RKNEE, junk));
-    }
-
-    //Initialise 4 joints
-    initMotorPos(&socket, LHIP);
-    initMotorPos(&socket, LKNEE);
-    initMotorPos(&socket, RHIP);
-    initMotorPos(&socket, RKNEE);
-
-    //Sets profile velocity, acceleration & deceleration for the joints.
-    setProfileAcceleration(&socket, LHIP, PROFILEACCELERATION);
-    setProfileVelocity(&socket, LHIP, PROFILEVELOCITY);
-    setProfileAcceleration(&socket, LKNEE, PROFILEACCELERATION);
-    setProfileVelocity(&socket, LKNEE, PROFILEVELOCITY);
-    setProfileAcceleration(&socket, RHIP, PROFILEACCELERATION);
-    setProfileVelocity(&socket, RHIP, PROFILEVELOCITY);
-    setProfileAcceleration(&socket, RKNEE, PROFILEACCELERATION);
-    setProfileVelocity(&socket, RKNEE, PROFILEVELOCITY);
-
     //Use to maintain states.
-    //sitstate goes from 0 to 10, indicating the 11 indices of the sitstandArrays
-    //sitstate is obtained as argument to this function.
+    //sitstate goes from 0 to arrsize-1, indicating the indices of the sitstandArrays
     //movestate can be STATEIMMOBILE, STATESITTING or STATESTANDING
     int movestate = STATEIMMOBILE;
 
@@ -191,36 +193,41 @@ void sitStand(int state)
     int button1Status = 0;
     int button2Status = 0;
     int button3Status = 0;
+    int button4Status = 0;
 
     //Statemachine loop.
-    //Exits when button 3 is pressed.
+    //Kill motor and end program when button 3 is pressed.
+    //Button 4 exits state machine
     //Button 1 sits more, button 2 stands more.
     while (1)
     {
 
         //read button state
-        button1Status = getButton(&socket, BUTTON_ONE, junk);
-        button2Status = getButton(&socket, BUTTON_TWO, junk);
-        button3Status = getButton(&socket, BUTTON_THREE, junk);
+        button1Status = getButton(socket, BUTTON_ONE, junk);
+        button2Status = getButton(socket, BUTTON_TWO, junk);
+        button3Status = getButton(socket, BUTTON_THREE, junk);
+        button4Status = getButton(socket, BUTTON_FOUR, junk);
 
         //Button has to be pressed & Exo not moving & array not at end. If true, execute move.
         if (button1Status == 1 && movestate == STATEIMMOBILE && sitstate < (arrSize - 1))
         {
             movestate = STATESITTING;
             printf("Sitting down\n");
-            setAbsPosSmart(&socket, LHIP, sitStandArrayHip[sitstate + 1], junk);
-            setAbsPosSmart(&socket, LKNEE, sitStandArrayKnee[sitstate + 1], junk);
-            setAbsPosSmart(&socket, RHIP, sitStandArrayHip[sitstate + 1], junk);
-            setAbsPosSmart(&socket, RKNEE, sitStandArrayKnee[sitstate + 1], junk);
+            setAbsPosSmart(socket, LHIP, sitStandArrayHip[sitstate + 1], junk);
+            setAbsPosSmart(socket, LKNEE, sitStandArrayKnee[sitstate + 1], junk);
+            setAbsPosSmart(socket, RHIP, sitStandArrayHip[sitstate + 1], junk);
+            setAbsPosSmart(socket, RKNEE, sitStandArrayKnee[sitstate + 1], junk);
         }
 
         //If target position is reached, then increment sitstate and set movestate to 0.
         if (sitstate < (arrSize-1) && movestate == STATESITTING)
         {
-            if (checkPos(&socket, sitStandArrayHip[sitstate + 1], sitStandArrayKnee[sitstate + 1]) == 1)
+            if (checkPos(socket, sitStandArrayHip[sitstate + 1], sitStandArrayKnee[sitstate + 1], sitStandArrayHip[sitstate + 1], sitStandArrayKnee[sitstate + 1]) == 1)
             {
                 printf("Position reached.\n");
                 sitstate++;
+                if(sitstate==(arrSize-1))
+                    printf("fully seated position\n");
                 movestate = STATEIMMOBILE;
             }
         }
@@ -230,19 +237,21 @@ void sitStand(int state)
         {
             movestate = STATESTANDING;
             printf("Standing up\n");
-            setAbsPosSmart(&socket, LHIP, sitStandArrayHip[sitstate - 1], junk);
-            setAbsPosSmart(&socket, LKNEE, sitStandArrayKnee[sitstate - 1], junk);
-            setAbsPosSmart(&socket, RHIP, sitStandArrayHip[sitstate - 1], junk);
-            setAbsPosSmart(&socket, RKNEE, sitStandArrayKnee[sitstate - 1], junk);
+            setAbsPosSmart(socket, LHIP, sitStandArrayHip[sitstate - 1], junk);
+            setAbsPosSmart(socket, LKNEE, sitStandArrayKnee[sitstate - 1], junk);
+            setAbsPosSmart(socket, RHIP, sitStandArrayHip[sitstate - 1], junk);
+            setAbsPosSmart(socket, RKNEE, sitStandArrayKnee[sitstate - 1], junk);
         }
 
         //If target position is reached, then decrease sitstate and set movestate to 0.
         if (sitstate > 0 && movestate == STATESTANDING)
         {
-            if (checkPos(&socket, sitStandArrayHip[sitstate - 1], sitStandArrayKnee[sitstate - 1]) == 1)
+            if (checkPos(socket, sitStandArrayHip[sitstate - 1], sitStandArrayKnee[sitstate - 1], sitStandArrayHip[sitstate - 1], sitStandArrayKnee[sitstate - 1]) == 1)
             {
                 printf("Position reached.\n");
                 sitstate--;
+                if(sitstate==0)
+                    printf("full standing position\n");
                 movestate = STATEIMMOBILE;
             }
         }
@@ -250,14 +259,267 @@ void sitStand(int state)
         //if button 3 pressed, then set to preop and exit.
         if (button3Status == 1)
         {
-            preop(&socket, LHIP);
-            preop(&socket, LKNEE);
-            preop(&socket, RHIP);
-            preop(&socket, RKNEE);
+            printf("Terminating Program (sitstand)\n");
+            stopExo(socket);
+            canFeastDown(socket);
+            exit(EXIT_SUCCESS);
+        }
+
+        //Exit statemachine only if button 4 pressed and gone from sitting to standing or vice versa.
+        if (button4Status == 1 && ((sitstate==arrSize-1 && initState==STANDING)||(sitstate==0 && initState==SITTING)))
+        {
             break;
         }
     }
-    canFeastDown(&socket);
+}
+
+
+//Walking state machine
+void walkMode(int *socket){
+
+    printf("Walk Mode\n");
+
+    //Used to store the canReturnMessage. Not used currently, hence called junk.
+    char junk[STRING_LENGTH];
+
+    //Array of trajectory points from R&D team
+    double walkArrLHip_degrees[] = {
+            171.59,
+            170.89,
+            167.41,
+            161.52,
+            155.55,
+            152.03,
+            152.17,
+            155.05,
+            158.61,
+            160.91,
+            161.39,
+            161.61,
+            162.80,
+            165.12,
+            168.21,
+            171.59,
+            174.97,
+            178.07,
+            180.39,
+            181.58,
+            181.80,
+            180.68,
+            175.16,
+            165.94,
+            156.83,
+            152.03,
+            153.46,
+            159.47,
+            166.36,
+            170.70,
+            171.59
+    };
+    double walkArrLKnee_degrees[] = {
+            18.19,
+            19.94,
+            28.49,
+            42.47,
+            55.59,
+            60.99,
+            55.59,
+            42.47,
+            28.49,
+            19.94,
+            18.19,
+            18.19,
+            18.19,
+            18.19,
+            18.19,
+            18.19,
+            18.19,
+            18.19,
+            18.19,
+            18.19,
+            18.19,
+            19.94,
+            28.49,
+            42.47,
+            55.59,
+            60.99,
+            55.59,
+            42.47,
+            28.49,
+            19.94,
+            18.19
+    };
+
+    double walkArrRHip_degrees[] = {
+            171.59,
+            171.50,
+            171.07,
+            170.56,
+            170.55,
+            171.59,
+            173.93,
+            177.04,
+            179.87,
+            181.48,
+            181.80,
+            180.78,
+            175.68,
+            166.97,
+            157.88,
+            152.03,
+            151.12,
+            154.02,
+            158.09,
+            160.81,
+            161.39,
+            161.70,
+            163.32,
+            166.15,
+            169.26,
+            171.59,
+            172.64,
+            172.62,
+            172.12,
+            171.69,
+            171.59
+    };
+    double walkArrRKnee_degrees[] = {
+            18.19,
+            18.19,
+            18.19,
+            18.19,
+            18.19,
+            18.19,
+            18.19,
+            18.19,
+            18.19,
+            18.19,
+            18.19,
+            19.94,
+            28.49,
+            42.47,
+            55.59,
+            60.99,
+            55.59,
+            42.47,
+            28.49,
+            19.94,
+            18.19,
+            18.19,
+            18.19,
+            18.19,
+            18.19,
+            18.19,
+            18.19,
+            18.19,
+            18.19,
+            18.19,
+            18.19
+    };
+
+    int arrSize = sizeof(walkArrLHip_degrees) / sizeof(walkArrLHip_degrees[0]);
+    //These arrays store the converted values of joint. These can be sent to the motor.
+    long walkArrLHip[arrSize];
+    long walkArrLKnee[arrSize];
+    long walkArrRHip[arrSize];
+    long walkArrRKnee[arrSize];
+
+    //Converting from degrees to motor drive compatible values.
+    motorPosArrayConverter(walkArrLHip_degrees, walkArrLHip, arrSize, LHIP);
+    motorPosArrayConverter(walkArrLKnee_degrees, walkArrLKnee, arrSize, LKNEE);
+    motorPosArrayConverter(walkArrRHip_degrees, walkArrRHip, arrSize, RHIP);
+    motorPosArrayConverter(walkArrRKnee_degrees, walkArrRKnee, arrSize, RKNEE);
+
+    //The walkstate value should be 1 position outside array index (ie -1 or 11 for a 11 item array).
+    //This is required because the 1st iteration of statemachine goes to array position walkstate+1
+    int walkstate = -1;
+
+    //Use to maintain states.
+    //walkstate can be STATEIMMOBILE, WALKINGFORWARD or WALKINGBACK
+    int movestate = STATEIMMOBILE;
+
+    //Used to check if button is pressed.
+    int button1Status = 0;
+    int button2Status = 0;
+    int button3Status = 0;
+    int button4Status = 0;
+    
+
+    //Statemachine loop.
+    //Kill motor and program when button 3 is pressed.
+    //Exits state machine when button 4 pressed
+    //Button 1 sits more, button 2 stands more.
+    while (1)
+    {
+
+        //read button state
+        button1Status = getButton(socket, BUTTON_ONE, junk);
+        button2Status = getButton(socket, BUTTON_TWO, junk);
+        button3Status = getButton(socket, BUTTON_THREE, junk);
+        button4Status = getButton(socket, BUTTON_FOUR, junk);
+
+        //Button has to be pressed & Exo not moving & array not at end. If true, execute move.
+        if (button1Status == 1 && movestate == STATEIMMOBILE && walkstate < (arrSize - 1))
+        {
+            movestate = WALKINGFORWARD;
+            printf("Walking forward\n");
+            setAbsPosSmart(socket, LHIP, walkArrLHip[walkstate + 1], junk);
+            setAbsPosSmart(socket, LKNEE, walkArrLKnee[walkstate + 1], junk);
+            setAbsPosSmart(socket, RHIP, walkArrRHip[walkstate + 1], junk);
+            setAbsPosSmart(socket, RKNEE, walkArrRKnee[walkstate + 1], junk);
+        }
+
+        //If target position is reached, then increment walkstate and set movestate to 0.
+        if (walkstate < (arrSize-1) && movestate == WALKINGFORWARD)
+        {
+            if (checkPos(socket, walkArrLHip[walkstate + 1], walkArrLKnee[walkstate + 1], walkArrRHip[walkstate + 1], walkArrRKnee[walkstate + 1]) == 1)
+            {
+                printf("Position reached.\n");
+                walkstate++;
+                if(walkstate==(arrSize-1))
+                    printf("final array position\n");
+                movestate = STATEIMMOBILE;
+            }
+        }
+
+        //Button has to be pressed & Exo not moving & array not at end. If true, execute move.
+        if (button2Status == 1 && movestate == STATEIMMOBILE && walkstate > 0)
+        {
+            movestate = WALKINGBACK;
+            printf("Walking backward\n");
+            setAbsPosSmart(socket, LHIP, walkArrLHip[walkstate - 1], junk);
+            setAbsPosSmart(socket, LKNEE, walkArrLKnee[walkstate - 1], junk);
+            setAbsPosSmart(socket, RHIP, walkArrRHip[walkstate - 1], junk);
+            setAbsPosSmart(socket, RKNEE, walkArrRKnee[walkstate - 1], junk);
+        }
+
+        //If target position is reached, then decrease walkstate and set movestate to 0.
+        if (walkstate > 0 && movestate == WALKINGBACK)
+        {
+            if (checkPos(socket, walkArrLHip[walkstate - 1], walkArrLKnee[walkstate - 1], walkArrRHip[walkstate - 1], walkArrRKnee[walkstate - 1]) == 1)
+            {
+                printf("Position reached.\n");
+                walkstate--;
+                if(walkstate==0)
+                    printf("first array position\n");
+                movestate = STATEIMMOBILE;
+            }
+        }
+
+        //if button 3 pressed, then set to preop and exit program.
+        if (button3Status == 1)
+        {
+            printf("Terminating Program (walk mode)\n");
+            stopExo(socket);
+            canFeastDown(socket);
+            exit(EXIT_SUCCESS);
+        }
+
+        //Only exit state machine if button 4 pressed and at end of walking array. 
+        if(button4Status==1 && walkstate==(arrSize-1)){
+            break;
+        }
+    }
 }
 
 //Used to read button status. Returns 1 if button is pressed
@@ -268,12 +530,12 @@ int getButton(int *canSocket, int button, char *canReturnMessage)
     char *buttonPressed = "0x3F800000";
 
     char buttons[][STRING_LENGTH] =
-        {
-            "[1] 9 read 0x0101 1 u32", //button 1
-            "[1] 9 read 0x0102 1 u32", //button 2
-            "[1] 9 read 0x0103 1 u32", //button 3
-            "[1] 9 read 0x0104 1 u32"  //button 4
-        };
+            {
+                    "[1] 9 read 0x0101 1 u32", //button 1
+                    "[1] 9 read 0x0102 1 u32", //button 2
+                    "[1] 9 read 0x0103 1 u32", //button 3
+                    "[1] 9 read 0x0104 1 u32"  //button 4
+            };
     canFeast(canSocket, buttons[button - 1], canReturnMessage);
 
     //printf("CAN return on button press is: %s", canReturnMessage);
@@ -355,9 +617,9 @@ void setAbsPosSmart(int *canSocket, int nodeid, int position, char *canReturnMes
 
     //Creating array of messages.
     char *commList[] = {
-        movePos,   //move to this position (absolute)
-        cntrWordL, //control word low
-        cntrWordH  //control word high
+            movePos,   //move to this position (absolute)
+            cntrWordL, //control word low
+            cntrWordH  //control word high
     };
 
     //Sending array of messages.
@@ -374,6 +636,8 @@ void canFeastUp(int *canSocket)
     struct sockaddr_un addr;
 
     *canSocket = socket(AF_UNIX, SOCK_STREAM, 0);
+    printf("Socket: %d\n",*canSocket);
+
     if (*canSocket == -1)
     {
         perror("Socket creation failed");
@@ -587,17 +851,17 @@ void initMotorPos(int *canSocket, int nodeid)
 }
 
 //Checks for 4 joints are within +-POSCLEARANCE of the hipTarget and kneeTarget values. Returns 1 if true.
-int checkPos(int *canSocket, long hipTarget, long kneeTarget)
+int checkPos(int *canSocket, long lhipTarget, long lkneeTarget, long rhipTarget, long rkneeTarget)
 {
 
     //The positions could be polled and stored earlier for more readable code. But getpos uses canfeast which has overhead.
     //Since C support short circuit evaluation, using getPos in if statement is more efficient.
     char junk[STRING_LENGTH];
-    if (getPos(canSocket, LHIP, junk) > (hipTarget - POSCLEARANCE) && getPos(canSocket, LHIP, junk) < (hipTarget + POSCLEARANCE) &&
-        getPos(canSocket, RHIP, junk) > (hipTarget - POSCLEARANCE) && getPos(canSocket, RHIP, junk) < (hipTarget + POSCLEARANCE))
+    if (getPos(canSocket, LHIP, junk) > (lhipTarget - POSCLEARANCE) && getPos(canSocket, LHIP, junk) < (lhipTarget + POSCLEARANCE) &&
+        getPos(canSocket, RHIP, junk) > (rhipTarget - POSCLEARANCE) && getPos(canSocket, RHIP, junk) < (rhipTarget + POSCLEARANCE))
     {
-        if (getPos(canSocket, LKNEE, junk) > (kneeTarget - POSCLEARANCE) && getPos(canSocket, LKNEE, junk) < (kneeTarget + POSCLEARANCE) &&
-            getPos(canSocket, RKNEE, junk) > (kneeTarget - POSCLEARANCE) && getPos(canSocket, RKNEE, junk) < (kneeTarget + POSCLEARANCE))
+        if (getPos(canSocket, LKNEE, junk) > (lkneeTarget - POSCLEARANCE) && getPos(canSocket, LKNEE, junk) < (lkneeTarget + POSCLEARANCE) &&
+            getPos(canSocket, RKNEE, junk) > (rkneeTarget - POSCLEARANCE) && getPos(canSocket, RKNEE, junk) < (rkneeTarget + POSCLEARANCE))
         {
             return 1;
         }
@@ -686,4 +950,31 @@ void calcAB(long y1, long x1, long y2, long x2, double *A, double *B)
     //printf("A is %f\n", *A);
     *B = 1.0 * (y1 * x2 - y2 * x1) / (x2 - x1);
     //printf("B is %f\n", *B);
+}
+
+void initExo(int *socket){
+
+    //Initialise 4 joints
+    initMotorPos(socket, LHIP);
+    initMotorPos(socket, LKNEE);
+    initMotorPos(socket, RHIP);
+    initMotorPos(socket, RKNEE);
+
+    //Sets profile velocity, acceleration & deceleration for the joints.
+    setProfileAcceleration(socket, LHIP, PROFILEACCELERATION);
+    setProfileVelocity(socket, LHIP, PROFILEVELOCITY);
+    setProfileAcceleration(socket, LKNEE, PROFILEACCELERATION);
+    setProfileVelocity(socket, LKNEE, PROFILEVELOCITY);
+    setProfileAcceleration(socket, RHIP, PROFILEACCELERATION);
+    setProfileVelocity(socket, RHIP, PROFILEVELOCITY);
+    setProfileAcceleration(socket, RKNEE, PROFILEACCELERATION);
+    setProfileVelocity(socket, RKNEE, PROFILEVELOCITY);
+}
+
+//Function to put motors to preop.
+void stopExo(int *socket){
+    preop(socket, LHIP);
+    preop(socket, LKNEE);
+    preop(socket, RHIP);
+    preop(socket, RKNEE);
 }

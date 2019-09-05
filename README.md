@@ -1,6 +1,6 @@
 # ALEX Embedded Documentation
 
-The source for ALEX EMBEDDED SYSTEM documentation is in this directory under `sources/`. 
+The source for [ALEX EMBEDDED SYSTEM](https://embeded.readthedocs.io/en/latest/) documentation is in this directory under `sources/`. 
 Our documentation uses extended Markdown, as implemented by [MkDocs](http://mkdocs.org).
 
 ## Building the documentation
