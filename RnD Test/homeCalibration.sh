@@ -110,6 +110,16 @@ echo "Reached home. Homing now"
 ./canopencomm [1] 3 write 0x607C 0 i32 0
 ./canopencomm [1] 4 write 0x607C 0 i32 0
 
+#Set software joint limits
+./canopencomm [1] 1 write 0x607D 1 i32 -- -110000 #Lhip lower limit
+./canopencomm [1] 1 write 0x607D 2 i32 310000 #Lhip upper limit
+./canopencomm [1] 2 write 0x607D 1 i32 2000 #Lknee lower limit
+./canopencomm [1] 2 write 0x607D 2 i32 280000 #Lknee upper limit
+./canopencomm [1] 3 write 0x607D 1 i32 -- -110000 #Rhip lower limit
+./canopencomm [1] 3 write 0x607D 2 i32 310000 #Rhip upper limit
+./canopencomm [1] 4 write 0x607D 1 i32 2000 #Rknee lower limit
+./canopencomm [1] 4 write 0x607D 2 i32 280000 #Rknee upper limit
+
 #Control word flip
 ./canopencomm [1] 2 write 0x6040 0 i16 15
 ./canopencomm [1] 2 write 0x6040 0 i16 31
@@ -137,7 +147,7 @@ echo "current right hip value"
 ./canopencomm [1] 3 read 0x6063 0 i32
 
 #Setting motors to preop
-echo "Motors to preop"
+echo "Motors to preop"									  
 ./canopencomm 1 preop
 ./canopencomm 2 preop
 ./canopencomm 3 preop
