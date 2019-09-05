@@ -7,6 +7,12 @@
 #
 cd /home/debian/CANopenSocket/canopencomm
 
+#set nodes as preop
+./canopencomm [1] 1 preop
+./canopencomm [1] 2 preop
+./canopencomm [1] 3 preop
+./canopencomm [1] 4 preop
+
 #TRANSMIT POS AND VEL
 
 ./canopencomm [1] 1 write 0x1800 1 u32 0x80000281
