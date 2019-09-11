@@ -93,6 +93,7 @@ void strreverse(char *begin, char *end)
 }
 /******************************************************************************/
 void fileLogger(){
+    printf("fileLogger beggining\n");
     FILE* fp;
     fp = fopen("X2_log.txt", "a");
     // Generate whatever you want logged here, "data" is just an example
