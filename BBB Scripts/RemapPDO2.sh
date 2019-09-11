@@ -75,6 +75,36 @@ cd /home/debian/CANopenSocket/canopencomm
 #./canopencomm [1] 3 write 0x1800 1 u32 0x183
 #ß./canopencomm [1] 4 write 0x1800 1 u32 0x184
 
+./canopencomm [1] 1 write 0x1800 1 u32 0x80000181
+./canopencomm [1] 2 write 0x1800 1 u32 0x80000182
+./canopencomm [1] 3 write 0x1800 1 u32 0x80000183
+./canopencomm [1] 4 write 0x1800 1 u32 0x80000184
+
+./canopencomm [1] 1 write 0x1A00 0 u8 0
+./canopencomm [1] 1 write 0x1800 2 u8 0x01
+./canopencomm [1] 1 write 0x1A00 1 u32 0x60770010
+./canopencomm [1] 1 write 0x1A00 0 u8 1
+
+./canopencomm [1] 2 write 0x1A00 0 u8 0
+./canopencomm [1] 2 write 0x1800 2 u8 0x01
+./canopencomm [1] 2 write 0x1A00 1 u32 0x60770010
+./canopencomm [1] 2 write 0x1A00 0 u8 1
+
+./canopencomm [1] 3 write 0x1A00 0 u8 0
+./canopencomm [1] 3 write 0x1800 2 u8 0x01
+./canopencomm [1] 3 write 0x1A00 1 u32 0x60770010
+./canopencomm [1] 3 write 0x1A00 0 u8 1
+
+./canopencomm [1] 4 write 0x1A00 0 u8 0
+./canopencomm [1] 4 write 0x1800 2 u8 0x01
+./canopencomm [1] 4 write 0x1A00 1 u32 0x60770010
+./canopencomm [1] 4 write 0x1A00 0 u8 1
+
+./canopencomm [1] 1 write 0x1800 1 u32 0x181
+./canopencomm [1] 2 write 0x1800 1 u32 0x182
+./canopencomm [1] 3 write 0x1800 1 u32 0x183
+./canopencomm [1] 4 write 0x1800 1 u32 0x184
+
 #RECIEVE POSITION COMMANDS
 
 ./canopencomm [1] 1 write 0x1401 1 u32 0x80000301
