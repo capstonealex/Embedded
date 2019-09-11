@@ -363,3 +363,6 @@ echo "Setting up PDOs"
 ./canopencomm [1] 3 write 0x6040 0 i16 0
 ./canopencomm [1] 4 write 0x6040 0 i16 0
 
+#set sync timing to 100hz
+./canopencomm [1] 100 write 0x1006 0 u32 10000 #1s=1000000
+
