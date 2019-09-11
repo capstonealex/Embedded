@@ -48,7 +48,7 @@ void app_programAsync(uint16_t timer1msDiff){
 //  struct timeval stop;
 //    gettimeofday(&start, NULL);
 
-fileLogger()
+fileLogger();
 
 //  gettimeofday(&stop, NULL);
 //  double elapsed_ms = (stop.tv_sec - start.tv_sec) * 1000.0;
