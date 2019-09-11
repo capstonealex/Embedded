@@ -36,6 +36,16 @@
 ./canopencomm [1] 3 write 0x1802 1 u32 0x383
 ./canopencomm [1] 4 write 0x1802 1 u32 0x384
 
+./canopencomm [1] 100 write 0x1404 1 u32 0x80000381
+./canopencomm [1] 100 write 0x1405 1 u32 0x80000382
+./canopencomm [1] 100 write 0x1406 1 u32 0x80000383
+./canopencomm [1] 100 write 0x1407 1 u32 0x80000384
+
+./canopencomm [1] 100 write 0x1604 0 u8 0
+./canopencomm [1] 100 write 0x1605 0 u8 0
+./canopencomm [1] 100 write 0x1606 0 u8 0
+./canopencomm [1] 100 write 0x1607 0 u8 0
+
 ./canopencomm [1] 100 write 0x1604 1 u32 0x60410110
 ./canopencomm [1] 100 write 0x1605 1 u32 0x60410210
 ./canopencomm [1] 100 write 0x1606 1 u32 0x60410310
@@ -51,12 +61,4 @@
 ./canopencomm [1] 100 write 0x1406 1 u32 0x383
 ./canopencomm [1] 100 write 0x1407 1 u32 0x384
 
-./canopencomm [1] 100 write 0x1404 1 u32 0x80000381
-./canopencomm [1] 100 write 0x1405 1 u32 0x80000382
-./canopencomm [1] 100 write 0x1406 1 u32 0x80000383
-./canopencomm [1] 100 write 0x1407 1 u32 0x80000384
 
-./canopencomm [1] 100 write 0x1604 0 u8 0
-./canopencomm [1] 100 write 0x1605 0 u8 0
-./canopencomm [1] 100 write 0x1606 0 u8 0
-./canopencomm [1] 100 write 0x1607 0 u8 0
