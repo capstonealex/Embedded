@@ -20,6 +20,6 @@ sudo ifconfig can1 up
 cd /home/debian/CANopenSocket/canopend
 
 #Setting up master node
-echo - > od100_storage
-echo - > od100_storage_auto
-app/canopend can1 -i 100 -s od100_storage -a od100_storage_auto -c "" 
+echo - > od4_storage
+echo - > od4_storage_auto
+app/canopend can1 -i 100 -s od4_storage -a od4_storage_auto -c "" 
