@@ -9,39 +9,39 @@ cd /home/debian/CANopenSocket/canopencomm
 
 #TRANSMIT POS AND VEL
 
-./canopencomm [1] 1 write 0x1800 1 u32 0x80000281
-./canopencomm [1] 2 write 0x1800 1 u32 0x80000282
-./canopencomm [1] 3 write 0x1800 1 u32 0x80000283
-./canopencomm [1] 4 write 0x1800 1 u32 0x80000284
+./canopencomm [1] 1 write 0x1801 1 u32 0x80000281
+./canopencomm [1] 2 write 0x1801 1 u32 0x80000282
+./canopencomm [1] 3 write 0x1801 1 u32 0x80000283
+./canopencomm [1] 4 write 0x1801 1 u32 0x80000284
 
-./canopencomm [1] 1 write 0x1A00 0 u8 0
-./canopencomm [1] 1 write 0x1800 2 u8 1
-./canopencomm [1] 1 write 0x1A00 1 u32 0x60640020
-./canopencomm [1] 1 write 0x1A00 2 u32 0x606C0020
-./canopencomm [1] 1 write 0x1A00 0 u8 2
+./canopencomm [1] 1 write 0x1A01 0 u8 0
+./canopencomm [1] 1 write 0x1801 2 u8 1
+./canopencomm [1] 1 write 0x1A01 1 u32 0x60640020
+./canopencomm [1] 1 write 0x1A01 2 u32 0x606C0020
+./canopencomm [1] 1 write 0x1A01 0 u8 2
 
-./canopencomm [1] 2 write 0x1A00 0 u8 0
-./canopencomm [1] 2 write 0x1800 2 u8 1
-./canopencomm [1] 2 write 0x1A00 1 u32 0x60640020
-./canopencomm [1] 2 write 0x1A00 2 u32 0x606C0020
-./canopencomm [1] 2 write 0x1A00 0 u8 2
+./canopencomm [1] 2 write 0x1A01 0 u8 0
+./canopencomm [1] 2 write 0x1801 2 u8 1
+./canopencomm [1] 2 write 0x1A01 1 u32 0x60640020
+./canopencomm [1] 2 write 0x1A01 2 u32 0x606C0020
+./canopencomm [1] 2 write 0x1A01 0 u8 2
 
-./canopencomm [1] 3 write 0x1A00 0 u8 0
-./canopencomm [1] 3 write 0x1800 2 u8 1
-./canopencomm [1] 3 write 0x1A00 1 u32 0x60640020
-./canopencomm [1] 3 write 0x1A00 2 u32 0x606C0020
-./canopencomm [1] 3 write 0x1A00 0 u8 2
+./canopencomm [1] 3 write 0x1A01 0 u8 0
+./canopencomm [1] 3 write 0x1801 2 u8 1
+./canopencomm [1] 3 write 0x1A01 1 u32 0x60640020
+./canopencomm [1] 3 write 0x1A01 2 u32 0x606C0020
+./canopencomm [1] 3 write 0x1A01 0 u8 2
 
-./canopencomm [1] 4 write 0x1A00 0 u8 0
-./canopencomm [1] 4 write 0x1800 2 u8 1
-./canopencomm [1] 4 write 0x1A00 1 u32 0x60640020
-./canopencomm [1] 4 write 0x1A00 2 u32 0x606C0020
-./canopencomm [1] 4 write 0x1A00 0 u8 2
+./canopencomm [1] 4 write 0x1A01 0 u8 0
+./canopencomm [1] 4 write 0x1801 2 u8 1
+./canopencomm [1] 4 write 0x1A01 1 u32 0x60640020
+./canopencomm [1] 4 write 0x1A01 2 u32 0x606C0020
+./canopencomm [1] 4 write 0x1A01 0 u8 2
 
-./canopencomm [1] 1 write 0x1800 1 u32 0x281
-./canopencomm [1] 2 write 0x1800 1 u32 0x282
-./canopencomm [1] 3 write 0x1800 1 u32 0x283
-./canopencomm [1] 4 write 0x1800 1 u32 0x284
+./canopencomm [1] 1 write 0x1801 1 u32 0x281
+./canopencomm [1] 2 write 0x1801 1 u32 0x282
+./canopencomm [1] 3 write 0x1801 1 u32 0x283
+./canopencomm [1] 4 write 0x1801 1 u32 0x284
 
 #TRANSMIT STATUS WORD
 
