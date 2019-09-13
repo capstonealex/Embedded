@@ -34,7 +34,7 @@ This website is broadly divided into 3 section:
 * Developer: Contains detailed information about recreating the work done in this project. 
 * In-Development: This section contains work-in-progress information.
 
-Below are a set of steps for getting started with developing for the Fourier X2 exoskeleton. Depending on your goal, check either the deployment or developer section for details.
+Below are steps for getting started with developing for the Fourier X2 exoskeleton. Depending on your goal, check either the deployment or developer section for details.
 
 1. Set up a virtual machine workbench to cross compile and deploy on the BBB.
 2. Set up connection from your PC to the BBB.

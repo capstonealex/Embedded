@@ -7,8 +7,8 @@ nav:
   - DEPLOYMENT SECTION:
     - Workbench Setup: Deployment/vm_setup.md
     - BBB Connection: Deployment/bbb_connection.md
+    - BBB Real-Time Kernel: Deployment/bbb_RT.md
     - X2 Trajectory Test: Deployment/x2_trajectory_test.md
-    - BBB Real-Time Kernel
     
   - DEVELOPER SECTION:
     - Workbench setup: workbench.md
