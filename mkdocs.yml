@@ -2,18 +2,31 @@ site_name: ALEX Embedded  Documentation
 theme: readthedocs
 nav:
   - Home: index.md
-  - Requirements: requirements.md
-  - Workbench setup: workbench.md
-  - Cross compliation: crosscomp.md
-  - Eclipse w/ cross compliation: eclipse.md
-  - Beagle Bone Black: bbb.md
-  - Beagle Bone Kernel: kernel.md
-  - Calibrating X2: calibration.md
-  # - Everthing below this is in-development components. Move completed sections above.
-  - IN-DEVELOPMENT:
+  #- Requirements: requirements.md
+
+  - DEPLOYMENT SECTION:
+    - Workbench Setup: Deployment/vm_setup.md
+    - BBB Connection: Deployment/bbb_connection.md
+    - BBB Real-Time Kernel: Deployment/bbb_RT.md
+    - CANopen Setup: Deployment/canopen_setup.md
+    - X2 Trajectory Test: Deployment/x2_trajectory_test.md
+    - PDO Setup: Deployment/PDO_setup.md
+    - Troubleshooting: Deployment/troubleshooting.md
+    
+  - DEVELOPER SECTION:
+    - Workbench setup: workbench.md
+    - Cross compilation: crosscomp.md
+    - Eclipse & cross compilation: eclipse.md
+    - Beagle Bone Black Flashing: bbb.md
+    - Beagle Bone Kernel Compilation: kernel.md
     - CANbus: canbus.md
+    - Accelnet Motor Drive Config and Wiring: accelnet_DriveSetup.md
     - CANopen: canopen.md
     - CANopen Hardware: canopenHardware.md
-    - RnD Trajectory Test: rnd_test.md
+    - Calibrating X2: calibration.md
+  
+    # - Everything below this is in-development components. Move completed sections above.
+  - IN-DEVELOPMENT:
     - Setting Up PDOs: PDOprotocol.md
+    - RnD Trajectory Test: Rnd_test.md
   # - About: about.md

@@ -1,8 +1,22 @@
-**This section contains features that are currently in development and not fully tested/documented. They are recorded here for reference.**
-
 # CANopen Hardware
 
 This section contains details about some of hardware used in the Fourier X2 Exoskeleton and how to interface with them using canopensocket.
+
+## X2 CANopen Node ID
+
+| Node ID             | Device                   |
+| ------------------- |:------------------------:|
+| 1                   | Left Hip Drive           |
+| 2                   | Left Knee Drive          |
+| 3                   | Right Hip Drive          |
+| 4                   | Right Knee Drive         |
+| 9                   | Hand Control Unit        |
+| 11                  | Left Thigh Force Sensor  |
+| 12                  | Left Calf Force Sensor   |
+| 13                  | Right Thigh Force Sensor |
+| 14                  | Right Calf Force Sensor  |
+| 21                  | Left Foot Force Sensor   |
+| 22                  | Right Foot Force Sensor  |
 
 ## Hand Control Unit
 The hand control unit (HCU) has 4 buttons connected to a custom board that supports some CANopen features. The image below shows the data frame for request and response for the HCU on the X2 (Obtained from the Fourier X2 Developer Guide). 
