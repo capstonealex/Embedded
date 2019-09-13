@@ -1,7 +1,7 @@
 # Real-Time Kernel for BBB
 This section shows how to install a pre-compiled RT kernel to your BBB.
 
-1. Get the Debian kernel packages from [here](https://drive.google.com/drive/folders/1QxixLCkjTl1fydw8D9Qf-CXiwcgkRjLf?usp=sharing). They are located in `Capstone Project - LOWER LIMB EXOSKELETON FOR GAIT ASSISTANCE\Embedded Team\BBB Kernels` of the Capstone Google Drive. 
+1. Get the Debian kernel packages from [Capstone Project - LOWER LIMB EXOSKELETON FOR GAIT ASSISTANCE\Embedded Team\BBB Kernels](https://drive.google.com/drive/folders/1QxixLCkjTl1fydw8D9Qf-CXiwcgkRjLf?usp=sharing) of the Capstone Google Drive. 
 
     Note: You may need a University of Melbourne email ID.
 

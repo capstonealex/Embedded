@@ -1,5 +1,3 @@
-**This section contains features that are currently in development and not fully tested/documented. They are recorded here for reference.**
-
 # CANopen Hardware
 
 This section contains details about some of hardware used in the Fourier X2 Exoskeleton and how to interface with them using canopensocket.

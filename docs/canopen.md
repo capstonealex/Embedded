@@ -1,5 +1,5 @@
-**This section contains features that are currently in development and not fully tested/documented. They are recorded here for reference.**
 # CANopen
+CANopen is a higher level protocol that sits on top of CANbus. This protocol gives us the features required for automation and robotics tasks. This page explains setting up CANopen comms using CANsocketOpen library. It also shows some basic SDO messaging.
 
 ## Sending CANopen messages on Accelnet Drive
 1. Git clone the [canopensocket](https://github.com/CANopenNode/CANopenSocket) from github. Use below commands if you have git installed, else download manually.
@@ -13,9 +13,10 @@
    
       Note: If downloading manually, the canopennode subfolder has to be separately downloaded as this is a separate repository. 
 
-2. Follow instructions in README.md on the github page for CANopenSocket. Below is an abridged version of the same.
-3.	Setup BBB CAN1 from the embedded [wiki](https://embeded.readthedocs.io/en/latest/canbus/#configuring-the-bbb-can-interface). Make sure to use same bitrate in setup here and the CAN config in the [CME software](https://embeded.readthedocs.io/en/latest/canbus/#accelnet-serial-comms). 
-4.	Connect to drive using serial. Reset the drive using CME to clear network errors. Also check bitrate and note the node ID.
+3. Connect the BBB to the CANbus network and setup CAN1 interface on the BBB as stated in [CANbus section](https://embeded.readthedocs.io/en/latest/canbus/). Make sure to use the same bitrate the drives as configured in. Default is 1000000. You can verify this using the CME software.
+
+3. Follow instructions in README.md on the github page for CANopenSocket. Below is an abridged version of the same.
+
 5.	Open 3 terminals on BBB. On first terminal: `candump can1`
 
 6.	2nd terminal: Navigate to canopend folder.  
@@ -55,9 +56,9 @@
 
 ## Connecting to the Exoskeleton and Issuing Position Command
 
-Currently, an ethernet cable (accessible from outside) is connected to the exoskeleton network switch. This serves as the CANbus interface for the BBB, i.e. it has CAN-H, CAN-L and GND. Internally, the old MMU is disconnected. The rest of the wiring has to be verfied: termination resistance, sensors and motors.
+Currently, an "ethernet" cable (accessible from outside) is connected to the exoskeleton CAN network. This serves as the CANbus interface for the BBB, i.e. it has CAN-H, CAN-L and GND. 
 
-1. Connect the ethernet cable to the BBB CAN interface as shown in the table below.
+1. Connect this cable to the BBB CAN interface as shown in the table below.
 
       | Ethernet Cable Wire | CAN                    |
       | ------------------- |:----------------------:|
@@ -65,8 +66,8 @@ Currently, an ethernet cable (accessible from outside) is connected to the exosk
       | White with Green    | CAN-H                  |
       | White with Orange   | Signal Ground          |
 
-2.	Setup BBB CAN1 from the embedded [wiki](https://embeded.readthedocs.io/en/latest/canbus/#configuring-the-bbb-can-interface). The exo CANbus is currently set to 1Mbps bitrate (1000000).
-3. The X2 node IDs can be found [here](https://embeded.readthedocs.io/en/latest/#x2-canopen-node-id).
+2. Setup BBB CAN1 from the embedded [wiki](https://embeded.readthedocs.io/en/latest/canbus/#configuring-the-bbb-can-interface). The exo CANbus is currently set to 1Mbps bitrate (1000000).
+3. The X2 node IDs can be found [here](https://embeded.readthedocs.io/en/latest/canopenHardware/#x2-canopen-node-id).
 4. On a BBB with CANopenSocket installed, open 3 terminals. 
 5. On terminal 1: `candump can1`
 
@@ -93,15 +94,8 @@ Currently, an ethernet cable (accessible from outside) is connected to the exosk
 14. Read status word: `./canopencomm [1] 2 read 0x6041 0 i16`. Should be 1591 (to be verified) if ready for motion. Convert 1591 to binary and compare to the bits in the manual for 0x6041 to get more details. 
 15. Control word (0x6040) can now be used for motion. We need to change bit 4 from low to high to start motion. The entire control word goes from 0000000001101111 (decimal 111) to 0000000001111111 (decimal 127). So send, `./canopencomm [1] 2 write 0x6040 0 i16 111` followed by `./canopencomm [1] 2 write 0x6040 0 i16 127`. This should move the knee. See profile position mode for details on bits 4-6. For remaining bits, see control word in manual.
 
-## Socket failure recovery
-* If the socket between the main Robot application running canFeast fails, or any socket error occurs follow bellow.
-1. In a terminal type: `unlink /tmp/CO_command_socket`.
-2. End and restart canopend `app/canopend can1 -i 100 -c ""`.
-3. Begin your application again.
-
 ## MISC
-* The zero (home) position of the motor set to current position when exo skeleton is powered on. 
-* To send negative values in canopencomm, use -- -number. The -- specifies that the number is a value and not an option for the command.
+* To send negative values (say -1235) in canopencomm, use -- -1235. The -- specifies that the number is a value and not an option for the command.
 * To add virtual nodes when using vcan, do the following step after step 5. On terminal 2: `cd CANopenSocket/canopend`. Then issue below command for each node after replace <NODE_ID> with correct ID. You can use ctrl + z and type `bg` to start another process for each of the node. 
 
       ```

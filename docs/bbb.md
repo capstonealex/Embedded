@@ -12,9 +12,9 @@ Use one of the following in terminal. They give different level of details.
 * `uname -r` to get just kernel
 
 ## Getting and flashing BBB images
-The instructions below are specifically for the official images from the BBB website. But you can follow similar steps for any compatible images. 
+The instructions below are specifically for the official images (containing Debian Stretch) from the BBB website. But you can follow similar steps for any compatible images. 
 
-1. Get latest image from https://beagleboard.org/latest-images. The regular version has a GUI while the IOT version does not.
+1. Get latest image from [https://beagleboard.org/latest-images](https://beagleboard.org/latest-images). The regular version has a GUI while the IOT version does not.
 2. Use [etcher](https://www.balena.io/etcher/) to install the image onto an SD card (4GB or greater). If using an alternate tool like UNetbootin, you may have to first extract the image.
 3. You can now either live boot of the SD card or flash the image onto the beagle bone.
 
