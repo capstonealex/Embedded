@@ -1,8 +1,8 @@
-#Process Data Objects (PDOs)
+# Process Data Objects (PDOs)
 
 Process Data Objects or PDOs, are high speed unacknowlegded messages used on CAN networks, used for real-time control.
 
-##Configuring PDOs on nodes
+## Configuring PDOs on nodes
 
 This will detail how to configure the nodes PDO messaging protocol using SDO messaging from canopend
 
@@ -52,14 +52,14 @@ RPDOs:
 
 For the X2 the actual position and velocity are set up to be sent out at a rate of 1000Hz. In order to do this, the  communication mode for each TPDO is set to 1 and a sync message is set up at 1000Hz.
 
-##Initialising Sync Message
+## Initialising Sync Message
 
 Initialising the sync message is done in 2 steps and can be on any node you desire, provided it is capable of producing a sync message.
 
 - Set 0x1005 sub 0 to 0x40000080.
 - Set 0x1006 sub 0 to 1000. (Time period in microseconds)
 
-##Master Object Dictionary
+## Master Object Dictionary
 
 In order to set up PDOs at the master end, an appropriate canopen object dictionary is needed.
 
@@ -138,24 +138,26 @@ Mapping the PDOs on the master could be done in an identical manner to the node 
 In the CO_OD.c file, the PDO communication and mapping parameters for the first recieve PDO would appear as follows by default:
 
 ```c
-/*1400*/ {{0x2L, 0x80000000L, 0xffL},...}
+/*1400*/ {{0x2L, 0x80000000L, 0xffL}}
 ```
 ...
 ```c
-/*1600*/ {{0x0L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L},...}
+/*1600*/ {{0x0L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L}}
 ```
 
 These can be then mapped to the desired mapping by editing the parameters manually. Each element in the brackets corresponds to the subindeces of the object. in the example below, there are 2 objects mapped with index 6040 sub1 and 606C sub1 respectively (actual postion for motor 1 & actual velocity for motor 1) with a COB_ID. (Note: the COB_ID of a RPDO on the master must match the COB_ID of the node TPDO it is expecting the information to come from)
 
 ```c
-/*1400*/ {{0x2L, 0x0181L, 0xffL},...}
+/*1400*/ {{0x2L, 0x0181L, 0xffL}}
 ```
 ...
 ```c
-/*1600*/ {{0x2L, 0x60640120L, 0x606c0120L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L},...}
+/*1600*/ 
+
+0x2L, 0x60640120L, 0x606c0120L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L}}
 ```
 
-##Deployment
+## Deployment
 
 To deploy:
 
