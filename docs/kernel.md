@@ -53,7 +53,7 @@ The debian packages compiled in this section can be found [here](https://drive.g
 - BBB Github wiki about kernel cross compilation [https://github.com/beagleboard/linux/wiki](https://github.com/beagleboard/linux/wiki)
 - [Robert Nelson's Repo](https://github.com/RobertCNelson/ti-linux-kernel-dev)
 
-# Developer Section
+# Alternate Methods
 
 There is an alternate script `build_kernel.sh` that can be used to make non-debian specific kernel files. In step 4 of the "Building Kernel" section, run this script instead to generate kernel files. In step 7, the deploy folder will contain `4.14.108-ti-rt-r103.zimage`, `4.14.108-ti-rt-r103-dtbs.tar.gz` and `4.14.108-ti-rt-r103-module.tar.gz` files. The file names will depend on the kernel version you checked out earlier. Now, follow the instructions below to install these kernel files.
 
