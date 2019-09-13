@@ -18,6 +18,15 @@ This section contains details about some of hardware used in the Fourier X2 Exos
 | 21                  | Left Foot Force Sensor   |
 | 22                  | Right Foot Force Sensor  |
 
+## X2 CANbus Cable Mapping
+Currrently RJ45 ended cables are used to connect to the X2 CAN network. They have the following mapping.
+
+| Ethernet Cable Wire | CAN                    |
+| ------------------- |:----------------------:|
+| Green               | CAN-L                  |
+| White with Green    | CAN-H                  |
+| White with Orange   | Signal Ground          |
+
 ## Hand Control Unit
 The hand control unit (HCU) has 4 buttons connected to a custom board that supports some CANopen features. The image below shows the data frame for request and response for the HCU on the X2 (Obtained from the Fourier X2 Developer Guide). 
 

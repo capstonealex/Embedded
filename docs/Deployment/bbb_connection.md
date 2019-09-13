@@ -11,6 +11,7 @@ Root password: root or blank
 ---
 
 # Connect to BBB through VM
+The BBB can be connected to VM to enable remote deployment of cross-compiled code directly to the BBB.
 
 ## Setting up BBB outside VM (To be done first)
 
