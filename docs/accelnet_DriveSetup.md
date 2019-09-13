@@ -4,7 +4,7 @@ This page has information about connecting to the the Accelnet Motor drives on t
 
 The Fourier X2 exoskeleton currently uses the Accelnet [ACJ-055-18](https://www.copleycontrols.com/en/products/acj-055-18) servo drives. These support the CANopen protocol. 
 
-## USB-Serial Adapter to Motor Drive
+## USB-Serial Adapter (TRP-C08) to Motor Drive
 We cannot use this CANbus to communicate to the drive directly from a PC (unless you get a CANbus adapter). Communicating directly from the PC is useful for configuring the drive (eg. allocating CAN node ID) and troubleshooting. We use serial comms for this, specifically RS232. 
 
 The Accelnet [datasheet](https://www.copleycontrols.com/wp-content/uploads/2018/02/Accelnet_Micro_Panel_CANopen-ACJ-Datasheet-Datasheet.pdf) recommends using ACJ-SK cable kit for serial comms. However, for our testing we have used a [TRP-C08](http://www.trycom.com.tw/TRP-C08.htm) USB-Serial adapter. Unfortunately, the unit we have uses a discontinued chipset and current drivers throw an error. Below are steps to rectify this.

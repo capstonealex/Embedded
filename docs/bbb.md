@@ -18,12 +18,14 @@ The instructions below are specifically for the official images (containing Debi
 2. Use [etcher](https://www.balena.io/etcher/) to install the image onto an SD card (4GB or greater). If using an alternate tool like UNetbootin, you may have to first extract the image.
 3. You can now either live boot of the SD card or flash the image onto the beagle bone.
 
-### Live booting from SD card
+## Live booting from SD card
+
 1. Power off the BBB and insert the SD card. 
 1. While pressing the boot button on the BBB (near the SD card), power it up. Pressing the boot button may not be required with the BBB we are using.
 1. The BBB will start up and boot the OS off the SD card. You can verify this by running `lsblk`. This shows all the partitions (internal and external). It shows a forward slash next to the boot partition. The SD card should be `mmcblk0` and internal emmc should be `mmcblk1`. Livebooting will show a `/` next to the SD card partition and regular booting will show it next to the internal emmc partition.
 
-### Flashing the image
+## Flashing the image
+
 1. In order to make the SD card image flashable, we need to modify the `uEnv.txt` file. This can be done either on the BBB or the host PC. Below instructions are for the BBB. 
 1. First, live boot using the SD card.
 2. Open `/boot/uEnv.txt`, you may need sudo to edit the file. 
@@ -37,7 +39,5 @@ The instructions below are specifically for the official images (containing Debi
 * Is using linux, the SSH may throw an authentication error after flashing new images/livebooting. To fix this, you have to clear the currently authorised key: `ssh-keygen -R 192.168.7.2`
 
 ## Sources
-* https://beagleboard.org/getting-started#update
-* https://elinux.org/Beagleboard:BeagleBoneBlack_Debian
-
----
+* [https://beagleboard.org/getting-started#update](https://beagleboard.org/getting-started#update)
+* [https://elinux.org/Beagleboard:BeagleBoneBlack_Debian](https://elinux.org/Beagleboard:BeagleBoneBlack_Debian)

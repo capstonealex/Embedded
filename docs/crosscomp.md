@@ -63,7 +63,3 @@ armhf ”
 - Check for success with: `user@desktop:~$ sudo apt update`
 - Return should have several packages ending in `armhf Packages` if not try again.
 - You can also try running the `testcross` executable created in the prev section to verify that QEMU is installed correctly.
-
-## Set up Multiarch cross-compliation with third-party libraries
-
-To be done.

@@ -16,7 +16,7 @@ The BBB can be connected to VM to enable remote deployment of cross-compiled cod
 ## Setting up BBB outside VM (To be done first)
 
 1. Fully shutdown VirtualBox and plug the BBB in to the host computer's USB. It should show up as a USB drive.
-2. Install the correct BBB drivers for your host OS. These can be obtained from the http://beagleboard.org/getting-started. Note: The drivers stored in the BBB that shows up as USB device (on your computer) maybe outdated.
+2. Install the correct BBB drivers for your host OS. These can be obtained from the [http://beagleboard.org/getting-started](http://beagleboard.org/getting-started). Note: The drivers stored in the BBB that shows up as USB device (on your computer) maybe outdated.
    - If the drivers were installed correctly, you should be able to remote login to the BBB (debian@192.168.7.2 with password: temppwd) using Putty (Win) or SSH (linux/mac). Note that the hostname for mac might be 192.168.6.2 for mac.
 3. For copying files you can use WinSCP or FileZilla.
 
