@@ -39,13 +39,13 @@ The debian packages compiled in this section can be found [here](https://drive.g
 
 ## Real-time Tests
 ### Cyclic Test
-* Download the rt-test files from [https://mirrors.edge.kernel.org/pub/linux/utils/rt-tests/](https://mirrors.edge.kernel.org/pub/linux/utils/rt-tests/)
-* Extract them into a folder. 
-* Run `make all`. Run 'make NUMA=0' if you encounter errors with the former. 
-* `sudo ./cyclictest -p 80` while in the working folder will start the cyclic test. `-p 80` is for priority.
-* Run a cpu stress test at same time while benchmarking. Get debian package for stress from here [https://packages.debian.org/stretch/armhf/stress/download](https://packages.debian.org/stretch/armhf/stress/download). Copy to BBB and install using dpkg.
-* Follow instructions here http://zeuzoix.github.io/techeuphoria/posts/2015/04/21/benchmarking-rt-preempt-kernel-on-beaglebone-black/
-* More instructions here: [https://wiki.linuxfoundation.org/realtime/documentation/howto/tools/rt-tests](https://wiki.linuxfoundation.org/realtime/documentation/howto/tools/rt-tests) and [https://web.archive.org/web/20160716124520/https://rt.wiki.kernel.org/index.php/Cyclictest](https://web.archive.org/web/20160716124520/https://rt.wiki.kernel.org/index.php/Cyclictest) (accessed via wayback machine)
+1. Download the rt-test files from [https://mirrors.edge.kernel.org/pub/linux/utils/rt-tests/](https://mirrors.edge.kernel.org/pub/linux/utils/rt-tests/)
+2. Extract them into a folder on the BBB. 
+3. Run `make all`. Run 'make NUMA=0' if you encounter errors with the former. 
+4. `sudo ./cyclictest -p 80` while in the working folder will start the cyclic test. `-p 80` is for priority.
+5. Run a cpu stress test at same time while benchmarking. Get debian package for stress from here [https://packages.debian.org/stretch/armhf/stress/download](https://packages.debian.org/stretch/armhf/stress/download). Copy to BBB and install using dpkg.
+6. Follow instructions here [http://zeuzoix.github.io/techeuphoria/posts/2015/04/21/benchmarking-rt-preempt-kernel-on-beaglebone-black/](http://zeuzoix.github.io/techeuphoria/posts/2015/04/21/benchmarking-rt-preempt-kernel-on-beaglebone-black/)
+7. More instructions here: [https://wiki.linuxfoundation.org/realtime/documentation/howto/tools/rt-tests](https://wiki.linuxfoundation.org/realtime/documentation/howto/tools/rt-tests) and [https://web.archive.org/web/20160716124520/https://rt.wiki.kernel.org/index.php/Cyclictest](https://web.archive.org/web/20160716124520/https://rt.wiki.kernel.org/index.php/Cyclictest) (accessed via wayback machine)
 
 ## Sources
 

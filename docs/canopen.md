@@ -2,9 +2,16 @@
 # CANopen
 
 ## Sending CANopen messages on Accelnet Drive
-1. Git clone the [canopensocket](https://github.com/CANopenNode/CANopenSocket) from github. 
+1. Git clone the [canopensocket](https://github.com/CANopenNode/CANopenSocket) from github. Use below commands if you have git installed, else download manually.
+
+      ```
+      git clone https://github.com/CANopenNode/CANopenSocket.git
+      cd CANopenSocket
+      git submodule init
+      git submodule update
+      ```
    
-      Note: The canopennode folder may have to be separately downloaded. Check canopennode folder and see if empty. Transfer the entire folder it over to BBB. 
+      Note: If downloading manually, the canopennode subfolder has to be separately downloaded as this is a separate repository. 
 
 2. Follow instructions in README.md on the github page for CANopenSocket. Below is an abridged version of the same.
 3.	Setup BBB CAN1 from the embedded [wiki](https://embeded.readthedocs.io/en/latest/canbus/#configuring-the-bbb-can-interface). Make sure to use same bitrate in setup here and the CAN config in the [CME software](https://embeded.readthedocs.io/en/latest/canbus/#accelnet-serial-comms). 
@@ -59,13 +66,7 @@ Currently, an ethernet cable (accessible from outside) is connected to the exosk
       | White with Orange   | Signal Ground          |
 
 2.	Setup BBB CAN1 from the embedded [wiki](https://embeded.readthedocs.io/en/latest/canbus/#configuring-the-bbb-can-interface). The exo CANbus is currently set to 1Mbps bitrate (1000000).
-3. The following are the currently identified node ID:
-
-      | Node ID             | Device                 |
-      | ------------------- |:----------------------:|
-      | 1                   | Left Hip Motor         |
-      | 2                   | Left Knee Motor        |
-
+3. The X2 node IDs can be found [here](https://embeded.readthedocs.io/en/latest/#x2-canopen-node-id).
 4. On a BBB with CANopenSocket installed, open 3 terminals. 
 5. On terminal 1: `candump can1`
 
@@ -108,56 +109,3 @@ Currently, an ethernet cable (accessible from outside) is connected to the exosk
       echo - > od<NODE_ID>_storage_auto
       app/canopend can1 -i <NODE_ID> -s od<NODE_ID>_storage -a od<NODE_ID>_storage_auto
       ```
-
-## Resources to look into
- - **Basics of CANopen**
-
-    <https://www.ni.com/en-au/innovations/white-papers/13/the-basics-of-canopen.html>
-
-    Probably need OD (object dictionary) for constructing messages for particular devices.
-    
-    
- - **Constructing Messages Manuallly**
-
-    <http://robotsforroboticists.com/can-bus/>
-    
-    See bottom of page. Probably can use this for cansend on can-utils (linux)
-    
- - **Video guide to CANopen**
-
-    <https://www.youtube.com/watch?v=iIkBJ4NheCc>
-
- - **CAN-utils**
-    
-    <https://blog.mbedded.ninja/programming/operating-systems/linux/how-to-use-socketcan-with-the-command-line-in-linux/>
-
-    cansend and candump quick guide.
-
- - **CMO for CANopen guide**
-    
-    <https://www.youtube.com/watch?v=NNlMBlTM228>
-    
-    <https://www.youtube.com/watch?v=i60Kk0K8KW8>
-
-    CMO is used by copley for CANopen comms. Most of the 1st video is unusable since we are using a BBB for comms. But we maybe able to use the C++ code at the end to construct messages. 
-    The 2nd video mentions that we can use the CMO library with other tools as well. Might be worth looking into.
-
- - **CANopenSocket**
-   
-    <https://github.com/CANopenNode/CANopenSocket>
-
-    Linux tools for constructing/reading CANopen messages.
-
- - **CANfestival**
- 
-    <https://basdebruijn.com/2015/05/sniffing-at-canopen/>
-    
-    <https://canfestival.org/>
-
-    Tools for CANopen.
-
-- **CANopen using python**
-
-    <https://buildmedia.readthedocs.org/media/pdf/canopen/latest/canopen.pdf>
-
-    Python libraries for constructing CANopen messages.

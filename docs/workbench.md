@@ -1,7 +1,5 @@
 # Workbench
 
----
-
 ## Virtual Box with instance of Debian 9.8
 
 - Download virtual box: [Virtual box](www.virtualbox.org)
@@ -16,7 +14,6 @@
 - Click Start and follow Debian install instructions, use any GUI you wish, this project follows a GNOME installation.
 - Once installed reboot and make sure the system boots, if you see a "No boot device" eject the install disk and try again.
 
----
 
 ## Enable Debian utilities for development.
 
@@ -34,8 +31,6 @@ root@debian:~# sh ./VBoxLinuxAdditions.run
 root@debian:~# reboot
 ```
 
----
-
 ## Enable sudo
 
 ```linux
@@ -46,11 +41,7 @@ root@debian:~# visudo
 -> add your user as:_your_username ALL=(ALL:ALL) ALL
 ```
 
----
-
 # Virtual Box UX improvements
-
----
 
 ## Enabling clipboard b/w host and guest
 
@@ -58,7 +49,6 @@ root@debian:~# visudo
 - Under virtual box, Settings>General>Advanced, enable Shared Clipboard.
 - If you run into issues with permissions, go to /etc/fstab and add exec permission. To do this, change following in fstab file `/dev/sr0 /media/cdrom0 udf,iso9660 user,noauto 0 0` to `/dev/sr0 /media/cdrom0 udf,iso9660 user,noauto,exec 0 0`. You may need sudo to do this.
 
----
 
 ## Shared folder b/w host and guest
 
@@ -66,5 +56,3 @@ root@debian:~# visudo
 - In virtual box, Settings>Shared Folders, add the folder you would like to share between host and guest.
 - From a terminal in guest, run `sudo adduser <username> vboxsf`.
 - Restart virtual box.
-
----

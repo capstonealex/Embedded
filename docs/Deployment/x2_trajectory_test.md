@@ -1,4 +1,8 @@
-# Procedure for Testing Trajectories on BBB
+# Procedure for Testing X2 Trajectories on BBB
+
+For controlling the X2, you will need a Beagle Bone Black with a [comms cape](https://github.com/beagleboard/capes/tree/master/beaglebone/Comms). This cape enables CANbus connections without additional hardware. 
+
+You can follow the instructions in this page to test some simple position controlled motions.
 
 ## Startup Sequence
 This is summary of the startup procedure. Following this out of sequence may cause SDO timeouts. For more details on each step, read the sections below. 
