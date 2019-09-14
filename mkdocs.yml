@@ -14,7 +14,7 @@ nav:
     - Troubleshooting: Deployment/troubleshooting.md
     
   - DEVELOPER SECTION:
-    - Workbench setup: workbench.md
+    - Workbench Creation: workbench.md
     - Cross compilation: crosscomp.md
     - Eclipse & cross compilation: eclipse.md
     - Beagle Bone Black Flashing: bbb.md
