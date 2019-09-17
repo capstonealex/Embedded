@@ -12,8 +12,9 @@ This is summary of the startup procedure. Following this out of sequence may cau
 3. Power on BBB (connect USB cable to PC).
 4. Run `./InitHardware.sh` on terminal 1.
 5. Run `./homeCalibration.sh` on terminal 2.
-6. Copy the required c program to working folder in BBB and compile using `gcc <filename>.c -Wall`.
-7. Control X2 using handheld buttons. 
+6. Copy the required c program to working folder in BBB and compile using `gcc <filename>.c -Wall` in terminal 2.
+7. Run program from terminal 2 using `./a.out`.
+7. Control X2 using handheld buttons.
 
 ## Initial Setup
 1. The files you require for testing are stored in the `RnD_Trajectory_Test` branch of Embedded Github, under [RnD Test Folder](https://github.com/capstonealex/Embedded/tree/RnD_Trajectory_Test/RnD%20Test). The files you need are `InitHardware.sh`, `homeCalibration.sh`, and `CanFeast_Trajectory.c`. Clone this branch to your PC.
@@ -65,6 +66,23 @@ This is summary of the startup procedure. Following this out of sequence may cau
 2. Switch off the X2 using the green button on the back.
 3. Switch off BBB with small black button near the ethernet port.
 4. Disconnect the cables. 
+
+## Logging Position and Torque
+To log position and torque, the startup sequence has to be done with a few additional steps.
+
+1. Power on X2 with joints fully bent back.
+2. Connect ethernet cable to BBB cape CAN pins. 
+3. Power on BBB (connect USB cable to PC).
+4. Run `./InitHardware_PDO.sh` on terminal 1. Note that this is a different script,
+5. Run `./homeCalibration.sh` on terminal 2.
+6. Run `./RemapPDO2.sh`. This is an extra step. 
+6. Copy the required c program to working folder in BBB and compile using `gcc <filename>.c -Wall` in terminal 2.
+7. Run program from terminal 2 using `./a.out`.
+7. Control X2 using handheld buttons.
+8. Once done, close the sockets in terminal 1 using `ctrl+c`.
+
+The log file name `X2_log.txt` can be obtained from `CANopenSocket/canopend/` folder. The data is stored in the format `time(seconds), time(microseconds), Left Hip Pos, Left Hip Torque, , Left Knee Pos, Left Knee Torque,, Right Hip Pos, Right Hip Torque,, Right Knee Pos, Right Knee Torque`. Torque is has unit `rated torque/1000`, i.e. a reading of 500 means that current torque is half of rated torque. The positions are shown as motor count values. See [calibration](https://embeded.readthedocs.io/en/latest/calibration/) page for details.
+
 
 ## Troubleshooting
 
