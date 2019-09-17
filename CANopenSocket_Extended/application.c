@@ -25,10 +25,12 @@
  */
 #include "CANopen.h"
 #include "stdio.h"
+#include <stdint.h>
 #include <sys/time.h>
+
 //// Data logger helper functions
 void fileLogHeader();
-void fileLogger(uint16_t timer1msDiff);
+void fileLogger();
 void strreverse(char *begin, char *end);
 void itoa(int value, char *str, int base);
 /******************************************************************************/
@@ -63,65 +65,7 @@ printf("time after(s): %lu, (us): %lu\n",tv.tv_sec, tv.tv_usec);
 
 /******************************************************************************/
 void app_program1ms(void){
-	/*
-	struct timeval tv;
-	gettimeofday(&tv,NULL);
-	printf("time rt(s): %lu, (us): %lu\n",tv.tv_sec, tv.tv_usec);
-	*/
-	
-	//printf("fileLogger beggining\n");
-    FILE* fp;
-    fp = fopen("X2_log.txt", "a");
-    // Generate whatever you want logged here, "data" is just an example
-    char position [50];
-	char timestamp [50];
-    char torque[50];
-    char comma[] = ", ";
-	char period[] = ".";
-	
-	//Getting timestamp
-	//printf("time(s): %lu, (us): %lu\n",tv.tv_sec, tv.tv_usec);
-    //itoa(timer1msDiff, position, 10);
-	struct timeval tv;
-	gettimeofday(&tv,NULL);
-	itoa(tv.tv_sec, timestamp, 10);
-    fputs(timestamp, fp);
-    fputs(period, fp);
-	itoa(tv.tv_usec, timestamp, 10);
-	fputs(timestamp, fp);
-    fputs(comma, fp);
-	
-    // Motor 1: Left Hip position and Torque
-    itoa(CO_OD_RAM.actualMotorPositions.motor1, position, 10);
-    itoa(CO_OD_RAM.statusWords.motor1, torque, 10);
-    fputs(position, fp);
-    fputs(comma, fp);
-    fputs(torque, fp);
-    fputs(comma, fp);
-    // Motor 2: Left Knee position and Torque
-    itoa(CO_OD_RAM.actualMotorPositions.motor2, position, 10);
-    itoa(CO_OD_RAM.statusWords.motor2, torque, 10);
-    fputs(position, fp);
-    fputs(comma, fp);
-    fputs(torque, fp);
-    fputs(comma, fp);
-    // Motor 3: Right Hip position and Torque
-    itoa(CO_OD_RAM.actualMotorPositions.motor3, position, 10);
-    itoa(CO_OD_RAM.statusWords.motor3, torque, 10);
-    fputs(position, fp);
-    fputs(comma, fp);
-    fputs(torque, fp);
-    fputs(comma, fp);
-    // Motor 4: Right Knee position and Torque
-    itoa(CO_OD_RAM.actualMotorPositions.motor4, position, 10);
-    itoa(CO_OD_RAM.statusWords.motor4, torque, 10);
-    fputs(position, fp);
-    fputs(comma, fp);
-    fputs(torque, fp);
-    fputs("\n", fp);
-	
-    fclose(fp);
-	
+	fileLogger();
 }
 /******************************************************************************/
 void itoa(int value, char *str, int base)
@@ -156,7 +100,7 @@ void strreverse(char *begin, char *end)
         aux = *end, *end-- = *begin, *begin++ = aux;
 }
 /******************************************************************************/
-void fileLogger(uint16_t timer1msDiff){
+void fileLogger(){
     //printf("fileLogger beggining\n");
     FILE* fp;
     fp = fopen("X2_log.txt", "a");
@@ -165,7 +109,6 @@ void fileLogger(uint16_t timer1msDiff){
 	char timestamp [50];
     char torque[50];
     char comma[] = ", ";
-	char period[] = ".";
 	
 	//Getting timestamp
 	//printf("time(s): %lu, (us): %lu\n",tv.tv_sec, tv.tv_usec);
@@ -174,35 +117,35 @@ void fileLogger(uint16_t timer1msDiff){
 	gettimeofday(&tv,NULL);
 	itoa(tv.tv_sec, timestamp, 10);
     fputs(timestamp, fp);
-    fputs(period, fp);
+    fputs(comma, fp);
 	itoa(tv.tv_usec, timestamp, 10);
 	fputs(timestamp, fp);
     fputs(comma, fp);
 	
     // Motor 1: Left Hip position and Torque
     itoa(CO_OD_RAM.actualMotorPositions.motor1, position, 10);
-    itoa(CO_OD_RAM.statusWords.motor1, torque, 10);
+    itoa(((int16_t)CO_OD_RAM.statusWords.motor1), torque, 10);
     fputs(position, fp);
     fputs(comma, fp);
     fputs(torque, fp);
     fputs(comma, fp);
     // Motor 2: Left Knee position and Torque
     itoa(CO_OD_RAM.actualMotorPositions.motor2, position, 10);
-    itoa(CO_OD_RAM.statusWords.motor2, torque, 10);
+    itoa(((int16_t)CO_OD_RAM.statusWords.motor2), torque, 10);
     fputs(position, fp);
     fputs(comma, fp);
     fputs(torque, fp);
     fputs(comma, fp);
     // Motor 3: Right Hip position and Torque
     itoa(CO_OD_RAM.actualMotorPositions.motor3, position, 10);
-    itoa(CO_OD_RAM.statusWords.motor3, torque, 10);
+    itoa(((int16_t)CO_OD_RAM.statusWords.motor3), torque, 10);
     fputs(position, fp);
     fputs(comma, fp);
     fputs(torque, fp);
     fputs(comma, fp);
     // Motor 4: Right Knee position and Torque
     itoa(CO_OD_RAM.actualMotorPositions.motor4, position, 10);
-    itoa(CO_OD_RAM.statusWords.motor4, torque, 10);
+    itoa(((int16_t)CO_OD_RAM.statusWords.motor4), torque, 10);
     fputs(position, fp);
     fputs(comma, fp);
     fputs(torque, fp);
@@ -217,7 +160,7 @@ void fileLogHeader(){
     char header1[] = "======================================\n";
     char header2[] = "X2 exoskeleton torque and position log\n";
     char header3[] = "======================================\n";
-    char header4[]= "Time, LHPos, LHT, LKPos, LKT, RHPos, RHT,RKPos, RKT\n";
+    char header4[]= "Time(s), time(ms) LHPos, LHT, LKPos, LKT, RHPos, RHT,RKPos, RKT\n";
     fputs(header1, fp);
     fputs(header2, fp);
     fputs(header3, fp);
