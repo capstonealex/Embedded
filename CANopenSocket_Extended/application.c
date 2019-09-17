@@ -28,7 +28,7 @@
 #include <sys/time.h>
 //// Data logger helper functions
 void fileLogHeader();
-void fileLogger();
+void fileLogger(uint16_t timer1msDiff);
 void strreverse(char *begin, char *end);
 void itoa(int value, char *str, int base);
 /******************************************************************************/
@@ -43,17 +43,17 @@ void app_programEnd(void){
 }
 /******************************************************************************/
 void app_programAsync(uint16_t timer1msDiff){
-// Timing speed of reading from memory and file writing
-// struct timeval start;
-//  struct timeval stop;
-//    gettimeofday(&start, NULL);
+//Timing speed of reading from memory and file writing
+//struct timeval start;
+//struct timeval stop;
+//gettimeofday(&start, NULL);
 
-fileLogger();
+fileLogger(timer1msDiff);
 
-//  gettimeofday(&stop, NULL);
-//  double elapsed_ms = (stop.tv_sec - start.tv_sec) * 1000.0;
-//  elapsed_ms += (stop.tv_usec - start.tv_usec) / 1000.0;
-//  printf("TASK 1:  %.2f milliseconds\n", elapsed_ms);
+//gettimeofday(&stop, NULL);
+//double elapsed_ms = (stop.tv_sec - start.tv_sec) * 1000.0;
+//elapsed_ms += (stop.tv_usec - start.tv_usec) / 1000.0;
+//printf("TASK 1:  %.2f milliseconds\n", elapsed_ms);
 }
 
 /******************************************************************************/
@@ -92,14 +92,28 @@ void strreverse(char *begin, char *end)
         aux = *end, *end-- = *begin, *begin++ = aux;
 }
 /******************************************************************************/
-void fileLogger(){
+void fileLogger(uint16_t timer1msDiff){
     printf("fileLogger beggining\n");
     FILE* fp;
     fp = fopen("X2_log.txt", "a");
     // Generate whatever you want logged here, "data" is just an example
     char position [50];
+	char timestamp [50];
     char torque[50];
     char comma[] = ", ";
+	char period[] = ".";
+	
+	//Getting timestamp
+	//printf("time(s): %lu, (us): %lu\n",tv.tv_sec, tv.tv_usec);
+    //itoa(timer1msDiff, position, 10);
+	struct timeval tv;
+	gettimeofday(&tv,NULL);
+	itoa(tv.tv_sec, timestamp, 10);
+    fputs(timestamp, fp);
+    fputs(period, fp);
+	itoa(tv.tv_usec, timestamp, 10);
+	fputs(timestamp, fp);
+    fputs(comma, fp);
     // Motor 1: Left Hip position and Torque
     itoa(CO_OD_RAM.actualMotorPositions.motor1, position, 10);
     itoa(CO_OD_RAM.statusWords.motor1, torque, 10);
@@ -136,7 +150,7 @@ void fileLogHeader(){
     char header1[] = "======================================\n";
     char header2[] = "X2 exoskeleton torque and position log\n";
     char header3[] = "======================================\n";
-    char header4[]= "LHPos, LHT, LKPos, LKT, RHPos, RHT,RKPos, RKT\n";
+    char header4[]= "Time, LHPos, LHT, LKPos, LKT, RHPos, RHT,RKPos, RKT\n";
     fputs(header1, fp);
     fputs(header2, fp);
     fputs(header3, fp);
