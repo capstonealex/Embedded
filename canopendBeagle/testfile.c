@@ -11,12 +11,16 @@ void strreverse(char *begin, char *end);
 void fileLogHeader();
 
 int main (int argc, char *argv[]) {
-    int x = 0;
-    fileLogHeader();
-    while (x < 100) {
-        fileLogger(x);
-        x++;
-    }
+//    int x = 0;
+//    fileLogHeader();
+//    while (x < 100) {
+//        fileLogger(x);
+//        x++;
+//    }
+
+    unsigned short x = 65532;
+    short z= (int) x;
+    printf("%d",z);
 }
 
 

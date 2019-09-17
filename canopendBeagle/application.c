@@ -33,7 +33,7 @@ void strreverse(char *begin, char *end);
 void itoa(int value, char *str, int base);
 /******************************************************************************/
 void app_programStart(void){
-    void fileLogHeader();
+    fileLogHeader();
 }
 /******************************************************************************/
 void app_communicationReset(void){
@@ -48,7 +48,7 @@ void app_programAsync(uint16_t timer1msDiff){
 //  struct timeval stop;
 //    gettimeofday(&start, NULL);
 
-fileLogger()
+fileLogger();
 
 //  gettimeofday(&stop, NULL);
 //  double elapsed_ms = (stop.tv_sec - start.tv_sec) * 1000.0;
@@ -60,8 +60,7 @@ fileLogger()
 void app_program1ms(void){
 }
 /******************************************************************************/
-void itoa(int value, char *str, int base)
-{
+void itoa(int value, char *str, int base){
     static char num[] = "0123456789abcdefghijklmnopqrstuvwxyz";
     char *wstr = str;
     int sign;
@@ -85,8 +84,7 @@ void itoa(int value, char *str, int base)
     strreverse(str, wstr - 1);
 }
 /******************************************************************************/
-void strreverse(char *begin, char *end)
-{
+void strreverse(char *begin, char *end){
     char aux;
     while (end > begin)
         aux = *end, *end-- = *begin, *begin++ = aux;
