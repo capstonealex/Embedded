@@ -20,7 +20,7 @@ The instructions below are specifically for the official images (containing Debi
 
 ## Live booting from SD card
 
-1. Power off the BBB and insert the SD card. 
+1. Power off the BBB and insert the SD card with OS image. 
 1. While pressing the boot button on the BBB (near the SD card), power it up. Pressing the boot button may not be required with the BBB we are using.
 1. The BBB will start up and boot the OS off the SD card. You can verify this by running `lsblk`. This shows all the partitions (internal and external). It shows a forward slash next to the boot partition. The SD card should be `mmcblk0` and internal emmc should be `mmcblk1`. Livebooting will show a `/` next to the SD card partition and regular booting will show it next to the internal emmc partition.
 

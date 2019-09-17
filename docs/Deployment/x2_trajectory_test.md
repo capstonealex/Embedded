@@ -12,7 +12,7 @@ The scripts in the below instructions are stored in [Embedded/BBB Scripts/](http
 4. SSH to BBB and run `./InitHardware.sh` on terminal 1. This sets up CANopen comms.
 5. SSH another terminal to BBB and run `./homeCalibration.sh` on terminal 2. This calibrates the joints to a zero position.
 6. Copy the required `CanFeast_Walk.c` program to working folder in BBB and compile using `gcc CanFeast_Walk.c -Wall -o sitwalk` from terminal 2.
-7. Run the program using `.\sitwalk`
+7. Run the program using `.\sitwalk.out`
 
 ## Walk program instructions
 * The program starts by displaying knee and hip positions. Pressing the green button locks position. The program assumes the X2 is in seated position, so only press green button when the X2 is roughly in seated position. 
