@@ -33,7 +33,7 @@ void strreverse(char *begin, char *end);
 void itoa(int value, char *str, int base);
 /******************************************************************************/
 void app_programStart(void){
-    void fileLogHeader();
+    //void fileLogHeader();
 }
 /******************************************************************************/
 void app_communicationReset(void){
@@ -47,9 +47,14 @@ void app_programAsync(uint16_t timer1msDiff){
 //struct timeval start;
 //struct timeval stop;
 //gettimeofday(&start, NULL);
-
+/*
+struct timeval tv;
+gettimeofday(&tv,NULL);
+printf("time before(s): %lu, (us): %lu\n",tv.tv_sec, tv.tv_usec);
 fileLogger(timer1msDiff);
-
+gettimeofday(&tv,NULL);
+printf("time after(s): %lu, (us): %lu\n",tv.tv_sec, tv.tv_usec);
+*/
 //gettimeofday(&stop, NULL);
 //double elapsed_ms = (stop.tv_sec - start.tv_sec) * 1000.0;
 //elapsed_ms += (stop.tv_usec - start.tv_usec) / 1000.0;
@@ -58,6 +63,65 @@ fileLogger(timer1msDiff);
 
 /******************************************************************************/
 void app_program1ms(void){
+	/*
+	struct timeval tv;
+	gettimeofday(&tv,NULL);
+	printf("time rt(s): %lu, (us): %lu\n",tv.tv_sec, tv.tv_usec);
+	*/
+	
+	//printf("fileLogger beggining\n");
+    FILE* fp;
+    fp = fopen("X2_log.txt", "a");
+    // Generate whatever you want logged here, "data" is just an example
+    char position [50];
+	char timestamp [50];
+    char torque[50];
+    char comma[] = ", ";
+	char period[] = ".";
+	
+	//Getting timestamp
+	//printf("time(s): %lu, (us): %lu\n",tv.tv_sec, tv.tv_usec);
+    //itoa(timer1msDiff, position, 10);
+	struct timeval tv;
+	gettimeofday(&tv,NULL);
+	itoa(tv.tv_sec, timestamp, 10);
+    fputs(timestamp, fp);
+    fputs(period, fp);
+	itoa(tv.tv_usec, timestamp, 10);
+	fputs(timestamp, fp);
+    fputs(comma, fp);
+	
+    // Motor 1: Left Hip position and Torque
+    itoa(CO_OD_RAM.actualMotorPositions.motor1, position, 10);
+    itoa(CO_OD_RAM.statusWords.motor1, torque, 10);
+    fputs(position, fp);
+    fputs(comma, fp);
+    fputs(torque, fp);
+    fputs(comma, fp);
+    // Motor 2: Left Knee position and Torque
+    itoa(CO_OD_RAM.actualMotorPositions.motor2, position, 10);
+    itoa(CO_OD_RAM.statusWords.motor2, torque, 10);
+    fputs(position, fp);
+    fputs(comma, fp);
+    fputs(torque, fp);
+    fputs(comma, fp);
+    // Motor 3: Right Hip position and Torque
+    itoa(CO_OD_RAM.actualMotorPositions.motor3, position, 10);
+    itoa(CO_OD_RAM.statusWords.motor3, torque, 10);
+    fputs(position, fp);
+    fputs(comma, fp);
+    fputs(torque, fp);
+    fputs(comma, fp);
+    // Motor 4: Right Knee position and Torque
+    itoa(CO_OD_RAM.actualMotorPositions.motor4, position, 10);
+    itoa(CO_OD_RAM.statusWords.motor4, torque, 10);
+    fputs(position, fp);
+    fputs(comma, fp);
+    fputs(torque, fp);
+    fputs("\n", fp);
+	
+    fclose(fp);
+	
 }
 /******************************************************************************/
 void itoa(int value, char *str, int base)
@@ -93,7 +157,7 @@ void strreverse(char *begin, char *end)
 }
 /******************************************************************************/
 void fileLogger(uint16_t timer1msDiff){
-    printf("fileLogger beggining\n");
+    //printf("fileLogger beggining\n");
     FILE* fp;
     fp = fopen("X2_log.txt", "a");
     // Generate whatever you want logged here, "data" is just an example
@@ -114,6 +178,7 @@ void fileLogger(uint16_t timer1msDiff){
 	itoa(tv.tv_usec, timestamp, 10);
 	fputs(timestamp, fp);
     fputs(comma, fp);
+	
     // Motor 1: Left Hip position and Torque
     itoa(CO_OD_RAM.actualMotorPositions.motor1, position, 10);
     itoa(CO_OD_RAM.statusWords.motor1, torque, 10);
@@ -142,7 +207,9 @@ void fileLogger(uint16_t timer1msDiff){
     fputs(comma, fp);
     fputs(torque, fp);
     fputs("\n", fp);
+	
     fclose(fp);
+	
 }
 void fileLogHeader(){
     FILE *fp;
