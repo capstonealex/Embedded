@@ -48,7 +48,7 @@ void app_programAsync(uint16_t timer1msDiff){
 //  struct timeval stop;
 //    gettimeofday(&start, NULL);
 
-fileLogger();
+fileLogger(timer1msDiff);
 
 //  gettimeofday(&stop, NULL);
 //  double elapsed_ms = (stop.tv_sec - start.tv_sec) * 1000.0;
@@ -92,7 +92,7 @@ void strreverse(char *begin, char *end)
         aux = *end, *end-- = *begin, *begin++ = aux;
 }
 /******************************************************************************/
-void fileLogger(){
+void fileLogger(uint16_t timer1msDiff){
     printf("fileLogger beggining\n");
     FILE* fp;
     fp = fopen("X2_log.txt", "a");
@@ -100,6 +100,9 @@ void fileLogger(){
     char position [50];
     char torque[50];
     char comma[] = ", ";
+    itoa(timer1msDiff, position, 10);
+    fputs(position, fp);
+    fputs(comma, fp);
     // Motor 1: Left Hip position and Torque
     itoa(CO_OD_RAM.actualMotorPositions.motor1, position, 10);
     itoa(CO_OD_RAM.statusWords.motor1, torque, 10);
@@ -136,7 +139,7 @@ void fileLogHeader(){
     char header1[] = "======================================\n";
     char header2[] = "X2 exoskeleton torque and position log\n";
     char header3[] = "======================================\n";
-    char header4[]= "LHPos, LHT, LKPos, LKT, RHPos, RHT,RKPos, RKT\n";
+    char header4[]= "Time, LHPos, LHT, LKPos, LKT, RHPos, RHT,RKPos, RKT\n";
     fputs(header1, fp);
     fputs(header2, fp);
     fputs(header3, fp);
