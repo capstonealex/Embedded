@@ -34,7 +34,7 @@ int main()
 - Compile with -static to statically build the executable.
 
 ```linux
-user@desktop:~$ arm-linux-gnuabihf-g++ -static testcross.cpp -o testcross
+user@desktop:~$ arm-linux-gnueabihf-g++ -static testcross.cpp -o testcross
 ```
 
 - The above code will produce an executable file called `testcross`. This will not directly run on your computer since it has ARM machine code. You should see the following error if you try: `cannot execute binary file: Exec format error`
@@ -63,7 +63,3 @@ armhf ”
 - Check for success with: `user@desktop:~$ sudo apt update`
 - Return should have several packages ending in `armhf Packages` if not try again.
 - You can also try running the `testcross` executable created in the prev section to verify that QEMU is installed correctly.
-
-## Set up Multiarch cross-compliation with third-party libraries
-
-To be done.

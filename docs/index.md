@@ -4,82 +4,40 @@
 
 ---
 
-## You have just found ALEX's embedded systems documentation
+You might find this website and documentation useful if you are:
 
-<!-- What alex is:
-
-What the documentationon can tell you
-
-Description of what the project is. -->
-
-You might find the docs useful if you are:
-
-- Developing on the Fourier inteligence platform using a beagle bone black
-- Developing an embedded system using a begale bone black as the hardware platform
-- Are in need of implementing a real time linux system.
-- Are in need of impleneting a real time linux development system with Can Bus support
-- Detailed instructions on implementing Can bus support over a beagle bone black.
+- Developing on the Fourier X2 exoskeleton using a Beagle Bone Black (BBB)
+- Developing an embedded system using a Beagle Bone Black as the hardware platform
+- Implementing a real time linux system.
+- Implementing CANopen on Linux running on the Beagle Bone Black
+- Need detailed instructions to do any of the above
 - more to come.
 
 ---
 
-## Project breakdown
+## Project Breakdown
+
+The primary goal of this project is to improve capabilities of the X2 lower limb exoskeleton developed by [Fourier Intelligence](http://www.fftai.com/). Specifically, the intention is to:
+
+* Successfully compete in [Cybathlon 2020](https://cybathlon.ethz.ch/cybathlon-2020.html) in Zurich.
+* Develop an open platform that can be used by third parties to utilise and improve similar rehabilitative devices.
+* Improve the X2, to make it more beneficial for individuals with paraplegia.
+
+This website primarily focuses on the embedded system on the Fourier X2.
 
 ---
 
-## Getting started in 10 minutes with a local install
+## Getting Started
+This website is broadly divided into 3 section:
 
-<!-- EXPLAIN HOW THE BELLOW WAS BUILT -->
+* Deployment: For instructions on how to run the system without going too much into the details. 
+* Developer: Contains detailed information about recreating the work done in this project. 
+* In-Development: This section contains work-in-progress information.
 
-For development we suggest using a virtual machine running debian linux.
-Follow these steps to start running a pre-configured VM .ova file on your own machine.
-The pre- congigured VM ha been configured as outlined in the [workbench setup] section.
-Upon installation the user should be up and running with an environment able to develop software, test and cross compile to a real time linux os on a beagle bone black.
+Below are steps for getting started with developing for the Fourier X2 exoskeleton. Depending on your goal, check either the deployment or developer section for details.
 
-1. Install [virtual box version 6.0.4](<https://www.virtualbox.org/wiki/Download_Old_Builds_6_0>).
-2. Download and install the VirtualBox Oracle VM VirtualBox [Extension Pack](https://www.virtualbox.org/wiki/Downloads).
-2. Download workbench.ova: Currently hosted at the capstone google drive: [workbench.ova](https://drive.google.com/drive/folders/1lCGyRpQLjKOnCXbs27e6w6VfofizSCC8)
-
-    * Google Drive Location: `Capstone Project - LOWER LIMB EXOSKELETON FOR GAIT ASSISTANCE\Embedded Team\Virtual Machines`
-   Note: You may need a University of Melbourne email to access this link.
-
-3. In Virtual box `file -> import appliance` and enter the path to the .ova file
-
-4. Configure the environment .
-
-    * Select 70mb or more of video ram.
-
-5. Make sure to select the `reinitialize the MAC address of all the network cards option`.
-
-6. Start your system and install virtual box Guest additions.
-
-    * Login password is `password`
-
-### Guest additions
-
-On the Virtual box menu Choose “Devices”->”Insert Guest Additions CD image…”
-
-If this does not automatically run then follow the below code on a terminal.
-
-```
-user@debian:~$ su -
-root@debian:~# apt-get update
-root@debian:~# apt-get install build-essential module-assistant
-root@debian:~# m-a prepare
-root@debian:~# cd /media/cdrom
-root@debian:~# sh ./VBoxLinuxAdditions.run
-root@debian:~# reboot
-```
----
-## Test system
-* Follow the tests run in [cross compilation test](https://embeded.readthedocs.io/en/latest/crosscomp/#test-installation) section.
-* Follow the instructions in [eclipse cross compilation](https://embeded.readthedocs.io/en/latest/eclipse/) section.
-    
-You should now have a cloned VM with working Debian and cross compilation to beagle bone or any other armhf devices.
-
-
-#### `Tested on mac OSX 10.14 and Windows 10`
-
-<!-- ## Support
-
-## Aim of the project -->
+1. Set up a virtual machine workbench to cross compile and deploy on the BBB.
+2. Set up connection from your PC to the BBB.
+2. Install a RT kernel on the BBB. 
+3. Setup the CANopenSocket on the BBB for CANopen communication to the X2.
+4. Run appropriate scripts and programs as required. 

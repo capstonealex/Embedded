@@ -1,6 +1,8 @@
-#Process Data Objects (PDOs)
+# Process Data Objects (PDOs)
 
-##Configuring PDOs on nodes
+Process Data Objects or PDOs, are high speed unacknowlegded messages used on CAN networks, used for real-time control.
+
+## Configuring PDOs on nodes
 
 This will detail how to configure the nodes PDO messaging protocol using SDO messaging from canopend
 
@@ -37,30 +39,34 @@ The basic steps for PDO reconfiguration are as follows:
 
 For the purposes of the X2, the following objects are mapped using the following mapping parameters:
 TPDOs:
+
 1. Status word (0x60410010).
 2. Actual position (0x60640020), Actual Velocity (0x606C0020).
 3. Actual Torque (0x60770010).
+
 RPDOs:
+
 1. Control Word (0x60400010).
 2. Control Word (0x60400010), Target Position (0x607A0020).
 3. Control Word (0x60400010), Target Velocity (0x60FF0020).
 
 For the X2 the actual position and velocity are set up to be sent out at a rate of 1000Hz. In order to do this, the  communication mode for each TPDO is set to 1 and a sync message is set up at 1000Hz.
 
-##Initialising Sync Message
+## Initialising Sync Message
 
 Initialising the sync message is done in 2 steps and can be on any node you desire, provided it is capable of producing a sync message.
 
 - Set 0x1005 sub 0 to 0x40000080.
 - Set 0x1006 sub 0 to 1000. (Time period in microseconds)
 
-##Master Object Dictionary
+## Master Object Dictionary
 
 In order to set up PDOs at the master end, an appropriate canopen object dictionary is needed.
 
 This can be done by editing the eds in CANopenSocket. This must be edited to include any objects required to communicate with the nodes. The number of total PDOs must also be edited to account for all the nodes on the network. For example if you have 4 nodes each using 4 useful TPDOs, the master must have 16 RPDOs to recieve all the messages and map them to the appropriate objects.
 
 In order to add an object to the dictionary, the desired addresses must be added and then the object must be defined. For the purposes of the project it was decided to use the indeces of the nodes for the variables and then use the subindeces to store the data for the motor corresponding to that subindex.
+
 The following shows an example of an EDS master mapping (Note: this is not the only way to map the objects required, it would be just as valid to make the motor the index and the various parameters the sub indeces. This is just an example of how it is implemented in the X2 with each node being mapped to its corresponding subindex for each object):
 
 ```c
@@ -132,24 +138,26 @@ Mapping the PDOs on the master could be done in an identical manner to the node 
 In the CO_OD.c file, the PDO communication and mapping parameters for the first recieve PDO would appear as follows by default:
 
 ```c
-/*1400*/ {{0x2L, 0x80000000L, 0xffL},
+/*1400*/ {{0x2L, 0x80000000L, 0xffL}}
 ```
 ...
 ```c
-/*1600*/ {{0x0L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L},
+/*1600*/ {{0x0L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L}}
 ```
 
 These can be then mapped to the desired mapping by editing the parameters manually. Each element in the brackets corresponds to the subindeces of the object. in the example below, there are 2 objects mapped with index 6040 sub1 and 606C sub1 respectively (actual postion for motor 1 & actual velocity for motor 1) with a COB_ID. (Note: the COB_ID of a RPDO on the master must match the COB_ID of the node TPDO it is expecting the information to come from)
 
 ```c
-/*1400*/ {{0x2L, 0x0181L, 0xffL},
+/*1400*/ {{0x2L, 0x0181L, 0xffL}}
 ```
 ...
 ```c
-/*1600*/ {{0x2L, 0x60640120L, 0x606c0120L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L},
+/*1600*/ 
+
+0x2L, 0x60640120L, 0x606c0120L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L}}
 ```
 
-##Deployment
+## Deployment
 
 To deploy:
 

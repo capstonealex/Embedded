@@ -1,4 +1,7 @@
 # Calibrating and Homing the X2
+The zero (home) position of the motor set to current position when exo skeleton is powered on. Therefore, start the X2 with the joints fully bent backwards and then run the homecalibration script (as stated [here](https://embeded.readthedocs.io/en/latest/Deployment/x2_trajectory_test/)) to set zero positions correctly.
+
+## Joint Ranges
 
 The X2 has a gear ratio of 122.5 and the counts per revolution is 4096. There is an additional multiplier x2 in the CANopen implementation. This means, a full revolution is 122.5 x 4096 x 2 = 1003520 counts. The commands issued to the X2 drive must be in counts. 
 
