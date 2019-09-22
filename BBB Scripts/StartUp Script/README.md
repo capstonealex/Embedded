@@ -11,6 +11,11 @@
 	sudo config-pin p9.26 can
 	sudo ip link set can1 up type can bitrate 1000000 &
 	sudo ifconfig can1 up &
+	
+	cd /home/debian/CANopenSocket/canopend
+
+	echo - > od4_storage &
+	echo - > od4_storage_auto &
 	```
 	
 2.	Make the script runnable using `sudo chmod a+x setupCANinterface.sh`
@@ -25,6 +30,7 @@
 	```
 	
 6.	Make rc.local runnable using `sudo chmod a+x rc.local`
+7.  Subsequently, just modify 
 
 Read more here
 https://askubuntu.com/questions/9853/how-can-i-make-rc-local-run-on-startup
