@@ -4,7 +4,7 @@
 
 For development we suggest using a virtual machine (VM) running debian (stretch) linux.
 Follow these steps to start running a pre-configured VM .ova file on your own machine.
-The pre-configured VM has been configured as outlined in the [workbench setup](https://embeded.readthedocs.io/en/latest/workbench/) section.
+The pre-configured VM has been configured as outlined in the [workbench setup](https://exoembedded.readthedocs.io/en/latest/workbench/) section.
 Upon installation the user should have an environment capable of developing software, testing and cross-compiling to a real time linux OS on a Beagle Bone Black.
 
 1. Install [virtual box version 6.0.4](<https://www.virtualbox.org/wiki/Download_Old_Builds_6_0>).
@@ -43,7 +43,7 @@ root@debian:~# reboot
 ```
 
 ## Testing the VM
-* Follow the tests run in [cross compilation test](https://embeded.readthedocs.io/en/latest/crosscomp/#test-installation) section.
-* Follow the instructions in [eclipse cross compilation](https://embeded.readthedocs.io/en/latest/eclipse/) section.
+* Follow the tests run in [cross compilation test](https://exoembedded.readthedocs.io/en/latest/crosscomp/#test-installation) section.
+* Follow the instructions in [eclipse cross compilation](https://exoembedded.readthedocs.io/en/latest/eclipse/) section.
     
 You should now have a cloned VM with working Debian and cross compilation to BBB or any other armhf devices.
