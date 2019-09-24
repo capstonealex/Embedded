@@ -40,12 +40,12 @@ Name[en_US]=Eclipse
 
 Source: Exploring BeagleBone by Derek Molloy
 
-Pre-requisites: ARM hard float (cross compilation) and QEMU (emulation) package installed. [See here.](https://github.com/capstonealex/Embeded/wiki/Setting-up-cross-compilation-tool-chain)
+Pre-requisites: ARM hard float (cross compilation) and QEMU (emulation) package installed. [See here.](https://github.com/capstonealex/exoembedded/wiki/Setting-up-cross-compilation-tool-chain)
 
 1. Start eclipse, select a default workspace.
 2. File -> New -> Project. Select C++ project and click next.
 3. Name your program and select a working folder. Then select Empty project (under project type) and Cross GCC (under toolchain).
-4. Click next until you reach the config page for Cross GCC. Set the cross compiler prefix as `arm-linux-gnueabihf-` and Cross compiler path as `/usr/bin`. Click finish.![](https://raw.githubusercontent.com/capstonealex/Embeded/master/Wiki%20Images/eclipse_crossGCCconfig.PNG)
+4. Click next until you reach the config page for Cross GCC. Set the cross compiler prefix as `arm-linux-gnueabihf-` and Cross compiler path as `/usr/bin`. Click finish.![](https://raw.githubusercontent.com/capstonealex/exoembedded/master/Wiki%20Images/eclipse_crossGCCconfig.PNG)
 5. Eclipse is now setup to cross compile for the BBB. You build project by Project -> Build All and run by Run -> Run. The executable contains ARM machine code and will run only if QEMU is installed.
 
 ## Configure Eclipse for Remote access (RSE)

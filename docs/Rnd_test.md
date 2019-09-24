@@ -57,7 +57,7 @@ This is summary of the startup procedure. Following this out of sequence may cau
 3. Save and copy this file to the BBB using WinSCP.
 2. Compile it on the BBB by running `gcc CanFeast_Trajectory.c -Wall` from a Putty terminal. Look for warnings. Execuable is named `a.out` by default.
 3. Run program with `./a.out`.
-4. When the program is running, it displays the current knee and joint angles. Pressing green button locks the motor in position. Try to lock it close to either the beginning/ending value in the array. To see relation between motor angle values and the degree values, see [this](https://embeded.readthedocs.io/en/latest/calibration/).
+4. When the program is running, it displays the current knee and joint angles. Pressing green button locks the motor in position. Try to lock it close to either the beginning/ending value in the array. To see relation between motor angle values and the degree values, see [this](https://exoembedded.readthedocs.io/en/latest/calibration/).
 5. Red button sits down more. Blue button stands more. Yellow button stops program and disengages motor.
 
 ## Shutdown Procedure
@@ -81,7 +81,7 @@ To log position and torque, the startup sequence has to be done with a few addit
 7. Control X2 using handheld buttons.
 8. Once done, close the sockets in terminal 1 using `ctrl+c`.
 
-The log file name `X2_log.txt` can be obtained from `CANopenSocket/canopend/` folder. The data is stored in the format `time(seconds), time(microseconds), Left Hip Pos, Left Hip Torque, , Left Knee Pos, Left Knee Torque,, Right Hip Pos, Right Hip Torque,, Right Knee Pos, Right Knee Torque`. Torque is has unit `rated torque/1000`, i.e. a reading of 500 means that current torque is half of rated torque. The positions are shown as motor count values. See [calibration](https://embeded.readthedocs.io/en/latest/calibration/) page for details.
+The log file name `X2_log.txt` can be obtained from `CANopenSocket/canopend/` folder. The data is stored in the format `time(seconds), time(microseconds), Left Hip Pos, Left Hip Torque, , Left Knee Pos, Left Knee Torque,, Right Hip Pos, Right Hip Torque,, Right Knee Pos, Right Knee Torque`. Torque is has unit `rated torque/1000`, i.e. a reading of 500 means that current torque is half of rated torque. The positions are shown as motor count values. See [calibration](https://exoembedded.readthedocs.io/en/latest/calibration/) page for details.
 
 
 ## Troubleshooting
