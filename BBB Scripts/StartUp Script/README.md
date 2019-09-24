@@ -30,7 +30,7 @@
 	```
 	
 6.	Make rc.local runnable using `sudo chmod a+x rc.local`
-7.  	Subsequently, just modify `yourscript.sh` to whatever you need. Can also start programs this same way.
+7.	Subsequently, just modify `yourscript.sh` to whatever you need. Can also start programs this same way.
 
 Read more here
 https://askubuntu.com/questions/9853/how-can-i-make-rc-local-run-on-startup
