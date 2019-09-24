@@ -32,5 +32,21 @@
 6.	Make rc.local runnable using `sudo chmod a+x rc.local`
 7.	Subsequently, just modify `yourscript.sh` to whatever you need. Can also start programs this same way.
 
+
 Read more here
 https://askubuntu.com/questions/9853/how-can-i-make-rc-local-run-on-startup
+
+# Running multiple programs
+
+```
+#!/bin/sh -e
+/usr/bin/pintest3.sh
+/usr/bin/pintest.out &
+/usr/bin/pintest4.sh
+/usr/bin/pintest2.out
+/usr/bin/pintest5.sh
+exit 0
+```
+
+Consider above rc.local. pintest3.sh blocks. It has to complete before pintest.out runs. pintest.out is run in background since we are using `&`
+
