@@ -1,5 +1,5 @@
 # Calibrating and Homing the X2
-The zero (home) position of the motor set to current position when exo skeleton is powered on. Therefore, start the X2 with the joints fully bent backwards and then run the homecalibration script (as stated [here](https://embeded.readthedocs.io/en/latest/Deployment/x2_trajectory_test/)) to set zero positions correctly.
+The zero (home) position of the motor set to current position when exo skeleton is powered on. Therefore, start the X2 with the joints fully bent backwards and then run the homecalibration script (as stated [here](https://exoembedded.readthedocs.io/en/latest/Deployment/x2_trajectory_test/)) to set zero positions correctly.
 
 ## Joint Ranges
 

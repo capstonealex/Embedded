@@ -13,7 +13,7 @@ CANopen is a higher level protocol that sits on top of CANbus. This protocol giv
    
       Note: If downloading manually, the canopennode subfolder has to be separately downloaded as this is a separate repository. 
 
-3. Connect the BBB to the [CANbus network](https://embeded.readthedocs.io/en/latest/canopenHardware/#x2-canbus-cable-mapping) of the X2 and setup CAN1 interface on the BBB as stated in [CANbus section](https://embeded.readthedocs.io/en/latest/canbus/). Make sure to use the same bitrate the drives as configured in. Default is 1000000. You can verify this using the CME software.
+3. Connect the BBB to the [CANbus network](https://exoembedded.readthedocs.io/en/latest/canopenHardware/#x2-canbus-cable-mapping) of the X2 and setup CAN1 interface on the BBB as stated in [CANbus section](https://exoembedded.readthedocs.io/en/latest/canbus/). Make sure to use the same bitrate the drives as configured in. Default is 1000000. You can verify this using the CME software.
 
 3. Follow instructions in README.md on the github page for CANopenSocket. Below is an abridged version of the same.
 
@@ -27,7 +27,7 @@ CANopen is a higher level protocol that sits on top of CANbus. This protocol giv
       app/canopend can1 -i 100 -c ""
       ```
 
-      The 100 in the above line is the master node ID. Do not use zero or one of the existing [node IDs](https://embeded.readthedocs.io/en/latest/canopenHardware/#x2-canopen-node-id).
+      The 100 in the above line is the master node ID. Do not use zero or one of the existing [node IDs](https://exoembedded.readthedocs.io/en/latest/canopenHardware/#x2-canopen-node-id).
        
        Note: the "make" step is only required for 1st run.
 
@@ -55,7 +55,7 @@ CANopen is a higher level protocol that sits on top of CANbus. This protocol giv
 
 ## Example: Issuing Position Command on CANopen
 
-The X2 node IDs can be found [here](https://embeded.readthedocs.io/en/latest/canopenHardware/#x2-canopen-node-id).
+The X2 node IDs can be found [here](https://exoembedded.readthedocs.io/en/latest/canopenHardware/#x2-canopen-node-id).
 
 4. Setup CANopenSocket as shown above and make sure you can send canopencomm messages. See next steps for issuing relative position command to left knee motor. 
 10. Set drive (node 2 here is left knee) to start mode: `./canopencomm 2 start` 

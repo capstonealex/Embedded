@@ -30,5 +30,5 @@ Note: CANbus is a physical/data link later protocol. CANOpen is a higher layer p
 BBB distro Debian 9 onwards comes preinstalled with can-utils. We can use this send and received messages over CAN bus. 
 
 1. Wire up the BBBs by connecting CAN-H to CAN-H, CAN-L to CAN-L, and common grounds. Do note that the last device in the daisy chain should have a 120Ω terminating resistance between CAN-H and CAN-L. This is already included in the BBB Comms cape. 
-2. Setup the DCAN1 controller on BBB for CAN using steps [above](https://embeded.readthedocs.io/en/latest/canbus/#configuring-the-bbb-can-interface).
+2. Setup the DCAN1 controller on BBB for CAN using steps [above](https://exoembedded.readthedocs.io/en/latest/canbus/#configuring-the-bbb-can-interface).
 3. On one of the BBB, send a can message using `cansend can1 123#fe.ed.be.ef`. On the other BBB, run `candump can1`. Note that the message and node ID used here are arbitrary since candump will read all messages being sent through the canbus.
