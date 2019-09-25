@@ -9,5 +9,5 @@ Robert Gadsby
 [rgadsby@student.unimelb.edu.au](mailto:rgadsby@student.unimelb.edu.au)
 
 William Campbell  
-[wacampbel@gmail.com](mailto:wacampbel@gmail.com)
+[wcampbell@student.unimelb.edu.au](mailto:wcampbell@student.unimelb.edu.au)
 
