@@ -208,7 +208,7 @@
                UNSIGNED32     size;
                UNSIGNED8      axisNo;
                VISIBLE_STRING name[6];
-               VISIBLE_STRING color[3];
+               VISIBLE_STRING color[5];
                UNSIGNED32     map;
                UNSIGNED8      format;
                UNSIGNED8      trigger;
