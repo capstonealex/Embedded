@@ -156,7 +156,14 @@ These can be then mapped to the desired mapping by editing the parameters manual
 
 0x2L, 0x60640120L, 0x606c0120L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L}}
 ```
-
+## MANDATORY FILE CHANGE 
+-> must change `const CO_OD_entry_t CO_OD['170']` to `extern const CO_OD_entry_t CO_OD[CO_OD_NoOfElements] ` which is found aprox line:2423, depending on dictionary size. The entry in CO_OD.c should look as follows.
+``` c
+/*******************************************************************************
+   OBJECT DICTIONARY
+*******************************************************************************/
+extern const CO_OD_entry_t CO_OD[CO_OD_NoOfElements] = {
+```
 ## Deployment
 
 To deploy:
