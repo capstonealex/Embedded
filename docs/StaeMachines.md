@@ -13,10 +13,10 @@ void StateMachine::getCurState(void)
 ---
 Abstract base class to represent **Events** which trigger a transition between two states. Done through the check method.
 	`virtual Boolean method: check()`
-	- derived class must implement the check method to return t/f based on some world condition.
-	e.g. event (doneMove) -> returns true or false if a motion has been completed (90 deg for example)
----
+	- derived class must implement the check method to return t/f based on some world condition. e.g. event (doneMove) -> returns true or false if a motion has been completed (90 deg for example)
+	
 ### State
+---
 ABSTRACT base class w/ 3 methods which must be defined
 ```
 		virtual void entry(void); 
@@ -28,8 +28,8 @@ ABSTRACT base class w/ 3 methods which must be defined
 		virtual void exit(void);
 			-> transition out of the state triggers this, release resources.
 ```
-When a state becomes active.
----STATE_MACHINE OWENER of it calls its entry method 1 time.
+When a state becomes active: STATE_MACHINE OWENER of it calls its entry method 1 time.
+
 ### Transitions
 ---
 - list of outgoing transitions (class Transitions) 
@@ -64,12 +64,9 @@ void StateMachine::update()
 }
 
 ```
-
-### The other difference between the basic task and a stateMachine task is that stateMachine tasks have:
+- StateMachines ahve pointer to initial STATE object of the machine, set up in the constructor using the initialize method.
 ---
-- pointer to initial STATE object of the machine, set up in the constructor using the initialize method.
-
-To set up a state machine as a programmer do the following:
+### To set up a state machine as a programmer do the following:
 1) Define the event objects 
 2) Define the state objects 
 3) Add trsitionsan to the states 
