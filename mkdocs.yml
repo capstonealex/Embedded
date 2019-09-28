@@ -24,6 +24,9 @@ nav:
     - CANopen: canopen.md
     - CANopen Hardware: canopenHardware.md
     - Calibrating X2: calibration.md
+   
+   - Software Architecture:
+    - State Machine: StateMachines.md
   
     # - Everything below this is in-development components. Move completed sections above.
   - IN-DEVELOPMENT:
