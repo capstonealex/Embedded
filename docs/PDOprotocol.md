@@ -156,6 +156,28 @@ These can be then mapped to the desired mapping by editing the parameters manual
 
 0x2L, 0x60640120L, 0x606c0120L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L, 0x0000L}}
 ```
+## OD File Changes for C++ 
+1. Change `const CO_OD_entry_t CO_OD['170']` to `extern const CO_OD_entry_t CO_OD[CO_OD_NoOfElements] ` which is found approx line:2423, depending on dictionary size. `CO_OD_NoOfElements` is in CO_OD.h. The entry in CO_OD.c should look as follows.
+    ``` c
+    /*******************************************************************************
+     OBJECT DICTIONARY
+    *******************************************************************************/
+    extern const CO_OD_entry_t CO_OD[CO_OD_NoOfElements] = {
+    ```
+2. Also change VISIBLE_STRING array size for color to match the CO_OD.c file initialisations.
+    ```
+    /*2301    */ typedef struct {
+               UNSIGNED8      maxSubIndex;
+               UNSIGNED32     size;
+               UNSIGNED8      axisNo;
+               VISIBLE_STRING name[6];
+               VISIBLE_STRING color[5];
+               UNSIGNED32     map;
+               UNSIGNED8      format;
+               UNSIGNED8      trigger;
+               INTEGER32      threshold;
+               }              OD_traceConfig_t;
+    ```
 
 ## Deployment
 

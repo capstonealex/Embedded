@@ -25,6 +25,9 @@ nav:
     - CANopen Hardware: canopenHardware.md
     - Calibrating X2: calibration.md
   
+  - SOFTWARE ARCHITECTURE:
+    - State Machine: StaeMachines.md
+  
     # - Everything below this is in-development components. Move completed sections above.
   - IN-DEVELOPMENT:
     - Setting Up PDOs: PDOprotocol.md
