@@ -29,6 +29,7 @@
 #include <sys/time.h>
 
 //// Data logger helper functions
+void fileLoggerBinary();
 void fileLogHeader();
 void fileLogger();
 void strreverse(char *begin, char *end);
@@ -165,5 +166,26 @@ void fileLogHeader(){
     fputs(header2, fp);
     fputs(header3, fp);
     fputs(header4, fp);
+    fclose(fp);
+}
+
+void fileLoggerBinary(){
+    FILE* fp;
+    uint32_t sizeInt = 0;
+    fp = fopen("/home/debian/X2_log.bin", "ab");
+
+    struct timeval tv;
+    gettimeofday(&tv,NULL);
+    
+    fwrite(&tv, sizeof(struct timeval), 1, fp);
+    fwrite(&CO_OD_RAM.actualMotorPositions.motor1, sizeof(sizeInt), 1, fp);
+    fwrite(&((int16_t)CO_OD_RAM.statusWords.motor1), sizeof(sizeInt), 1, fp);
+    fwrite(&CO_OD_RAM.actualMotorPositions.motor2, sizeof(sizeInt), 1, fp);
+    fwrite(&((int16_t)CO_OD_RAM.statusWords.motor2), sizeof(sizeInt), 1, fp);
+    fwrite(&CO_OD_RAM.actualMotorPositions.motor3, sizeof(sizeInt), 1, fp);
+    fwrite(&((int16_t)CO_OD_RAM.statusWords.motor3), sizeof(sizeInt), 1, fp);
+    fwrite(&CO_OD_RAM.actualMotorPositions.motor4, sizeof(sizeInt), 1, fp);
+    fwrite(&((int16_t)CO_OD_RAM.statusWords.motor4), sizeof(sizeInt), 1, fp);
+
     fclose(fp);
 }
