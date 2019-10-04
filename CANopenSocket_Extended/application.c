@@ -66,7 +66,7 @@ printf("time after(s): %lu, (us): %lu\n",tv.tv_sec, tv.tv_usec);
 
 /******************************************************************************/
 void app_program1ms(void){
-	fileLogger();
+	fileLoggerBinary();
 }
 /******************************************************************************/
 void itoa(int value, char *str, int base)
@@ -178,16 +178,26 @@ void fileLoggerBinary(){
 
     struct timeval tv;
     gettimeofday(&tv,NULL);
-    
+
+    uint32_t motor1pos=CO_OD_RAM.actualMotorPositions.motor1;
+    uint32_t motor2pos=CO_OD_RAM.actualMotorPositions.motor2;
+    uint32_t motor3pos=CO_OD_RAM.actualMotorPositions.motor3;
+    uint32_t motor4pos=CO_OD_RAM.actualMotorPositions.motor4;
+    uint16_t motor1Tor=CO_OD_RAM.statusWords.motor1;
+    uint16_t motor2Tor=CO_OD_RAM.statusWords.motor2;
+    uint16_t motor3Tor=CO_OD_RAM.statusWords.motor3;
+    uint16_t motor4Tor=CO_OD_RAM.statusWords.motor4;
+
+
     fwrite(&tv, sizeof(struct timeval), 1, fp);
-    fwrite(&CO_OD_RAM.actualMotorPositions.motor1, sizeof(sizeInt), 1, fp);
-    fwrite(&((int16_t)CO_OD_RAM.statusWords.motor1), sizeof(sizeInt), 1, fp);
-    fwrite(&CO_OD_RAM.actualMotorPositions.motor2, sizeof(sizeInt), 1, fp);
-    fwrite(&((int16_t)CO_OD_RAM.statusWords.motor2), sizeof(sizeInt), 1, fp);
-    fwrite(&CO_OD_RAM.actualMotorPositions.motor3, sizeof(sizeInt), 1, fp);
-    fwrite(&((int16_t)CO_OD_RAM.statusWords.motor3), sizeof(sizeInt), 1, fp);
-    fwrite(&CO_OD_RAM.actualMotorPositions.motor4, sizeof(sizeInt), 1, fp);
-    fwrite(&((int16_t)CO_OD_RAM.statusWords.motor4), sizeof(sizeInt), 1, fp);
+    fwrite(&motor1pos, sizeof(sizeInt), 1, fp);
+    fwrite(&motor1Tor, sizeof(sizeInt), 1, fp);
+    fwrite(&motor2pos, sizeof(sizeInt), 1, fp);
+    fwrite(&motor2Tor, sizeof(sizeInt), 1, fp);
+    fwrite(&motor3pos, sizeof(sizeInt), 1, fp);
+    fwrite(&motor3Tor, sizeof(sizeInt), 1, fp);
+    fwrite(&motor4pos, sizeof(sizeInt), 1, fp);
+    fwrite(&motor4Tor, sizeof(sizeInt), 1, fp);
 
     fclose(fp);
 }
