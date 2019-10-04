@@ -172,7 +172,9 @@ void fileLogHeader(){
 void fileLoggerBinary(){
     FILE* fp;
     uint32_t sizeInt = 0;
-    fp = fopen("/home/debian/X2_log.bin", "ab");
+    fp = fopen("/media/sdcard1/X2logs/X2_log.bin", "ab");
+	if(fp==NULL)
+		printf("\nFILE CREATION ERROR\n");
 
     struct timeval tv;
     gettimeofday(&tv,NULL);
