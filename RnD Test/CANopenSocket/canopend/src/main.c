@@ -506,7 +506,8 @@ static void* rt_thread(void* arg) {
 #endif
 
             /* Execute optional additional application code */
-            app_program1ms();
+			if(CO_timer1ms%10==0)
+				app_program1ms();
 
             /* Detect timer large overflow */
             if(OD_performance[ODA_performance_timerCycleMaxTime] > TMR_TASK_OVERFLOW_US && rtPriority > 0 && CO->CANmodule[0]->CANnormal) {
