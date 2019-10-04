@@ -187,9 +187,12 @@ void fileLoggerBinary(){
     uint16_t motor2Tor=CO_OD_RAM.statusWords.motor2;
     uint16_t motor3Tor=CO_OD_RAM.statusWords.motor3;
     uint16_t motor4Tor=CO_OD_RAM.statusWords.motor4;
+    long long timesec=tv.tv_sec;
+    long timeusec=tv.tv_usec;
 
 
-    fwrite(&tv, sizeof(struct timeval), 1, fp);
+    fwrite(&timesec, sizeof(timesec), 1, fp);
+    fwrite(&timeusec, sizeof(timeusec), 1, fp);
     fwrite(&motor1pos, sizeof(sizeInt), 1, fp);
     fwrite(&motor1Tor, sizeof(sizeInt), 1, fp);
     fwrite(&motor2pos, sizeof(sizeInt), 1, fp);
