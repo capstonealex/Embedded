@@ -1,4 +1,4 @@
-# Alex Exoskeleton: StaeMachines
+# Alex Exoskeleton: State Machines
 Robots must be able to undertake both low level (read sensors, timing, a/d IO) and high level (behavioural) tasks (data log, trajectory gen, motor cal, sensor filtering etc).We require most of these tasks to be managed to support experimental controllers and supervisory machines that activate and deactivate behaviors based on user input from the remote control. We have implemented a modular State Machine library to easily develop event based controllers for specific tasks and easily switch between tasks. Bellow we descrive the architecture of the State Machine class. 
 
 ## State  Machines.
