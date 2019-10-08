@@ -112,21 +112,19 @@ int main()
     printf("Welcome to CANfeast!\n");
     int socket;
     char junk[STRING_LENGTH];
-
-    GPIO::GPIOManager* gp = GPIO::GPIOManager::getInstance();
-    int pin = GPIO::GPIOConst::getInstance()->getGpioByKey("P9_23");
-    gp->setDirection(pin, GPIO::INPUT);
-    printf("Pin 9.23 value: %d\n",gp->getValue(pin));
-    gp->~GPIOManager();
-
+    int on = 1;
     canFeastUp(&socket);
-    int button4=0;
+    // GREEN BUTTON
+    int button4=1;
 
-    while (button4==0)
+    while (button4 == 1)
     {
         printf("LHIP: %ld, LKNEE: %ld, RHIP: %ld, RKNEE: %ld\n", getPos(&socket, LHIP, junk), getPos(&socket, LKNEE, junk), getPos(&socket, RHIP, junk), getPos(&socket, RKNEE, junk));
-        std::cout<<"Enter button 4: ";
-        std::cin>>button4;
+        std::cout<<"PRESS GREEN BUTTON TO START: ";
+        GPIO::GPIOManager* gp = GPIO::GPIOManager::getInstance();
+	    int pin = GPIO::GPIOConst::getInstance()->getGpioByKey("P8_9");
+	    gp->setDirection(pin, GPIO::INPUT);
+	    button4 = gp->getValue(pin);
         printf("Button 4: %d\n",button4);
     }
 
@@ -211,28 +209,51 @@ void sitStand(int *socket, int initState)
     //Kill motor and end program when button 3 is pressed.
     //Button 4 exits state machine
     //Button 1 sits more, button 2 stands more.
+    static char *BUTTONRED = "P8_7";
+    static char *BUTTONBLUE = "P8_8";
+    static char *BUTTONGREEN = "P8_9";
+    static char *BUTTONYELLOW = "P8_10";
     while (1)
     {
+    	while(1){
+	    	GPIO::GPIOManager *gp = GPIO::GPIOManager::getInstance();
+		    int red = GPIO::GPIOConst::getInstance()->getGpioByKey(BUTTONRED);
+		    int blue = GPIO::GPIOConst::getInstance()->getGpioByKey(BUTTONBLUE);
+		    int green = GPIO::GPIOConst::getInstance()->getGpioByKey(BUTTONGREEN);
+		    int yellow = GPIO::GPIOConst::getInstance()->getGpioByKey(BUTTONYELLOW);
+		    gp->setDirection(red, GPIO::INPUT);
+		    gp->setDirection(blue, GPIO::INPUT);
+		    gp->setDirection(green, GPIO::INPUT);
+		    gp->setDirection(yellow, GPIO::INPUT);
+		    button1Status = gp->getValue(red);
+		    button2Status = gp->getValue(blue);
+		    button4Status = gp->getValue(green);
+		    button3Status = gp->getValue(yellow);
+		    gp->~GPIOManager();
 
-        //read button state
-        std::cout<<"Enter button 1: ";
-        std::cin>>button1Status;
-        printf("Button 1: %d\n",button1Status);
+	        // //read button state using keyboard
+	        // std::cout<<"Enter button 1: ";
+	        // std::cin>>button1Status;
+	         printf("Button 1: %d\n",button1Status);
 
-        std::cout<<"Enter button 2: ";
-        std::cin>>button2Status;
-        printf("Button 2: %d\n",button1Status);
+	        // std::cout<<"Enter button 2: ";
+	        // std::cin>>button2Status;
+	         printf("Button 2: %d\n",button1Status);
 
-        std::cout<<"Enter button 3: ";
-        std::cin>>button3Status;
-        printf("Button 3: %d\n",button1Status);
+	        // std::cout<<"Enter button 3: ";
+	        // std::cin>>button3Status;
+	         printf("Button 3: %d\n",button1Status);
 
-        std::cout<<"Enter button 4: ";
-        std::cin>>button4Status;
-        printf("Button 4: %d\n",button1Status);
+	        // std::cout<<"Enter button 4: ";
+	        // std::cin>>button4Status;
+	         printf("Button 4: %d\n",button1Status);
+			}
+
+        /// USING BUTTONS
+
 
         //Button has to be pressed & Exo not moving & array not at end. If true, execute move.
-        if (button1Status == 1 && movestate == STATEIMMOBILE && sitstate < (arrSize - 1))
+        if (button1Status == 0 && movestate == STATEIMMOBILE && sitstate < (arrSize - 1))
         {
             movestate = STATESITTING;
             printf("Sitting down\n");
@@ -256,7 +277,7 @@ void sitStand(int *socket, int initState)
         }
 
         //Button has to be pressed & Exo not moving & array not at end. If true, execute move.
-        if (button2Status == 1 && movestate == STATEIMMOBILE && sitstate > 0)
+        if (button2Status == 0 && movestate == STATEIMMOBILE && sitstate > 0)
         {
             movestate = STATESTANDING;
             printf("Standing up\n");
@@ -280,7 +301,7 @@ void sitStand(int *socket, int initState)
         }
 
         //if button 3 pressed, then set to preop and exit.
-        if (button3Status == 1)
+        if (button3Status == 0)
         {
             printf("Terminating Program (sitstand)\n");
             stopExo(socket);
@@ -289,7 +310,7 @@ void sitStand(int *socket, int initState)
         }
 
         //Exit statemachine only if button 4 pressed and gone from sitting to standing or vice versa.
-        if (button4Status == 1 && ((sitstate==arrSize-1 && initState==STANDING)||(sitstate==0 && initState==SITTING)))
+        if (button4Status == 0 && ((sitstate==arrSize-1 && initState==STANDING)||(sitstate==0 && initState==SITTING)))
         {
             break;
         }
