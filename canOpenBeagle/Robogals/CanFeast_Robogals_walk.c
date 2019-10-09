@@ -220,10 +220,8 @@ void sitStand(int *socket, int initState)
         // //read button state using keyboard
         // std::cout<<"Enter button 1: ";
         // std::cin>>button1Status;
-         printf("Buttons: %d %d %d %d ... %d , %d\n",button1Status,button2Status,button3Status,button4Status, movestate,sitstate);
-
+         // printf("Buttons: %d %d %d %d ... %d , %d\n",button1Status,button2Status,button3Status,button4Status, movestate,sitstate);
         /// USING BUTTONS
-
 
         //Button has to be pressed & Exo not moving & array not at end. If true, execute move.
         if (button1Status == 0 && movestate == STATEIMMOBILE && sitstate < (arrSize - 1))
@@ -301,137 +299,137 @@ void walkMode(int *socket){
 
     //Array of trajectory points from R&D team
     double walkArrLHip_degrees[] = {
-        170.00,
-        170.06,
-        168.01,
-        157.19,
-        130.26,
-        110.86,
-        155.61,
-        156.20,
-        159.09,
-        164.12,
-        170.00,
-        177.14,
-        184.39,
-        183.49,
-        177.24,
-        160.69,
-        130.26,
-        110.86,
-        155.61,
-        156.20,
-        159.09,
-        164.12,
-        170.00,
-        177.14,
-        184.39,
-        181.84,
-        169.71,
-        150.11,
-        130.26,
-        130.26,
-        170.00     
+170.00,
+169.84,
+168.66,
+165.35,
+158.77,
+147.96,
+132.25,
+113.61,
+112.22,
+141.42,
+155.52,
+155.74,
+156.96,
+159.41,
+162.78,
+166.50,
+170.00,
+173.16,
+177.18,
+182.52,
+184.48,
+183.60,
+178.81,
+169.33,
+156.70,
+143.53,
+132.25,
+125.11,
+132.25,
+158.57,
+170.00
     };
     double walkArrLKnee_degrees[] = {
-      0.00,
-      4.89,
-     27.01,
-     58.79,
-     82.60,
-     67.44,
-      0.00,
-      0.00,
-      0.00,
-      0.00,
-      0.00,
-      0.00,
-      0.00,
-      4.89,
-     27.01,
-     58.79,
-     82.60,
-     67.44,
-      0.00,
-      0.00,
-      0.00,
-      0.00,
-      0.00,
-      0.00,
-      0.00,
-      3.31,
-     19.79,
-     48.64,
-     82.60,
-     82.60,
-      0.00 
+3.00,
+ 3.64,
+10.42,
+27.30,
+48.68,
+68.98,
+83.10,
+87.20,
+67.71,
+19.82,
+ 0.00,
+ 0.00,
+ 0.00,
+ 0.00,
+ 0.00,
+ 0.00,
+ 0.00,
+-0.00,
+ 0.00,
+ 0.00,
+ 0.00,
+ 1.25,
+ 8.19,
+22.20,
+41.52,
+62.87,
+83.10,
+98.04,
+83.10,
+25.26,
+3.00
     };
 
     double walkArrRHip_degrees[] = {
-        170.00,
-        169.63,
-        168.31,
-        167.63,
-        170.00,
-        177.14,
-        184.39,
-        183.49,
-        177.24,
-        160.69,
-        130.26,
-        110.86,
-        155.61,
-        156.20,
-        159.09,
-        164.12,
-        170.00,
-        177.14,
-        184.39,
-        183.49,
-        177.24,
-        160.69,
-        130.26,
-        110.86,
-        155.61,
-        156.56,
-        160.77,
-        166.49,
-        170.00,
-        170.00,
-        170.00 
+170.00,
+169.91,
+169.48,
+168.82,
+168.34,
+168.59,
+170.00,
+172.81,
+177.18,
+182.57,
+184.48,
+184.01,
+181.19,
+174.76,
+164.33,
+150.05,
+132.25,
+113.25,
+112.22,
+141.47,
+155.52,
+155.83,
+157.47,
+160.59,
+164.44,
+167.91,
+170.00,
+170.35,
+170.00,
+169.96,
+170.00
     };
     double walkArrRKnee_degrees[] = {
-     0.00,
-     0.00,
-     0.00,
-     0.00,
-     0.00,
-     0.00,
-     0.00,
-     4.89,
-    27.01,
-    58.79,
-    82.60,
-    67.44,
-     0.00,
-     0.00,
-     0.00,
-     0.00,
-     0.00,
-     0.00,
-     0.00,
-     4.89,
-    27.01,
-    58.79,
-    82.60,
-    67.44,
-     0.00,
-     0.00,
-     0.00,
-     0.00,
-     0.00,
-     0.00,
-     0.00
+3.00,
+ 3.00,
+ 3.00,
+ 3.00,
+ 3.00,
+ 3.00,
+ 3.00,
+ 3.00,
+ 3.00,
+ 3.00,
+ 3.00,
+ 1.64,
+10.42,
+27.30,
+48.68,
+68.98,
+83.10,
+87.20,
+67.71,
+19.82,
+3.00,
+3.00,
+3.00,
+3.00,
+3.00,
+3.00,
+3.00,
+3.00,
+3.00,
+3.00,
+0.00
     };
 
     int arrSize = sizeof(walkArrLHip_degrees) / sizeof(walkArrLHip_degrees[0]);
@@ -495,7 +493,7 @@ void walkMode(int *socket){
         button3Status = gp->getValue(yellow);
         gp->~GPIOManager();
         //Button has to be pressed & Exo not moving & array not at end. If true, execute move.
-        if (button1Status == 1 && movestate == STATEIMMOBILE && walkstate < (arrSize - 1))
+        if (button1Status == 0 && movestate == STATEIMMOBILE && walkstate < (arrSize - 1))
         {
             movestate = WALKINGFORWARD;
             printf("Walking forward\n");
@@ -519,7 +517,7 @@ void walkMode(int *socket){
         }
 
         //Button has to be pressed & Exo not moving & array not at end. If true, execute move.
-        if (button2Status == 1 && movestate == STATEIMMOBILE && walkstate > 0)
+        if (button2Status == 0 && movestate == STATEIMMOBILE && walkstate > 0)
         {
             movestate = WALKINGBACK;
             printf("Walking backward\n");
@@ -543,7 +541,7 @@ void walkMode(int *socket){
         }
 
         //if button 3 pressed, then set to preop and exit program.
-        if (button3Status == 1)
+        if (button3Status == 0)
         {
             printf("Terminating Program (walk mode)\n");
             stopExo(socket);
@@ -552,7 +550,7 @@ void walkMode(int *socket){
         }
 
         //Only exit state machine if button 4 pressed and at end of walking array. 
-        if(button4Status==1 && walkstate==(arrSize-1)){
+        if(button4Status==0 && walkstate==(arrSize-1)){
             break;
         }
     }
