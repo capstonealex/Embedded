@@ -495,7 +495,7 @@ void walkMode(int *socket){
         button3Status = gp->getValue(yellow);
         gp->~GPIOManager();
         //Button has to be pressed & Exo not moving & array not at end. If true, execute move.
-        if (button1Status == 0 && movestate == STATEIMMOBILE && walkstate < (arrSize - 1))
+        if (button1Status == 1 && movestate == STATEIMMOBILE && walkstate < (arrSize - 1))
         {
             movestate = WALKINGFORWARD;
             printf("Walking forward\n");
@@ -519,7 +519,7 @@ void walkMode(int *socket){
         }
 
         //Button has to be pressed & Exo not moving & array not at end. If true, execute move.
-        if (button2Status == 0 && movestate == STATEIMMOBILE && walkstate > 0)
+        if (button2Status == 1 && movestate == STATEIMMOBILE && walkstate > 0)
         {
             movestate = WALKINGBACK;
             printf("Walking backward\n");
@@ -543,7 +543,7 @@ void walkMode(int *socket){
         }
 
         //if button 3 pressed, then set to preop and exit program.
-        if (button3Status == 0)
+        if (button3Status == 1)
         {
             printf("Terminating Program (walk mode)\n");
             stopExo(socket);
@@ -552,7 +552,7 @@ void walkMode(int *socket){
         }
 
         //Only exit state machine if button 4 pressed and at end of walking array. 
-        if(button4Status==0 && walkstate==(arrSize-1)){
+        if(button4Status==1 && walkstate==(arrSize-1)){
             break;
         }
     }

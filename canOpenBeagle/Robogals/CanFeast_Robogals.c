@@ -35,7 +35,7 @@
 //Clearance used when doing point to point motion
 #define POSCLEARANCE 10000
 //Velocity and acceleration for position mode move
-#define PROFILEVELOCITY 200000
+#define PROFILEVELOCITY 900000
 #define PROFILEACCELERATION 40000
 //Knee motor reading and corresponding angle. Used for mapping between degree and motor values.
 #define KNEE_MOTOR_POS1 250880
@@ -150,30 +150,12 @@ void sitStand(int *socket, int initState)
     //IMPORTANT: Update initState arg passed to sitstand() from main.
 
     double sitStandArrHip_degrees[] = {
-            171.59,
-            169.97,
-            161.72,
-            147.06,
-            130.51,
-            117.26,
-            109.84,
-            107.45,
-            107.89,
-            108.86,
-            109.13
+            180.00,
+            96.23
     };
     double sitStandArrKnee_degrees[] = {
-            18.19,
-            20.59,
-            32.71,
-            53.84,
-            76.85,
-            93.64,
-            100.35,
-            98.88,
-            93.91,
-            90.07,
-            89.20
+            0.00,
+            84.42
     };
 
     int arrSize = sizeof(sitStandArrHip_degrees) / sizeof(sitStandArrHip_degrees[0]);
@@ -215,39 +197,25 @@ void sitStand(int *socket, int initState)
     static char *BUTTONYELLOW = "P8_10";
     while (1)
     {
-    	while(1){
-	    	GPIO::GPIOManager *gp = GPIO::GPIOManager::getInstance();
-		    int red = GPIO::GPIOConst::getInstance()->getGpioByKey(BUTTONRED);
-		    int blue = GPIO::GPIOConst::getInstance()->getGpioByKey(BUTTONBLUE);
-		    int green = GPIO::GPIOConst::getInstance()->getGpioByKey(BUTTONGREEN);
-		    int yellow = GPIO::GPIOConst::getInstance()->getGpioByKey(BUTTONYELLOW);
-		    gp->setDirection(red, GPIO::INPUT);
-		    gp->setDirection(blue, GPIO::INPUT);
-		    gp->setDirection(green, GPIO::INPUT);
-		    gp->setDirection(yellow, GPIO::INPUT);
-		    button1Status = gp->getValue(red);
-		    button2Status = gp->getValue(blue);
-		    button4Status = gp->getValue(green);
-		    button3Status = gp->getValue(yellow);
-		    gp->~GPIOManager();
+    	GPIO::GPIOManager *gp = GPIO::GPIOManager::getInstance();
+	    int red = GPIO::GPIOConst::getInstance()->getGpioByKey(BUTTONRED);
+	    int blue = GPIO::GPIOConst::getInstance()->getGpioByKey(BUTTONBLUE);
+	    int green = GPIO::GPIOConst::getInstance()->getGpioByKey(BUTTONGREEN);
+	    int yellow = GPIO::GPIOConst::getInstance()->getGpioByKey(BUTTONYELLOW);
+	    gp->setDirection(red, GPIO::INPUT);
+	    gp->setDirection(blue, GPIO::INPUT);
+	    gp->setDirection(green, GPIO::INPUT);
+	    gp->setDirection(yellow, GPIO::INPUT);
+	    button1Status = gp->getValue(red);
+	    button2Status = gp->getValue(blue);
+	    button4Status = gp->getValue(green);
+	    button3Status = gp->getValue(yellow);
+	    gp->~GPIOManager();
 
-	        // //read button state using keyboard
-	        // std::cout<<"Enter button 1: ";
-	        // std::cin>>button1Status;
-	         printf("Button 1: %d\n",button1Status);
-
-	        // std::cout<<"Enter button 2: ";
-	        // std::cin>>button2Status;
-	         printf("Button 2: %d\n",button1Status);
-
-	        // std::cout<<"Enter button 3: ";
-	        // std::cin>>button3Status;
-	         printf("Button 3: %d\n",button1Status);
-
-	        // std::cout<<"Enter button 4: ";
-	        // std::cin>>button4Status;
-	         printf("Button 4: %d\n",button1Status);
-			}
+        // //read button state using keyboard
+        // std::cout<<"Enter button 1: ";
+        // std::cin>>button1Status;
+         printf("Buttons: %d %d %d %d ... %d , %d\n",button1Status,button2Status,button3Status,button4Status, movestate,sitstate);
 
         /// USING BUTTONS
 
