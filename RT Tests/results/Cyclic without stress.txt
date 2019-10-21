@@ -1,0 +1,24 @@
+policy: other/other: loadavg: 1.06 1.03 1.47 2/184 2160          4 Max:    3170
+policy: other/other: loadavg: 1.14 1.05 1.47 1/184 2160          6 Max:    5340
+policy: other/other: loadavg: 1.37 1.10 1.48 1/184 2160          5 Max:    5340
+policy: other/other: loadavg: 1.37 1.10 1.48 1/184 2160          4 Max:    5340
+policy: other/other: loadavg: 1.66 1.16 1.50 1/184 2160          4 Max:    5340
+policy: other/other: loadavg: 1.66 1.16 1.50 1/184 2160          4 Max:    5974
+policy: other/other: loadavg: 1.66 1.16 1.50 1/184 2160          4 Max:    5974
+policy: other/other: loadavg: 1.66 1.16 1.50 1/184 2160          4 Max:    5974
+T: 0 ( 2160) P: 0 I:1000 C:  25700 Min:     28 Act:  132 Avg:  144 Max:    5974
+T: 0 ( 2160) P: 0 I:1000 C:  27480 Min:     28 Act:   94 Avg:  144 Max:    5974
+^Cdebian@beaglebone:~/rt-tests-1.3$ sudo ./cyclictest -p 80
+# /dev/cpu_dma_latency set to 0us
+policy: fifo: loadavg: 1.62 1.18 1.50 1/184 2163
+policy: fifo: loadavg: 1.70 1.27 1.52 1/184 2163
+policy: fifo: loadavg: 1.70 1.27 1.52 1/184 2163          vg:   28 Max:     110
+policy: fifo: loadavg: 1.70 1.30 1.52 1/184 2163          vg:   28 Max:     110
+policy: fifo: loadavg: 1.70 1.30 1.52 1/183 2163          vg:   28 Max:     110
+policy: fifo: loadavg: 1.64 1.30 1.52 1/183 2163          vg:   28 Max:     110
+policy: fifo: loadavg: 1.64 1.30 1.52 1/183 2163          vg:   28 Max:     110
+policy: fifo: loadavg: 1.64 1.30 1.52 2/183 2163          vg:   28 Max:     110
+policy: fifo: loadavg: 1.64 1.30 1.52 1/183 2163          vg:   28 Max:     110
+policy: fifo: loadavg: 1.59 1.29 1.52 1/183 2163          vg:   28 Max:     110
+T: 0 ( 2163) P:80 I:1000 C:  90365 Min:     16 Act:   29 Avg:   28 Max:     110
+T: 0 ( 2163) P:80 I:1000 C:  94021 Min:     16 Act:   19 Avg:   28 Max:     110
