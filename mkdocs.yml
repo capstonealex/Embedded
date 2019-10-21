@@ -19,6 +19,7 @@ nav:
     - Eclipse & cross compilation: eclipse.md
     - Beagle Bone Black Flashing: bbb.md
     - Beagle Bone Kernel Compilation: kernel.md
+    - Realtime Tests: rtTests.md
     - CANbus: canbus.md
     - Accelnet Motor Drive Config and Wiring: accelnet_DriveSetup.md
     - CANopen: canopen.md
