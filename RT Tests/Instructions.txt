@@ -8,5 +8,5 @@ Extract them into a folder.
 Run make all. Run 'make NUMA=0' if you encounter errors with the former.
 sudo ./cyclictest -p 80 while in the working folder will start the cyclic test. -p 80 is for priority.
 Run a cpu stress test at same time while benchmarking. Get debian package for stress from here https://packages.debian.org/stretch/armhf/stress/download. Copy to BBB and install using dpkg.
-stress --cpu 64 --io 64 --vm 2 --vm-bytes 128M & --timeout 120
+stress --cpu 64 --io 64 --vm 2  --timeout 120 --vm-bytes 128M &
 Follow instructions here http://zeuzoix.github.io/techeuphoria/posts/2015/04/21/benchmarking-rt-preempt-kernel-on-beaglebone-black/
