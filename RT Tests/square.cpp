@@ -23,8 +23,7 @@ int count=0;
 //   LOW = 0,
 //   HIGH = 1
 // };
-GPIO::PIN_VALUE h = GPIO::PIN_VALUE.HIGH;
-GPIO::PIN_VALUE l = GPIO::PIN_VALUE.LOW;
+
 /* the struct timespec consists of nanoseconds
  * and seconds. if the nanoseconds are getting
  * bigger than 1000000000 (= 1 second) the
@@ -45,18 +44,18 @@ void out()
 {  
    int val = count%2;
    if(val){
-      printf("High val: %d\n",val);
-      gp->setValue(pin, h);
+      // printf("High val: %d\n",val);
+      gp->setValue(pin, GPIO::HIGH);
    }
    else
    {
-      printf("Low val: %d\n",val);
-      gp->setValue(pin, l);
+      // printf("Low val: %d\n",val);
+      gp->setValue(pin, GPIO::LOW);
       /* code */
    }
    
    
-   val++;
+   count++;
 }
 
 int main(int argc,char** argv)
