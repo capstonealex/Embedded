@@ -1,1 +1,0 @@
-g++ GPIO/GPIOConst.cpp GPIO/GPIOManager.cpp -o swave square.cpp -lrt -Wall
