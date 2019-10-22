@@ -7,7 +7,7 @@
   * This starts CAN interface and sets BBB GPIO pins 8.7, 8.8, 8.9, 8.11 to input for the handheld control buttons. Then it starts the sit stand program located at `/home/debian/Sit_stand/canopend/./ALEX`.
   * The sit stand programs starts PDOs, does home calibration and then waits in IDLE state for user input. Press yellow button on hand controller to enter sit stand mode. Then Hold green button to cycle through sit stand. 
   
-  # Creating Your Own Image
+# Creating Your Own Image
   
   * Live boot with a fresh image of the BBB OS.
   * Set it up with required programs and startup scripts. These can be executed during startup by adding them to `rc.local`. Refer to [this](https://github.com/capstonealex/Embedded/tree/master/BBB%20Scripts/Startup%20Script%20-%20Full%20Program) for currently used startup scripts. 
