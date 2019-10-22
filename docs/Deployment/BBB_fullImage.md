@@ -8,11 +8,21 @@
    * The sit stand programs starts PDOs, does home calibration and then waits in idle state for user input. Press yellow button on hand controller to enter sit stand mode. Then hold green button to cycle through sit stand. 
   
 # Creating Your Own Image
-  
+
   * Live boot with a fresh image of the BBB OS.
   * Set it up with required programs and startup scripts. These can be executed during startup by adding them to `rc.local`. Refer to [this](https://github.com/capstonealex/Embedded/tree/master/BBB%20Scripts/Startup%20Script%20-%20Full%20Program) for currently used startup scripts. 
-  * Now shutdown BBB, take the SD card with the liveboot image and insert into Linux PC. 
-  * Use `df -h` to identify the sd card.
-  * Use `sudo dd if=/dev/mmcblk0p1 of=/SDCardBackup.img` to make the image. Replace `mmcblk0p1` with the appropriate partition.
+  * Now shutdown BBB, take the SD card with the liveboot image and insert into a PC. Follow either Windows or Linux instructions stated below.
+
+## For Windows
+  * Download and install [Win32 Disk Imager](https://sourceforge.net/projects/win32diskimager/). Also available [here](https://drive.google.com/open?id=1sqqtmF5ChAT6LPynyj2XnDZbb2vEUvlf)
+  * Run the program. On the right side, select the drive letter corresponding to the SD card.
+  * Enter a name for the image in the "Image File" box. 
+  * Select "Read Only Allocated Partitions".
+  * Click Read. This will create the image file. 
+
+## For Linux
+  * See this [http://blog.logikonlabs.com/how-to-create-a-custom-microsd-card-image-for-the-beaglebone-black/](http://blog.logikonlabs.com/how-to-create-a-custom-microsd-card-image-for-the-beaglebone-black/)
+
+
   
   
