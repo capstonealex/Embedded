@@ -16,7 +16,6 @@ sudo config-pin -a p8.9 in+
 sudo config-pin -a p8.10 in+
 
 #Setting up slave nodes
-#cd /home/debian/CANopenSocket/canopend
-
-#Setting up master node
-#app/canopend can1 -i 100 -c "" &
+cd /home/debian/Sit_stand/canopend
+echo - > od4_storage
+echo - > od4_storage_auto
