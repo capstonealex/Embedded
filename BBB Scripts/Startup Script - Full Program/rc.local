@@ -1,0 +1,9 @@
+#!/bin/sh -e
+
+/usr/bin/X2_startCAN.sh
+#/usr/bin/X2_homeCalibration.sh
+#sleep 10s
+#/usr/bin/X2_homeCalib2.sh
+#/usr/bin/X2_run.out
+
+exit 0
