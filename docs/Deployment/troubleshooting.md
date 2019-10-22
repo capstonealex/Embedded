@@ -18,3 +18,7 @@ This potentially can happen if the components are connected up in the wrong orde
 5. Run the initialisation scripts: `./InitHardware.sh`.
 
 The system should now be fixed.
+
+## CAN Interface Reset
+
+1. Run `sudo ifconfig can1 down`. This closes the CAN1 interface.

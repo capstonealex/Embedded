@@ -1,0 +1,6 @@
+#!/bin/sh -e
+
+/usr/bin/X2_startCAN.sh
+/home/debian/Sit_stand/canopend/./ALEX
+
+exit 0

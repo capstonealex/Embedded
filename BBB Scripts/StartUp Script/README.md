@@ -19,7 +19,7 @@
 	```
 	
 2.	Make the script runnable using `sudo chmod a+x setupCANinterface.sh`
-3.	Don’t put anything is script that is blocking. 
+3.	Don’t put anything is script that is blocking. Remove sleep from script and put in `rc.local`.
 4.	Now `sudo nano /etc/rc.local`
 5.	Add 
 
