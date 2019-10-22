@@ -5,7 +5,7 @@
 * The behaviour of this image is as follows:
    * `/etc/rc.local` starts the `/usr/bin/X2_startCAN.sh` and `/home/debian/Sit_stand/canopend/./ALEX` programs.
    * This starts CAN interface and sets BBB GPIO pins 8.7, 8.8, 8.9, 8.11 to input for the handheld control buttons. Then it starts the sit stand program located at `/home/debian/Sit_stand/canopend/./ALEX`.
-   * The sit stand programs starts PDOs, does home calibration and then waits in IDLE state for user input. Press yellow button on hand controller to enter sit stand mode. Then Hold green button to cycle through sit stand. 
+   * The sit stand programs starts PDOs, does home calibration and then waits in idle state for user input. Press yellow button on hand controller to enter sit stand mode. Then hold green button to cycle through sit stand. 
   
 # Creating Your Own Image
   
