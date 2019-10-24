@@ -64,14 +64,14 @@ void app_programAsync(uint16_t timer1msDiff){
 //struct timeval start;
 //struct timeval stop;
 //gettimeofday(&start, NULL);
-/*
- *struct timeval tv;
- *gettimeofday(&tv,NULL);
- *printf("time before(s): %lu, (us): %lu\n",tv.tv_sec, tv.tv_usec);
- *fileLogger(timer1msDiff);
- *gettimeofday(&tv,NULL);
- *printf("time after(s): %lu, (us): %lu\n",tv.tv_sec, tv.tv_usec);
- */
+
+//struct timeval tv;
+//gettimeofday(&tv,NULL);
+//printf("time before(s): %lu, (us): %lu\n",tv.tv_sec, tv.tv_usec);
+//fileLogger(timer1msDiff);
+//gettimeofday(&tv,NULL);
+//printf("time after(s): %lu, (us): %lu\n",tv.tv_sec, tv.tv_usec);
+
 //gettimeofday(&stop, NULL);
 //double elapsed_ms = (stop.tv_sec - start.tv_sec) * 1000.0;
 //elapsed_ms += (stop.tv_usec - start.tv_usec) / 1000.0;
