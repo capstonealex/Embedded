@@ -31,6 +31,7 @@
 //header files for the implementing logging using spdlog techniques.
 #include <iostream>
 #include <string.h>
+#include <sstream>
 #include "spdlog/spdlog.h"
 #include "spdlog/sinks/basic_file_sink.h"
 
@@ -41,10 +42,10 @@ void fileLogger();
 void strreverse(char *begin, char *end);
 void itoa(int value, char *str, int base);
 
-/* File has been modified by Mihai Blaga on 24/10 to implement more robust
- * logging through the implementation of spdlog.
- */
+/* File has been modified by Mihai Blaga to implement more robust
+ * logging through the implementation of spdlog. */
 auto* createLogger(std::string logID, std::string fileLocation);
+void setLoggerStyle(auto* logger);
 //Path to the file in which all of the log files are stored.
 const std::string logFolder = "\logs\";
 
@@ -131,6 +132,7 @@ void itoa(int value, char *str, int base)
     strreverse(str, wstr - 1);
 }
 /******************************************************************************/
+//can do this with std::reverse.
 void strreverse(char *begin, char *end)
 {
     char aux;
@@ -163,6 +165,11 @@ void fileLogger(auto* logger){
 	uint32_t motorpos[4];
 	uint16_t motorTor[4];
 	
+	/* Motor 1: Left Hip
+	 * Motor 2: Left Knee
+	 * Motor 3: Right Hip
+	 * Motor 4: Right Knee */
+	
 	motorpos[0] = CO_OD_RAM.actualMotorPositions.motor1;
 	motorpos[1] = CO_OD_RAM.actualMotorPositions.motor2;
 	motorpos[2] = CO_OD_RAM.actualMotorPositions.motor3;
@@ -172,12 +179,6 @@ void fileLogger(auto* logger){
 	motorTor[1] = CO_OD_RAM.statusWords.motor2;
 	motorTor[2] = CO_OD_RAM.statusWords.motor3;
 	motorTor[3] = CO_OD_RAM.statusWords.motor4;
-	
-	/* Motor 1: Left Hip
-	 * Motor 2: Left Knee
-	 * Motor 3: Right Hip
-	 * Motor 4: Right Knee
-	 */
 	
 	std::stringstream output;
 	
@@ -207,8 +208,8 @@ void fileLogHeader(auto* logger){
 	logger->info(header.str());
 }
 
-void fileLoggerBinary(auto* logger){
-    	mainLogger = createLogger("parent", logFolder + "parent.txt");
+void fileLoggerBinary(){
+    	parent = createLogger("parent", logFolder + "parent.txt");
 	spd::set_default_logger(mainLogger);
 
     	struct timeval tv;
@@ -229,12 +230,14 @@ void fileLoggerBinary(auto* logger){
 	
     	long long timesec=tv.tv_sec;
     	long timeusec=tv.tv_usec;
+	
+	std::stringstream content;
 
-	logger->info("{}", timesec);
-	logger->info("{}", timeusec);
+	content << timesec << timeusec;
 	
 	for(int i = 0; i<4; i++){
-		mainLogger->info("{}", &motorpos[i]);
-		mainLogger->info("{}", &motorTor[i]);
+		content << motorpos[i] << motorTor[i];
 	}
+	
+	parent->info(content.str());
 }
