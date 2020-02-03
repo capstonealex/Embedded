@@ -1,5 +1,5 @@
 # Workbench
-## Container set up Version 2.0 (tested mac OSX and ubuntu)
+## Version 2.0 : Using Docker Container (tested mac OSX and ubuntu)
 ### Docker container cross
 1. Install Docker and Docker hub[Docker Desktop for Mac and Windows | Docker](https://www.docker.com/products/docker-desktop)
 2. docker pull alejandro4siana/cross-bbb-debian
