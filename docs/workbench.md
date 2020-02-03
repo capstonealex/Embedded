@@ -1,4 +1,15 @@
 # Workbench
+## Container set up Version 2.0 (tested mac OSX and ubuntu)
+### Docker container cross
+1. Install Docker and Docker hub[Docker Desktop for Mac and Windows | Docker](https://www.docker.com/products/docker-desktop)
+2. docker pull alejandro4siana/cross-bbb-debian
+3. cd into the file you wish to cross compile in (e.g. ALEX)
+```
+docker run siana/cross-bbb-debian > bbbxc
+chmod +x bbbxc
+```
+4. run command `./bbbxc make	` which should create your executable ready to upload on BBB
+5.(OPTIONAL) Install vscode and use docker container as compiling environment:[VS code](https://code.visualstudio.com/docs/remote/containers)
 
 ## Virtual Box with instance of Debian 9.8
 
