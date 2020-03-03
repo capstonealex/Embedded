@@ -11,7 +11,7 @@ chmod +x bbbxc
 4. run command `./bbbxc make	` which should create your executable ready to upload on BBB
 5.(OPTIONAL) Install vscode and use docker container as compiling environment:[VS code](https://code.visualstudio.com/docs/remote/containers)
 ## Windows Virtual GDB Beagle bone.
-PreBuilt Windows toolchain for beagle bone and accompanying plugin for Visual Studio: [Link](https://gnutoolchains.com/beaglebone/)
+PreBuilt GNU Windows toolchain for beagle bone and accompanying plugin for Visual Studio: [Link](https://gnutoolchains.com/beaglebone/)
 
 ## Virtual Box with instance of Debian 9.8
 
