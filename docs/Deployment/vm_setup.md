@@ -53,39 +53,60 @@ You should now have a cloned VM with working Debian and cross compilation to BBB
 Rather than setting up a Virtual Machine, an alternative is to use a Docker container to simulate the BBB on the user's host OS in a terminal. This method utilises cross compilation for the BBB, then copying the compiled exo app or tests to the Docker container to be run. A recommended method for setting up the Docker workflow on a fresh computer is described below.
 
 1. Install [VSCode](https://code.visualstudio.com/)
+
 2. Install [Git](https://git-scm.com/download)
+
 3. Download the [GNU Toolchain](https://gnutoolchains.com/download/), selecting beaglebone-gcc6.3.0-r2.exe (361 MB) and install
+
 4. Install [Docker](https://docs.docker.com/docker-for-windows/install)
+
    * To learn some of the basics on getting started with Docker, [this Youtube video](https://www.youtube.com/watch?v=t5yqLJfbnqM) may be useful.
+   
 5. Checkout the [code repository](https://github.com/capstonalex/exo)
+
 6. Pull the armhf/Debian Docker image
    * Recommend using the VSCode terminals for simplicity, as multiple terminals will be required when the container is created. The following example was from a Powershell terminal within VSCode.
-```
-PS C:\Users\pc-user> docker pull armhf/debian
-```
+   
+   ```
+   PS C:\Users\pc-user> docker pull armhf/debian
+   ```
+   
 7. Create a container based on the image
+
    * A container ID will be produced in the form of a long hexidecimal string.
+   
    * This will not start the container yet.
-```
-PS C:\Users\pc-user> docker create -it armhf/debian
-```
+   
+   ```
+   PS C:\Users\pc-user> docker create -it armhf/debian
+   ```
+
 8. Build the desired app or test using the relevant Makefile and the "make" command
-```
-PS C:\Users\pc-user\Documents\Github\exo\> make testJoints
-```
+
+   ```
+   PS C:\Users\pc-user\Documents\Github\exo\> make testJoints
+   ```
+
 9. Copy the generated application on the local filesystem to the Docker container
+
    * Only enough characters of the container ID are needed to make it unique amoung created containers, so if only one container has been created, only one character of the container ID is needed.
-```
-PS C:\Users\pc-user\Documents\Github\exo\> docker cp <APPNAME> <CONTAINERID>:/<LOCATION>
-```
+   
+   ```
+   PS C:\Users\pc-user\Documents\Github\exo\> docker cp <APPNAME> <CONTAINERID>:/<LOCATION>
+   ```
+   
    * For example:
+   
    ```
    PS C:\Users\pc-user\Documents\Github\exo\> docker cp testJoints 93d5d:/testJoints
    ````
+   
 10. Start the Docker container in interactive mode, using the flag '-i'
-```
-PS C:\Users\pc-user\Documents\Github\exo\> docker start -i <CONTAINERID>
-```
+
+   ```
+   PS C:\Users\pc-user\Documents\Github\exo\> docker start -i <CONTAINERID>
+   ```
+
 11. Confirm that the application copied from the local filesystem is present in the container and can be run
    * For example, listing the present files, running testJoints and exiting the container:
    ```
