@@ -108,7 +108,9 @@ Rather than setting up a Virtual Machine, an alternative is to use a Docker cont
    ```
 
 11. Confirm that the application copied from the local filesystem is present in the container and can be run
+
    * For example, listing the present files, running testJoints and exiting the container:
+   
    ```
    root@93d5d77076e1:/exo# ls
    bin  boot  dev  etc  home  lib  media  mnt  opt  proc  root  run  sbin  srv  sys  testJoints  tmp  usr  var
