@@ -60,7 +60,7 @@ Rather than setting up a Virtual Machine, an alternative is to use a Docker cont
 
 4. Install [Docker](https://docs.docker.com/docker-for-windows/install)
 
-   * Windows 10 Pro, Enterprise or Education are required for use. For University of Melbourne staff and students, a free upgrade to Windows 10 Education from Windows 10 Home can be accessed at [this link](https://unimelb.onthehub.com/WebStore/OfferingDetails.aspx?o=40f9cc62-6445-e511-940f-b8ca3a5db7a1)
+   * Windows 10 Pro, Enterprise or Education are required for use. For University of Melbourne staff and students, a free upgrade to Windows 10 Education from Windows 10 Home can be accessed at [this link](https://unimelb.onthehub.com/WebStore/OfferingDetails.aspx?o=40f9cc62-6445-e511-940f-b8ca3a5db7a1).
 
    * To learn some of the basics on getting started with Docker, [this Youtube video](https://www.youtube.com/watch?v=t5yqLJfbnqM) may be useful.
    
