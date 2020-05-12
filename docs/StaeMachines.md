@@ -1,8 +1,9 @@
 # Exoskeleton: State Machine
-Robots must be able to undertake both low level (read sensors, timing, a/d IO) and high level (behavioral) tasks (data log, trajectory gen, motor cal, sensor filtering, etc). We require most of these tasks to be managed to support experimental controllers and supervisory machines that activate and deactivate behaviors based on user input from the remote control. We have implemented a modular State Machine library to easily develop event-based controllers for specific tasks and easily switch between tasks. Bellow, we describe the architecture of the State Machine class. 
+Robots must be able to undertake both low level (read sensors, timing, a/d IO) and high level (behavioral) tasks (data log, trajectory gen, motor cal, sensor filtering, etc). We require most of these tasks to be managed to support experimental controllers and supervisory machines that activate and deactivate behaviors based on user input. We have implemented a modular State Machine library to develop event-driven controllers for specific tasks and a method to safely switch between tasks. Bellow, we describe the architecture of the State Machine class. The explnation is meant to be non exhaustive and only gives a brief intro to the mechanics of the software. For full details, run through the source code, example ExoStateMachine project and try to develop your own event driven State Machine to meet your needs.
 
+driven state Machine.
 ## State  Machine.
-- StateMachine class is a base which all state machines are created from, it is from this class that states are run and switched between. The class must has the following mandatory methods.
+- StateMachine class is a base class, it is from this class that states are run and switched between. The class must have the following methods.
 ```
 void StateMachine::init(void)
 void StateMachine::acttuvate(void)
@@ -13,9 +14,9 @@ void StateMachine::getCurState(void)
 ```
 ## Events
 ---
-Abstract base class to represent **Events** which trigger a transition between two states. Done through the check method.
+Abstract base class to represent **Events** which trigger a transition between two states. Using the check method.
     `virtual Boolean method: check()`
-    - the derived class must implement the check method to return t/f based on some world condition. e.g. event (doneMove) -> returns true or false if a motion has been completed (90 deg for example)
+    - the derived class must implement the check method to return t/f based on some world condition. e.g. event (doneMove) -> returns true or false if a motion has been completed (90 deg for example).
     
 ## State
 ---
@@ -67,32 +68,8 @@ void StateMachine::update()
 
 ```
 ---
-### To set up a state machine as a programmer do the following:
-1) Define the event objects 
-2) Define the state objects 
+### To design your own state machine programatically follow these four steps:
+1) Define the event objects with the statemachine
+2) Define the state classes and objects within the statemachine
 3) Add desired transitions to the states 
 4) Set the initial state of the state machine 
-
-
-## Useful programming tools.
----
-MACROS for easily creating scaffolding code for STATE,EVENT, and TRANSITIONS
-e.g. typing StateObject(nameOfStateClass) creates a a new state class called nameOfStateClass as well as a pointer to an object of that state.
-To use: StateObject ( MyState ) * myState;
-```cpp
-/*Definition of Macro:*/
-#define StateObject(_name_)                                                  \
-    class _name_;                                                            \
-    friend class _name_;                                                     \
-    class _name_ : public State                                              \
-    {                                                                        \
-                                                                             \
-    public:                                                                  \
-        _name_(StateMachine *m, const char *name = NULL) : State(m, name){}; \
-        void entry(void);                                                    \
-        void during(void);                                                   \
-        void exit(void);                                                     \
-    };                                                                       \
-    _name_
-		
-```
