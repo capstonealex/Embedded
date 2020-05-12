@@ -1,19 +1,23 @@
 # Workbench
-## Version 2.0 : Using Docker Container (tested mac OSX and ubuntu)
-### Docker container cross
+## Option A. Cross compile on a host machine.
+### Using Docker to Cross-Compile
+Docker is a light-weight virtual machine with excellent cross-platform support. This allows us to run something very close to the Target OS(Beagle bone black in this case) on any desktop or notebook computer. We get the same versions of all of the libraries running on the Target machine but compile with the power of a desktop processor.
 1. Install Docker and Docker hub[Docker Desktop for Mac and Windows | Docker](https://www.docker.com/products/docker-desktop)
 2. docker pull alejandro4siana/cross-bbb-debian
-3. cd into the file you wish to cross compile in (e.g. ALEX)
+3. cd into the file you wish to cross compile in (e.g. CORC)
 ```
 docker run siana/cross-bbb-debian > bbbxc
 chmod +x bbbxc
 ```
-4. run command `./bbbxc make	` which should create your executable ready to upload on BBB
+4. run the command `./bbbxc make exe    ` which should create your executable ready to upload onto Target machine
 5.(OPTIONAL) Install vscode and use docker container as compiling environment:[VS code](https://code.visualstudio.com/docs/remote/containers)
-## Windows Virtual GDB Beagle bone.
-PreBuilt GNU Windows toolchain for beagle bone and accompanying plugin for Visual Studio: [Link](https://gnutoolchains.com/beaglebone/)
 
-## Virtual Box with instance of Debian 9.8
+### Prebuilt GNU Toolchains for Windows
+- Windows developers can use a pre-build GCC compiler for C and C++ languages locally on their host machine.
+- The PreBuilt GNU Windows toolchain and accompanying plugin for Visual Studio can be found here: [Link](https://gnutoolchains.com/beaglebone/)
+- Once installed, a call to cross-compile to an armhf target will use this compiler.
+
+## Option B. Build a virtual machine and cross-compile
 
 - Download virtual box: [Virtual box](www.virtualbox.org)
 - Make a new virtual machine for a Linux Debian distribution.
@@ -58,7 +62,7 @@ root@debian:~# visudo
 
 ## Enabling clipboard b/w host and guest
 
-- In virtual box, Devices>Insert Guest Additions CD Image. This installs guest additions for expanded functionality.
+- In the virtual box, Devices>Insert Guest Additions CD Image. This installs guest additions for expanded functionality.
 - Under virtual box, Settings>General>Advanced, enable Shared Clipboard.
 - If you run into issues with permissions, go to /etc/fstab and add exec permission. To do this, change following in fstab file `/dev/sr0 /media/cdrom0 udf,iso9660 user,noauto 0 0` to `/dev/sr0 /media/cdrom0 udf,iso9660 user,noauto,exec 0 0`. You may need sudo to do this.
 
