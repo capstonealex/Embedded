@@ -10,7 +10,7 @@ docker run siana/cross-bbb-debian > bbbxc
 chmod +x bbbxc
 ```
 4. run the command `./bbbxc make exe    ` which should create your executable ready to upload onto Target machine
-5.(OPTIONAL) Install vscode and use docker container as compiling environment:[VS code](https://code.visualstudio.com/docs/remote/containers)
+
 
 ### Prebuilt GNU Toolchains for Windows
 - Windows developers can use a pre-build GCC compiler for C and C++ languages locally on their host machine.
