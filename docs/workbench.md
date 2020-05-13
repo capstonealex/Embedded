@@ -1,5 +1,10 @@
 # Workbench
 ## Option A. Cross compile on a host machine.
+### Prebuilt GNU Toolchains for Windows
+- Windows developers can use a pre-build GCC compiler for C and C++ languages locally on their host machine.
+- The PreBuilt GNU Windows toolchain and accompanying plugin for Visual Studio can be found here: [Link](https://gnutoolchains.com/beaglebone/)
+- Once installed, a call to cross-compile to an armhf target will use this compiler.
+
 ### Using Docker to Cross-Compile
 Docker is a light-weight virtual machine with excellent cross-platform support. This allows us to run something very close to the Target OS(Beagle bone black in this case) on any desktop or notebook computer. We get the same versions of all of the libraries running on the Target machine but compile with the power of a desktop processor.
 
@@ -15,12 +20,6 @@ docker run siana/cross-bbb-debian > bbbxc
 chmod +x bbbxc
 ```
 - run the command `./bbbxc make exe    ` which should create your executable ready to upload onto Target machine
-
-
-### Prebuilt GNU Toolchains for Windows
-- Windows developers can use a pre-build GCC compiler for C and C++ languages locally on their host machine.
-- The PreBuilt GNU Windows toolchain and accompanying plugin for Visual Studio can be found here: [Link](https://gnutoolchains.com/beaglebone/)
-- Once installed, a call to cross-compile to an armhf target will use this compiler.
 
 ## Option B. Build a virtual machine and cross-compile
 
