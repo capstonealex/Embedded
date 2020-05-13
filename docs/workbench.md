@@ -8,7 +8,7 @@ Docker is a light-weight virtual machine with excellent cross-platform support. 
 docker pull alejandro4siana/cross-bbb-debian
 ```
 
--cd into the file you wish to cross compile in (e.g. CORC)
+- cd into the file you wish to cross compile in (e.g. CORC)
 
 ```
 docker run siana/cross-bbb-debian > bbbxc
