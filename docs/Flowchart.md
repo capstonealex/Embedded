@@ -1,10 +1,6 @@
-# Flowchart of a typical CORC implementation
-
-![Flow Chart](img/CORC_flow_chart.png)
-
 # Multi threaded execution
 
-To run application tasks and network tasks (all CANopen acticity and messaging) the software runs threee parallel threads. Two threads to maintain up to date CANopen processes and a third running the applications program loop.
+To run application tasks and network tasks (all CANopen acticity and messaging) the software runs threee parallel threads. Two threads to maintain up to date CANopen processes and a third running the applications program loop. A flowchart of a typical CORC implementation can be found bellow.
 
 ## CANopenNode threads
 
