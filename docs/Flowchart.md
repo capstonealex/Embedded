@@ -13,3 +13,7 @@ For more details on the implementation of CANopenNode please go to the projects 
 The applications loop speed can be altered by the programmer, however it must run slower then the CANopen Node rt loop. This insures any PDO reliante commands to nodes from the application are processed and sent out on the bus.
 
 <!-- \todo: test and document accurte method for max and min program loop speed plus associated issues when approaching max (jitter etc.)-->
+
+# Flowchart of a typical CORC implementation
+
+![Flow Chart](img/CORC_flow_chart.png)
