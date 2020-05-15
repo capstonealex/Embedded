@@ -1,23 +1,23 @@
 # Designing Finite State Machines using CORC
 
-### What is a Finite State Machine (FSM)
+## What is a Finite State Machine (FSM)
 
 - A reactive system whose response to a particular stimulus (a signal, or a piece of input) is not the same on every occasion, depending on its current “state”. - For example, in the case of a Vending machine, it will not despense a chocolate bar when you make a selection unless you have already inserted the correct amount of money. Thus, the response to the selection button depends on the previous history of the use of the system.
 
-### Why FSM in Robotics
+## Why FSM in Robotics
 
 - Robot behaviour is inherently reactive. Response to an event at any moment, is dependent on the “state” of the robot.
 - Safety: To avoid states (motion or behaviour) with disastrous consequences, FSM only allow pre-determined state transitions. - Never begin a motion unless in a safe starting position. - Never keep rocket engines on for more than n seconds. - (Therac-25 accident)[An investigation of the Therac-25 accidents - IEEE Journals & Magazine](https://ieeexplore.ieee.org/document/274940)
 
-### How to Structure State Machine Code
+## How to Structure State Machine Code
 
-CORC provides a structured way to build event driven FSMs. The following explains how to represent states and events and how to put them together into a CORC state machine. It is best practice to start with a state transition diagram and build each component individually. We will use the ExoTestMachine example provided in the CORC library (link)[https://github.com/UniMelbHumanRoboticsLab/CANOpenRobotController/blob/master/src/apps/stateMachine/ExoTestMachine.cpp] presented bellow.
+CORC provides a structured way to build event driven FSMs. The following explains how to represent states and events and how to put them together into a CORC state machine. It is best practice to start with a state transition diagram and build each component individually. We will use the ExoTestMachine example provided in the CORC library [link](https://github.com/UniMelbHumanRoboticsLab/CANOpenRobotController/blob/master/src/apps/stateMachine/ExoTestMachine.cpp) presented bellow.
 
 ![exoTestMachine](img/exoTestMachine.png)
 
 - Guided by a pilot with some form of input control to trigger startExo, startStand and startSit events, the desired behaviour is to move the exoskeleton from a sitting position to a standing position state, through two moving states (sittingDwn and standingUp). In state machine structure design we do not care how those motions happen, only the separation of states to both septette programatically and prevent unwanted behaviours.
 
-#### States
+## States
 
 - States can either have an associated action with them (sitting Down), or no action (sitting), which differ them from each other.
 - Programatically we design each state as a separate class which must implement the following three functions.
@@ -38,7 +38,7 @@ For example the SittingDown class:
 
 ```C++
 void SittingDwn::entry(void) {
-	  cout << " GREEN -> SIT DOWN " << endl
+    cout << " GREEN -> SIT DOWN " << endl
     trajectoryGenerator->initialiseTrajectory(SIT, 1);
     robot->startNewTraj();
 }
@@ -50,7 +50,7 @@ void SittingDwn::exit(void) {
 }
 ```
 
-#### Events
+## Events
 
 Events could a sensor trigger, timer finishing, end of a trajectory or anything in between.
 When an event happens:
@@ -73,17 +73,17 @@ bool ExoTestMachine::IsAPressed::check(void) {
 }
 ```
 
-#### Transitions
+## Transitions
 
 A transition represents a shift from one State to another, triggered by a specific Event (arrow in the above diagram).
 
 - Transition objects have a pointer to the Event and the toState, which for a transition object is called a target. Simply a target State triggered by an Event.
 - Programatically this is captured by the fromState holding all possible transition objects in an archList. A list of all possible transitions this state can transition too. - The overlaying State machine asks the current state to check its Archlist for any Triggered transitions. If a transition event is triggered, the transition object provides the stjatemachine a pointer to its ToState. This now becomes the current state.
   Define each transition by specifying :
-  _ FromState - the starting state for this transition
-  _ ToState - the end state for this transition
-  _ Event( Condition) - a callable which when it returns True means this transition is valid
-  _ Use `NewTransition(_from_, _event_, _to_)` MACRO to achieve this.
+  - FromState - the starting state for this transition
+  - ToState - the end state for this transition
+  - Event( Condition) - a callable which when it returns True means this transition is valid
+  - Use `NewTransition(_from_, _event_, _to_)` MACRO to achieve this.
 
 ```C++
 \*Define sitting transitions*\
@@ -91,7 +91,7 @@ A transition represents a shift from one State to another, triggered by a specif
     NewTransition(sitting, startStand, standingUp);
 ```
 
-##### Putting everything together in a stateMachine class.
+## Putting everything together in a stateMachine class.
 
 The base state machine class relies on cyclic calls to update(). - Each statemachine starts with a call to initialize(state) setting the currentState pointer to the fed in state object, - After the initialization call each loop of a program must cyclically call statemachine.update() and a program will transition from state to state based on the events which occur. - The update() function achieves this with two calls - Checks the currentStates ArcList for any triggered Transitions (that transition objects Event). - If an Event has been triggered, a sequence of calls exits the current state and sets the target to the current state. - Else if no Event triggers a transition, the currentStates during function is called. - This sequence is repeated until program exit.
 
@@ -109,9 +109,9 @@ void StateMachine::update()
 }
 ```
 
-#### Designing your own stateMachine
+## Designing your own stateMachine
 
-Following the ExoTestMachine example (link)[https://github.com/UniMelbHumanRoboticsLab/CANOpenRobotController/blob/master/src/apps/stateMachine/ExoTestMachine.cpp] , the following steps should yield a functional state machine.
+Following the ExoTestMachine example [link](https://github.com/UniMelbHumanRoboticsLab/CANOpenRobotController/blob/master/src/apps/stateMachine/ExoTestMachine.cpp) , the following steps should yield a functional state machine.
 
 1. Design a state diagram with states, events and transitions (states may have more than one possible transition)
 2. Create each state classes three virtual functions following the above SittingDwn.cpp as example
@@ -120,4 +120,4 @@ Following the ExoTestMachine example (link)[https://github.com/UniMelbHumanRobot
 4. Use the EventObject(_name_) MACRO to create and initialize Event objects `EventObject(IsAPressed) * isAPressed;` & `isAPressed = new IsAPressed(*this*);`
 5. Define Event object check() functions as above (in Statemachine class)
 6. Pass your first state to the Base StateMachine `initialize(state)` function -> `StateMachine::initialize(initState)`
-7. In your main program cyclically call <yourStaeMachine>.update() function.
+7. In your main program cyclically call `<yourStaeMachine>.update()`
