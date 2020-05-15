@@ -1,39 +1,39 @@
 site_name: ALEX Embedded  Documentation
 theme: readthedocs
 nav:
-  - Home: index.md
-  #- Requirements: requirements.md
+    - Home: index.md
+    #- Requirements: requirements.md
 
-  - DEPLOYMENT SECTION:
-      - Workbench Setup: Deployment/vm_setup.md
-      - BBB Connection: Deployment/bbb_connection.md
-      - BBB Real-Time Kernel: Deployment/bbb_RT.md
-      - CANopen Setup: Deployment/canopen_setup.md
-      - X2 Trajectory Test: Deployment/x2_trajectory_test.md
-      - PDO Setup: Deployment/PDO_setup.md
-      - BBB Full Image: Deployment/BBB_fullImage.md
-      - Troubleshooting: Deployment/troubleshooting.md
+    - DEPLOYMENT SECTION:
+          - Workbench Setup: Deployment/vm_setup.md
+          - BBB Connection: Deployment/bbb_connection.md
+          - BBB Real-Time Kernel: Deployment/bbb_RT.md
+          - CANopen Setup: Deployment/canopen_setup.md
+          - X2 Trajectory Test: Deployment/x2_trajectory_test.md
+          - PDO Setup: Deployment/PDO_setup.md
+          - BBB Full Image: Deployment/BBB_fullImage.md
+          - Troubleshooting: Deployment/troubleshooting.md
 
-  - DEVELOPER SECTION:
-      - Workbench Creation: workbench.md
-      - Cross compilation: crosscomp.md
-      - Eclipse & cross compilation: eclipse.md
-      - Beagle Bone Black Flashing: bbb.md
-      - Beagle Bone Kernel Compilation: kernel.md
-      - Realtime Tests: rtTests.md
-      - CANbus: canbus.md
-      - Accelnet Motor Drive Config and Wiring: accelnet_DriveSetup.md
-      - CANopen: canopen.md
-      - CANopen Hardware: canopenHardware.md
-      - Calibrating X2: calibration.md
+    - DEVELOPER SECTION:
+          - Workbench Creation: workbench.md
+          - Cross compilation: crosscomp.md
+          - Eclipse & cross compilation: eclipse.md
+          - Beagle Bone Black Flashing: bbb.md
+          - Beagle Bone Kernel Compilation: kernel.md
+          - Realtime Tests: rtTests.md
+          - CANbus: canbus.md
+          - Accelnet Motor Drive Config and Wiring: accelnet_DriveSetup.md
+          - CANopen: canopen.md
+          - CANopen Hardware: canopenHardware.md
+          - Calibrating X2: calibration.md
 
-  - SOFTWARE ARCHITECTURE:
-      - State Machine: StaeMachines.md
-      - CORC Flowchart: Flowchart.md
-    # - Everything below this is in-development components. Move completed sections above.
-  - IN-DEVELOPMENT:
-      - Setting Up PDOs: PDOprotocol.md
-      - RnD Trajectory Test: Rnd_test.md
+    - SOFTWARE ARCHITECTURE:
+          - State Machine: StaeMachine.md
+          - CORC Flowchart: Flowchart.md
+      # - Everything below this is in-development components. Move completed sections above.
+    - IN-DEVELOPMENT:
+          - Setting Up PDOs: PDOprotocol.md
+          - RnD Trajectory Test: Rnd_test.md
 
-  - Contact Us: contact.md
-  # - About: about.md
+    - Contact Us: contact.md
+    # - About: about.md
