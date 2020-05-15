@@ -28,7 +28,7 @@ nav:
           - Calibrating X2: calibration.md
 
     - SOFTWARE ARCHITECTURE:
-          - State Machine: StaeMachine.md
+          - State Machine: StateMachine.md
           - CORC Flowchart: Flowchart.md
       # - Everything below this is in-development components. Move completed sections above.
     - IN-DEVELOPMENT:
