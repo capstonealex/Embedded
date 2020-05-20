@@ -148,3 +148,5 @@ NOTE: As Docker requires virtualization to be enabled in Windows, Virtual Machin
    ```
    C:\WINDOWS\system32> bcdedit /set hypervisorlaunchtype off
    ```
+   
+3. Reboot your machine
