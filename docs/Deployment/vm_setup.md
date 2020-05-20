@@ -24,6 +24,7 @@ Upon installation the user should have an environment capable of developing soft
 
 6. Start your system and install virtual box Guest additions.
 
+    * Login username is `will`
     * Login password is `password`
 
 ## Guest additions for VM
@@ -131,4 +132,19 @@ Rather than setting up a Virtual Machine, an alternative is to use a Docker cont
    Call a updateValue() defined in Joint: 1
    Read Value of the Joint (Expected Value 1): 1
    root@93d5d77076e1:/exo# exit
+   ```
+NOTE: As Docker requires virtualization to be enabled in Windows, Virtual Machines like VirtualBox will not be able to be used. To enable/disable virtualization in Windows without using the BIOS, follow these steps:
+
+1. Run Command Prompt as administrator
+
+2. Enter the following command
+   
+   * To enable virtualisation:
+   ```
+   C:\WINDOWS\system32> bcdedit /set hypervisorlaunchtype auto
+   ```
+   
+   * To disable virtualisation:
+   ```
+   C:\WINDOWS\system32> bcdedit /set hypervisorlaunchtype off
    ```
