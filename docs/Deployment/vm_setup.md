@@ -53,28 +53,28 @@ You should now have a cloned VM with working Debian and cross compilation to BBB
 
 Rather than setting up a Virtual Machine, an alternative is to use a Docker container to simulate the BBB on the user's host OS in a terminal. This method utilises cross compilation for the BBB, then copying the compiled exo app or tests to the Docker container to be run. A recommended method for setting up the Docker workflow on a fresh computer is described below.
 
-1. Install [VSCode](https://code.visualstudio.com/)
+1. Install [VSCode](https://code.visualstudio.com/).
 
-2. Install [Git](https://git-scm.com/download)
+2. Install [Git](https://git-scm.com/download).
 
-3. Download the [GNU Toolchain](https://gnutoolchains.com/download/), selecting beaglebone-gcc6.3.0-r2.exe (361 MB) and install
+3. Download the [GNU Toolchain](https://gnutoolchains.com/download/), selecting beaglebone-gcc6.3.0-r2.exe (361 MB) and install.
 
-4. Install [Docker](https://docs.docker.com/docker-for-windows/install)
+4. Install [Docker](https://docs.docker.com/docker-for-windows/install).
 
    * Windows 10 Pro, Enterprise or Education are required for use. For University of Melbourne staff and students, a free upgrade to Windows 10 Education from Windows 10 Home can be accessed at [this link](https://unimelb.onthehub.com/WebStore/OfferingDetails.aspx?o=40f9cc62-6445-e511-940f-b8ca3a5db7a1).
 
    * To learn some of the basics on getting started with Docker, [this Youtube video](https://www.youtube.com/watch?v=t5yqLJfbnqM) may be useful.
    
-5. Checkout the [code repository](https://github.com/capstonalex/exo)
+5. Checkout the [code repository](https://github.com/capstonalex/exo).
 
-6. Pull the armhf/Debian Docker image
+6. Pull the armhf/Debian Docker image.
    * Recommend using the VSCode terminals for simplicity, as multiple terminals will be required when the container is created. The following example was from a Powershell terminal within VSCode.
    
    ```
    PS C:\Users\pc-user> docker pull armhf/debian
    ```
    
-7. Create a container based on the image
+7. Create a container based on the image.
 
    * A container ID will be produced in the form of a long hexidecimal string.
    
@@ -84,13 +84,13 @@ Rather than setting up a Virtual Machine, an alternative is to use a Docker cont
    PS C:\Users\pc-user> docker create -it armhf/debian
    ```
 
-8. Build the desired app or test using the relevant Makefile and the "make" command
+8. Build the desired app or test using the relevant Makefile and the "make" command.
 
    ```
    PS C:\Users\pc-user\Documents\Github\exo\> make testJoints
    ```
 
-9. Copy the generated application on the local filesystem to the Docker container
+9. Copy the generated application on the local filesystem to the Docker container.
 
    * Only enough characters of the container ID are needed to make it unique amoung created containers, so if only one container has been created, only one character of the container ID is needed.
    
@@ -104,13 +104,13 @@ Rather than setting up a Virtual Machine, an alternative is to use a Docker cont
    PS C:\Users\pc-user\Documents\Github\exo\> docker cp testJoints 93d5d:/testJoints
    ````
    
-10. Start the Docker container in interactive mode, using the flag '-i'
+10. Start the Docker container in interactive mode, using the flag '-i'.
 
    ```
    PS C:\Users\pc-user\Documents\Github\exo\> docker start -i <CONTAINERID>
    ```
 
-11. Confirm that the application copied from the local filesystem is present in the container and can be run
+11. Confirm that the application copied from the local filesystem is present in the container and can be run.
 
    * For example, listing the present files, running testJoints and exiting the container:
    
@@ -135,9 +135,9 @@ Rather than setting up a Virtual Machine, an alternative is to use a Docker cont
    ```
 NOTE: As Docker requires virtualization to be enabled in Windows, Virtual Machines like VirtualBox will not be able to be used. To enable/disable virtualization in Windows without using the BIOS, follow these steps:
 
-1. Run Command Prompt as administrator
+1. Run Command Prompt as administrator.
 
-2. Enter the following command
+2. Enter the following command.
    
    * To enable virtualisation:
    ```
@@ -149,4 +149,4 @@ NOTE: As Docker requires virtualization to be enabled in Windows, Virtual Machin
    C:\WINDOWS\system32> bcdedit /set hypervisorlaunchtype off
    ```
    
-3. Reboot your machine
+3. Reboot your machine.
